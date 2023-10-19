@@ -1,4 +1,4 @@
-const STORAGE_TOKEN = 'T3ZM12M138IJKXCYJV1DA8PMVRJBHNPB4BD5OV43';
+const STORAGE_TOKEN = 'IXUDP6BWKXHRJCOFIUH7LIUKSX3X8BUBHD0R3R6R';
 const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 
 
@@ -62,7 +62,7 @@ let databaseJSON = {
         },
         {
             "firstname": "Guest",
-            "lastname": "",
+            "lastname": " ",
             "email": "guest@mail.com",
             "phone": "",
             "color": "rgb(141, 218, 80)"
@@ -169,11 +169,6 @@ let databaseJSON = {
         {
             "username": "Guest",
             "email": "guest@mail.com",
-            "password": "12345678"
-        },
-        {
-            "username": "Peter",
-            "email": "peter@mail.com",
             "password": "12345678"
         }
     ]
