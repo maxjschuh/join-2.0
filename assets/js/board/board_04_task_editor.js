@@ -273,13 +273,11 @@ async function taskEditorSetCheckbox(i) {
 /**
  * Hides the subtask checkmark by returning 'd-none' if the subtask status is false.
  * @param {string} status subtask status
- * @returns 'd-none' if the subtask status is false
+ * @returns {string} 'd-none' if the subtask status is false
  */
 function taskEditorGetSubtaskStatus(status) {
 
-    if (status != 'true') {
-        return 'd-none';
-    }
+    if (status != 'true') return 'd-none';
 }
 
 

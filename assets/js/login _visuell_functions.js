@@ -4,7 +4,7 @@
  * This function will set and reset the tick in the "Remember me" box
  */
 function setTick() {
-    if (tickCount == 0) {
+    if (!tickCount) {
         document.getElementById('tick').classList.remove('d-none');
         rememberMe = true;
     }
@@ -13,9 +13,7 @@ function setTick() {
         rememberMe = false;
     }
     tickCount++;
-    if (tickCount >= 2) {
-        tickCount = 0;
-    }
+    if (tickCount >= 2) tickCount = 0;
 }
 
 
@@ -43,27 +41,23 @@ function checkScreenSize() {
  * This function is switching the image next to the passwort inputfield onkeyup
  */
 function switchPasswordPicture() {
-    let passwordInput = document.getElementById("password").value;
-    let passwordInputType = document.getElementById("password");
+    const passwordInput = document.getElementById("password");
 
-    if (passwordInput == '') {
-        document.getElementById('lock').classList.remove('d-none');
-        document.getElementById('showPassword').classList.add('d-none');
-        document.getElementById('hidePassword').classList.add('d-none');
-    }
-    else {
-        if (passwordInputType.type == "password") {
-            document.getElementById('lock').classList.add('d-none');
-            document.getElementById('showPassword').classList.add('d-none')
-            document.getElementById('hidePassword').classList.remove('d-none');
-        }
-        else {
-            document.getElementById('lock').classList.add('d-none');
-            document.getElementById('showPassword').classList.remove('d-none')
-            document.getElementById('hidePassword').classList.add('d-none');
+    if (!passwordInput.value) {
+        toggleElements(['lock'], 'd-none', false);
+        toggleElements(['showPassword', 'hidePassword'], 'd-none', true);
+
+    } else {
+
+        if (passwordInput.type == "password") {
+            toggleElements(['lock', 'showPassword'], 'd-none', true);
+            toggleElements(['hidePassword'], 'd-none', false);
+
+        } else {
+            toggleElements(['lock', 'hidePassword'], 'd-none', true);
+            toggleElements(['showPassword'], 'd-none', false);
         }
     }
-
 }
 
 
@@ -87,18 +81,6 @@ function showPassword1() {
 
 
 /**
- * This function creates random colors.
- * @returns random rgb numbers.
- */
-function generateRandomColor() {
-    let r = Math.floor(Math.random() * 256);
-    let g = Math.floor(Math.random() * 256);
-    let b = Math.floor(Math.random() * 256);
-    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
-}
-
-
-/**
  * This function is used to change the border of the parent-element of the inputfield
  * 
  * @param {string} event This is the active event
@@ -112,11 +94,11 @@ function activeInputfield(event) {
         if (event.type === "focus") {
             // Das Input-Feld hat den Fokus erhalten
             const activeInputfieldId = activeInput.id;
-            document.getElementById(activeInputfieldId).parentNode.style = "border: 1px solid #29ABE2;"
+            document.getElementById(activeInputfieldId).parentNode.style = "border: 1px solid #29ABE2;";
         } else if (event.type === "blur") {
             // Das Input-Feld hat den Fokus verloren
             const activeInputfieldId = activeInput.id;
-            document.getElementById(activeInputfieldId).parentNode.style = ""
+            document.getElementById(activeInputfieldId).parentNode.style = "";
         }
     }
 }
@@ -126,10 +108,8 @@ function activeInputfield(event) {
  * This function is used to restart the animation when the screen is resized
  */
 function handleResize() {
-    let screenWidth = window.innerWidth;
-    if (screenWidth == 900) {
-        waitForAnimation();
-    }
+    const screenWidth = window.innerWidth;
+    if (screenWidth == 900) waitForAnimation();
 }
 
 
@@ -139,7 +119,7 @@ function handleResize() {
  * @param {string} buttonId The id of the button which will be disabled
  */
 function disableButton(buttonId) {
-    const button = document.getElementById(buttonId);
+    let button = document.getElementById(buttonId);
 
     button.disabled = true;
 
@@ -154,10 +134,9 @@ function disableButton(buttonId) {
  * This function will open the window to register a user
  */
 function openRegister() {
-    document.getElementById('signUp').classList.add('d-none');
-    document.getElementById('loginContainer').classList.add('d-none');
-    document.getElementById('resetPwContainer').classList.add('d-none');
-    document.getElementById('signUpContainer').classList.remove('d-none');
+
+    toggleElements(['signUp', 'loginContainer', 'resetPwContainer'], 'd-none', true);
+    toggleElements(['signUpContainer'], 'd-none', false);
 }
 
 
@@ -165,11 +144,9 @@ function openRegister() {
  * This function will open the window to login
  */
 function openLogin() {
-    document.getElementById('signUp').classList.remove('d-none');
-    document.getElementById('loginContainer').classList.remove('d-none');
-    document.getElementById('signUpContainer').classList.add('d-none');
-    document.getElementById('resetPwContainer').classList.add('d-none');
-    document.getElementById('forgotPwContainer').classList.add('d-none');
+
+    toggleElements(['signUp', 'loginContainer'], 'd-none', false);
+    toggleElements(['signUpContainer', 'resetPwContainer', 'forgotPwContainer'], 'd-none', true);
 }
 
 
@@ -177,11 +154,9 @@ function openLogin() {
  * This function will open the window to request a passwort change
  */
 function openForgotPw() {
-    document.getElementById('signUp').classList.add('d-none');
-    document.getElementById('loginContainer').classList.add('d-none');
-    document.getElementById('resetPwContainer').classList.add('d-none');
-    document.getElementById('forgotPwContainer').classList.remove('d-none');
-    document.getElementById('signUpContainer').classList.add('d-none');
+    
+    toggleElements(['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'], 'd-none', true);
+    toggleElements(['forgotPwContainer'], 'd-none', false);
 }
 
 

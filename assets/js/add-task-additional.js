@@ -55,11 +55,10 @@ function datePicker() {
  */
 function pullDownMenu(clicked, notClicked, visible, notVisible) {
     let openMenu = document.getElementById(clicked).classList;
-    if (openMenu == 'dropdown-category-closed') {
-        openDropDownMenu(clicked, notClicked, visible, notVisible);
-    } else {
-        closeDropDownMenu(clicked, visible, notVisible);
-    } if (clicked == 'assingedTo') {
+    if (openMenu == 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
+    else closeDropDownMenu(clicked, visible, notVisible);
+    
+    if (clicked == 'assingedTo') {
         switchContactIcons();
         renderInitials();
         initialsRenderd = false;
@@ -205,7 +204,7 @@ function clearAllFields() {
     clearCreateCategory();
     clearContacts();
     document.getElementById('date').value = '';
-    resetPrioButtom();
+    resetPrioButton();
     resetSubTasks();
     resetWarnings();
 }

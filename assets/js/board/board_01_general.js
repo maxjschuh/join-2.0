@@ -39,18 +39,13 @@ function boardSetMaximumDescriptionLength() {
 
     const windowWidth = window.innerWidth;
 
-    if (windowWidth > 1500 || (windowWidth < 700 && windowWidth > 370)) {
-        boardMaximumDescriptionLength = 90;
+    if (windowWidth > 1500 || (windowWidth < 700 && windowWidth > 370)) boardMaximumDescriptionLength = 90;
 
-    } else if ((windowWidth < 1100 && windowWidth > 900) || (windowWidth < 750 && windowWidth > 700)) {
-        boardMaximumDescriptionLength = 25;
+    else if ((windowWidth < 1100 && windowWidth > 900) || (windowWidth < 750 && windowWidth > 700)) boardMaximumDescriptionLength = 25;
 
-    } else if (windowWidth > 280) {
-        boardMaximumDescriptionLength = 40;
+    else if (windowWidth > 280) boardMaximumDescriptionLength = 40;
 
-    } else {
-        boardMaximumDescriptionLength = 25;
-    }
+    else boardMaximumDescriptionLength = 25;
 }
 
 
@@ -174,10 +169,7 @@ function boardSwitchResponsiveMode() {
         document.getElementById('board-kanban').style = 'position: relative';
         columnStyle = 'position: absolute';
 
-    } else {
-
-        document.getElementById('board-kanban').style = 'display: flex';
-    }
+    } else document.getElementById('board-kanban').style = 'display: flex';
 
     for (let i = 0; i < columnIds.length; i++) {
         const column = columnIds[i];
@@ -213,12 +205,9 @@ function columnSetOffsetY() {
  */
 function boardComputeOffsetY(offsetY, i) {
 
-    if (taskCountPerColumn[i] === 0) {
-        return offsetY + 264;
+    if (taskCountPerColumn[i] === 0) return offsetY + 264;
 
-    } else {
-        return offsetY + (260 * (taskCountPerColumn[i] - 1)) + 253;
-    }
+    else return offsetY + (260 * (taskCountPerColumn[i] - 1)) + 253;
 }
 
 
@@ -229,15 +218,11 @@ function boardComputeOffsetY(offsetY, i) {
  */
 function getTaskPrioBoard(task) {
 
-    if (task.prio == 'low') {
-        return 'Low';
+    if (task.prio == 'low') return 'Low';
 
-    } else if (task.prio == 'medium') {
-        return 'Medium';
+    else if (task.prio == 'medium') return 'Medium';
 
-    } else {
-        return 'Urgent';
-    }
+    else return 'Urgent';
 }
 
 
@@ -251,9 +236,7 @@ function getCategoryColor(taskCategory) {
     for (let i = 0; i < database.categories.length; i++) {
         const category = database.categories[i];
 
-        if (category.name == taskCategory) {
-            return category.color;
-        }
+        if (category.name == taskCategory) return category.color;
     }
 }
 
@@ -265,13 +248,9 @@ function getCategoryColor(taskCategory) {
  */
 function htmlTemplateAllAssignees(task) {
 
-    if (task.assigned_to.length < 4) {
+    if (task.assigned_to.length < 4) return htmlTemplateUpTo3Assignees(task);
 
-        return htmlTemplateUpTo3Assignees(task);
-
-    } else {
-        return htmlTemplateMoreThan3Assignees(task);
-    }
+    else return htmlTemplateMoreThan3Assignees(task);
 }
 
 
@@ -330,9 +309,7 @@ function getAssigneeColor(assignee) {
         const contact = database.contacts[i];
 
         if ((firstname == contact.firstname && lastname == contact.lastname) ||
-            (assignee == contact.firstname)) {
-            return contact.color;
-        }
+            (assignee == contact.firstname)) return contact.color;
     }
 }
 
@@ -364,9 +341,7 @@ function boardGetShortenedDescription(description) {
  */
 function boardCheckForSubtasks(task) {
 
-    if (task.subtasks.name.length == 0) {
-        return "display:none;";
-    }
+    if (task.subtasks.name.length == 0) return "display:none;";
 }
 
 
@@ -395,12 +370,10 @@ function boardSubtasksProgress(task) {
 function determineSubtasksProgress(task) {
     let subtasksProgress = 0;
 
-    for (let i = 0; i < task.subtasks.status.length; i++) {
-        const subtask = task.subtasks.status[i];
+    task.subtasks.status.forEach(subtask => {
 
-        if (subtask == "true") {
-            subtasksProgress++;
-        }
-    }
+        if (subtask === "true") subtasksProgress++;
+    });
+
     return subtasksProgress;
 }

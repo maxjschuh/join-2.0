@@ -130,15 +130,11 @@ function boardDetailViewSubtasks(task) {
  */
 function boardGetPrioColor(taskPrio) {
 
-    if (taskPrio == 'low') {
-        return 'rgba(122, 226, 41, 1)';
+    if (taskPrio == 'low') return 'rgba(122, 226, 41, 1)';
 
-    } else if (taskPrio == 'medium') {
-        return 'rgba(255, 168, 0, 1)';
+    else if (taskPrio == 'medium') return 'rgba(255, 168, 0, 1)';
 
-    } else {
-        return 'rgba(255, 61, 0, 1)';
-    }
+    else return 'rgba(255, 61, 0, 1)';
 }
 
 

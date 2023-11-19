@@ -144,9 +144,7 @@ function boardSetDropTargets() {
         }
     }
 
-    if (boardDropTargetContainer) {
-        document.getElementById(boardDropTargetContainer).classList.remove('board-display-none');
-    }
+    if (boardDropTargetContainer) document.getElementById(boardDropTargetContainer).classList.remove('board-display-none');
 }
 
 
@@ -157,12 +155,9 @@ function boardSetDropTargets() {
  */
 function rotateTaskCard(boardDragElement, rotate) {
 
-    if (rotate) {
-        boardDragElement.classList.add('board-task-card-rotated');
+    if (rotate) boardDragElement.classList.add('board-task-card-rotated');
 
-    } else {
-        boardDragElement.classList.remove('board-task-card-rotated');
-    }
+    else boardDragElement.classList.remove('board-task-card-rotated');
 }
 
 
@@ -182,9 +177,7 @@ function checkDragOverlapping(boardDragElement, taskNumber) {
 
             boardHidePlaceholder(columnId);
 
-        } else {
-            boardShowPlaceholder(columnId);
-        }
+        } else boardShowPlaceholder(columnId);
     }
 }
 
@@ -208,9 +201,8 @@ function isDraggedElementOverBoardColumn(columnId, boardDragElement, i, taskNumb
 
         checkDraggingOverDropContainer(columnId, centerX, centerY, i, taskNumber);
         return true;
-    } else {
-        return false;
-    }
+
+    } else return false;
 }
 
 
@@ -322,9 +314,7 @@ function ignoreDraggedTaskWhenSettingGaps(draggingTask) {
 
     const taskNumberPositionCurrentColumn = tasksInCurrentColumn.indexOf(draggingTask);
 
-    if (taskNumberPositionCurrentColumn != -1) {
-        tasksInCurrentColumn.splice(taskNumberPositionCurrentColumn, 1);
-    }
+    if (taskNumberPositionCurrentColumn != -1) tasksInCurrentColumn.splice(taskNumberPositionCurrentColumn, 1);
 }
 
 
@@ -338,13 +328,9 @@ function handleDropping(i) {
     document.onmousemove = null;
     let index = i;
 
-    if (boardActiveSearch) {
-        index = searchResultsDatabaseIndexes[i];
-    }
+    if (boardActiveSearch) index = searchResultsDatabaseIndexes[i];
 
-    if (!currentlyDragging) {
-        boardShowTaskDetails(index);
-    }
+    if (!currentlyDragging) boardShowTaskDetails(index);
 
     boardSetAndSaveProgress(index);
     boardValidateSearchInput();
@@ -374,10 +360,7 @@ function boardSetAndSaveProgress(index) {
  */
 function boardColumnRouter() {
 
-    if (boardDropTargetColumn) {
-
-        return boardDropTargetColumn.substring(20);
-    }
+    if (boardDropTargetColumn) return boardDropTargetColumn.substring(20);
 }
 
 

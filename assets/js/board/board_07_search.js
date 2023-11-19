@@ -5,11 +5,9 @@
  */
 function boardUseSearchResults(newBoardSearch) {
 
-    if (newBoardSearch == true || boardActiveSearch == true) {
+    if (newBoardSearch == true || boardActiveSearch == true) return searchResults;
 
-        return searchResults;
-    }
-    return database;
+    else return database;
 }
 
 
@@ -97,9 +95,7 @@ function boardFieldIncludes(field, userInput) {
     const fieldLowerCase = field.toLowerCase();
     const userInputLowerCase = userInput.toLowerCase();
 
-    if (fieldLowerCase.includes(userInputLowerCase)) {
-        return true;
-    }
+    if (fieldLowerCase.includes(userInputLowerCase)) return true;
 }
 
 
@@ -114,12 +110,10 @@ function boardSaveSearchResults(task) {
 
     searchResultsAsString = searchResultsAsString.slice(0, -2);
 
-    if (searchResultsAsString.length > 20) {
-        searchResultsAsString = searchResultsAsString + ',' + taskAsString;
+    if (searchResultsAsString.length > 20) searchResultsAsString = searchResultsAsString + ',' + taskAsString;
 
-    } else {
-        searchResultsAsString = searchResultsAsString + taskAsString;
-    }
+    else searchResultsAsString = searchResultsAsString + taskAsString;
+    
     searchResultsAsString = searchResultsAsString + ']}';
     searchResults = JSON.parse(searchResultsAsString);
 }

@@ -17,10 +17,8 @@ async function initContact() {
 function loadContacts() {
     for (let i = 0; i < contacts.length; i++) {
         const contact = contacts[i];
-        let firstLetter = contact['firstname'].charAt(0).toLowerCase();
-        if (!firstLetters.includes(firstLetter)) {
-            firstLetters.push(firstLetter);
-        }
+        const firstLetter = contact['firstname'].charAt(0).toLowerCase();
+        if (!firstLetters.includes(firstLetter)) firstLetters.push(firstLetter);
     }
     firstLetters.sort();
     let contactList = document.getElementById('contact-list');
@@ -50,7 +48,7 @@ function renderContactList(firstLetters) {
 function renderFirstLetter(firstLetter) {
     for (let i = 0; i < contacts.length; i++) {
         const userData = contacts[i];
-        let contactFirstLetter = userData['firstname'].charAt(0).toLowerCase();
+        const contactFirstLetter = userData['firstname'].charAt(0).toLowerCase();
         if (contactFirstLetter === firstLetter) {
             let contactList = document.getElementById('contact-list');
             contactList.innerHTML += templateContactList(userData, i);
@@ -63,10 +61,9 @@ function renderFirstLetter(firstLetter) {
  * This function changes the color of a user in the contact list when clicked on.
  */
 function changeContactColor() {
-    let elem = document.querySelectorAll(".contact-list-box");
-    for (let j = 0; j < elem.length; j++) {
-        elem[j].classList.remove('change-background-color');
-    }
+    const elements = document.querySelectorAll(".contact-list-box");
+
+    elements.forEach(element => element.classList.remove('change-background-color'));
 }
 
 
@@ -80,47 +77,24 @@ function openContactDetails(i) {
     let showDetails = document.getElementById('selectedContact');
     showDetails.innerHTML = '';
     showDetails.innerHTML = templateContactDetails(i);
-    changeMobileView(i);
+    if (window.matchMedia('screen and (max-width: 900px)').matches) changeMobileView(true);
 }
 
 
 /**
- * This function opens the overlay selected user information when a screen is max 900px wide.
+ * Shows or hides the mobile view.
+ * @param {boolean} direction_of_operation true for showing, false for hiding
  */
-function changeMobileView() {
-    if (window.matchMedia('screen and (max-width: 900px)').matches) {
-        document.getElementById('contact-list').classList.add('d-none');
-        document.getElementById('contacts-container').classList.add('show-contact-selection-overlay');
-        document.getElementById('contact-left-arrow').classList.add('visibility');
-        document.getElementById('contact-kanban').classList.add('show-contact-selection-overlay');
-        document.getElementById('contact-kanban').classList.remove('d-none');
-        document.getElementById('headline').classList.add('show-contact-selection-overlay');
-        document.getElementById('selectedContact').classList.add('show-contact-selection-overlay');
-        document.getElementById('contact-edit').classList.add('d-none');
-        document.getElementById('trash-icon').classList.remove('d-none');
-        document.getElementById('contact-trash').classList.add('d-none');
-        document.getElementById('edit-contact-icon').classList.remove('d-none');
-        document.getElementById('mobile-contact-button-container').classList.add('d-none');
-    }
-}
+function changeMobileView(direction_of_operation) {
 
+    document.getElementById('contact-left-arrow').classList.toggle('visibility', direction_of_operation);
 
-/**
- * This function closes overlay selected user information.
- */
-function closeMobileVersion() {
-    document.getElementById('contact-list').classList.remove('d-none');
-    document.getElementById('contacts-container').classList.remove('show-contact-selection-overlay');
-    document.getElementById('contact-left-arrow').classList.remove('visibility');
-    document.getElementById('contact-kanban').classList.remove('show-contact-selection-overlay');
-    document.getElementById('contact-kanban').classList.add('d-none');
-    document.getElementById('headline').classList.remove('show-contact-selection-overlay');
-    document.getElementById('selectedContact').classList.remove('show-contact-selection-overlay');
-    document.getElementById('contact-edit').classList.remove('d-none');
-    document.getElementById('trash-icon').classList.add('d-none');
-    document.getElementById('contact-trash').classList.remove('d-none');
-    document.getElementById('edit-contact-icon').classList.add('d-none');
-    document.getElementById('mobile-contact-button-container').classList.remove('d-none');
+    toggleElements(['contacts-container', 'contact-kanban', 'headline', 'selectedContact'], 'show-contact-selection-overlay', direction_of_operation);
+
+    toggleElements(['contact-list', 'contact-edit', 'contact-trash', 'mobile-contact-button-container'], 'd-none', direction_of_operation);
+
+    toggleElements(['edit-contact-icon', 'trash-icon', 'contact-kanban'], 'd-none', !direction_of_operation);
+
 }
 
 
@@ -129,7 +103,6 @@ function closeMobileVersion() {
  */
 function openNewContactForm() {
     let newContact = document.getElementById('overlaySection');
-    newContact.innerHTML = '';
     newContact.innerHTML = templateAddContactOverlay();
     setTimeout(() => {
         document.getElementById('contactOverlayBoxAdd').classList.add('contact-overlay-box-animate');
@@ -139,33 +112,39 @@ function openNewContactForm() {
 
 /**
  * This function checks if all input fields are filled in.
- * @returns false to show that the form is not valid.
+ * @returns {boolean} false if the form is invalid, true if the form is valid
  */
 function validateForm() {
-    let name = document.getElementById("newContactName").value;
-    let email = document.getElementById("newContactEmail").value;
-    let phone = document.getElementById("newContactPhone").value;
 
-    if (name == "") {
-        document.getElementById('nameAlert').classList.remove('noAlert');
-        document.getElementById('nameAlert').classList.add('alert');
-        return false;
-    }
+    let form_complete = true;
 
-    if (email == "") {
-        document.getElementById('emailAlert').classList.remove('noAlert');
-        document.getElementById('emailAlert').classList.add('alert');
-        return false;
-    }
+    const inputFields = [
+        { value: document.getElementById("newContactName").value, alertId: 'nameAlert' },
+        { value: document.getElementById("newContactEmail").value, alertId: 'emailAlert' },
+        { value: document.getElementById("newContactPhone").value, alertId: 'phoneAlert' }];
 
-    if (phone == "") {
-        document.getElementById('phoneAlert').classList.remove('noAlert');
-        document.getElementById('phoneAlert').classList.add('alert');
-        return false;
-    }
+    inputFields.forEach((inputField) => {
 
-    return true;
+        if (!inputField.value) {
+            showAlert(inputField.alertId);
+            form_complete = false;
+        }
+    });
+
+    return form_complete;
 }
+
+
+/**
+ * Shows an alert for the input field that is passed as parameter.
+ * @param {string} id of the empty input field
+ */
+function showAlert(id) {
+
+    document.getElementById(id).classList.remove('noAlert');
+    document.getElementById(id).classList.add('alert');
+}
+
 
 /**
  * This function gets the data from the add contact input fields
@@ -175,18 +154,18 @@ function getContactData() {
     const name = document.getElementById('newContactName').value;
     const email = document.getElementById('newContactEmail').value;
     const phone = document.getElementById('newContactPhone').value;
-    
+
     return { name, email, phone };
-  }
+}
 
 
 /**
  * This function adds a new contact to contacts object and saves it in the remote storage.
  */
 async function addContact() {
-    let { name, email, phone } = getContactData();
-    let initialColor = getRandomRGBColor();
-    let { firstName, lastName } = getFirstAndLastName(name);
+    const { name, email, phone } = getContactData();
+    const initialColor = generateRandomColor();
+    const { firstName, lastName } = getFirstAndLastName(name);
     addContactToContacts(firstName, lastName, email, phone, initialColor);
 
     try {
@@ -199,9 +178,7 @@ async function addContact() {
     disableButton();
     userCreatedSuccess();
     closeContactOverlay();
-    if (window.location.pathname == '/contacts.html') {
-        loadContacts();
-    }
+    if (window.location.pathname == '/contacts.html') loadContacts();
 }
 
 
@@ -230,22 +207,20 @@ function addContactToContacts(firstName, lastName, email, phone, initialColor) {
  * @returns firstName, lastName 
  */
 function getFirstAndLastName(fullName) {
-    let fullNameArray = fullName.split(' ');
-    let firstName = fullNameArray[0].charAt(0).toUpperCase() + fullNameArray[0].slice(1);
+    const fullNameArray = fullName.split(' ');
+    const firstName = fullNameArray[0].charAt(0).toUpperCase() + fullNameArray[0].slice(1);
     let lastName = '';
-  
-    if (fullNameArray.length > 1) {
-      lastName = fullNameArray[1].charAt(0).toUpperCase() + fullNameArray[1].slice(1);
-    }
+
+    if (fullNameArray.length > 1) lastName = fullNameArray[1].charAt(0).toUpperCase() + fullNameArray[1].slice(1);
     return { firstName, lastName };
-  }
+}
 
 
 /**
  * This function empties the input fields of the add contact form.
- * @param {string} name 
- * @param {string} email 
- * @param {number} phone 
+ * @param {object} name 
+ * @param {object} email 
+ * @param {object} phone 
  */
 function resetForm(name, email, phone) {
     name.value = '';
@@ -262,18 +237,6 @@ function disableButton() {
     if (window.location.pathname == '/contacts.html') {
         document.getElementById('user-contact-button').classList.remove("button-hover:hover");
     }
-}
-
-
-/**
- * This function creates random colors.
- * @returns random rgb numbers.
- */
-function getRandomRGBColor() {
-    let r = Math.floor(Math.random() * 256);
-    let g = Math.floor(Math.random() * 256);
-    let b = Math.floor(Math.random() * 256);
-    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 }
 
 
@@ -296,7 +259,7 @@ function userCreatedSuccess() {
  * @param {number} i - index of the database.contacts array
  */
 async function deleteContact(i) {
-    let toDelete = contacts[i]
+    const toDelete = contacts[i];
     deleteContatctsFromTask(toDelete);
     contacts.splice(i, 1);
     try {
@@ -304,9 +267,7 @@ async function deleteContact(i) {
     } catch (e) {
         console.error('Loading error:', e);
     }
-    if (document.getElementById("contactOverlayBoxEdit")) {
-        closeOverlayEdit();
-    }
+    if (document.getElementById("contactOverlayBoxEdit")) closeOverlayEdit();
     await initContact();
     updateContactSelection();
 }
@@ -316,10 +277,11 @@ async function deleteContact(i) {
  * This function closes the add new contact form.
  */
 function closeContactOverlay() {
-    document.getElementById('contactOverlayBoxAdd').classList.remove('contact-overlay-box-animate');
+
+    toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', false);
     setTimeout(() => {
         document.getElementById('overlaySection').innerHTML = '';
-    }, 300)
+    }, 300);
 }
 
 
@@ -328,11 +290,12 @@ function closeContactOverlay() {
  * @param {number} i - index of the database.contacts array 
  */
 function editContact(i) {
-    let editDetails = contacts[i];
+    const editDetails = contacts[i];
     document.getElementById('editContact').innerHTML = templateContactOverlayEdit(i, editDetails);
     setTimeout(() => {
-        document.getElementById('contactOverlayBoxEdit').classList.add('contact-overlay-box-animate');
-    }, 20)
+
+        toggleElements(['contactOverlayBoxEdit'], 'contact-overlay-box-animate', true);
+    }, 20);
 }
 
 
@@ -341,8 +304,8 @@ function editContact(i) {
  * @param {number} i - index of the database.contacts array
  */
 async function saveEditedUser(i) {
-    let name = document.getElementById('editName').value;
-    let { firstName, lastName } = getFirstAndLastName(name);
+    const name = document.getElementById('editName').value;
+    const { firstName, lastName } = getFirstAndLastName(name);
     contacts[i]['firstname'] = firstName;
     contacts[i]['lastname'] = lastName;
     contacts[i]['email'] = document.getElementById('editEmail').value;
@@ -364,10 +327,11 @@ async function saveEditedUser(i) {
  * This function closes the edit contact form.
  */
 function closeOverlayEdit() {
-    document.getElementById('contactOverlayBoxEdit').classList.remove('contact-overlay-box-animate');
+
+    toggleElements(['contactOverlayBoxEdit'], 'contact-overlay-box-animate', false);
     setTimeout(() => {
         document.getElementById('editContact').innerHTML = '';
-    }, 350)
+    }, 350);
 }
 
 
@@ -387,11 +351,9 @@ function updateContactSelection() {
  * @param {string} contactToDelete - the contact to be deleted
  */
 function deleteContatctsFromTask(contactToDelete) {
-    let toDelete = contactToDelete.firstname + ' ' + contactToDelete.lastname;
+    const toDelete = contactToDelete.firstname + ' ' + contactToDelete.lastname;
     database.tasks.forEach(task => {
         const assignedIndex = task.assigned_to.indexOf(toDelete);
-        if (assignedIndex !== -1) {
-            task.assigned_to.splice(assignedIndex, 1);
-        }
+        if (assignedIndex !== -1) task.assigned_to.splice(assignedIndex, 1);
     });
 }

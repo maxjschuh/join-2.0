@@ -68,9 +68,7 @@ function renderloggedInUserinContactList() {
 function searchContactwithEmail() {
     for (let i = 0; i < database.contacts.length; i++) {
         let contact = database.contacts[i];
-        if (currentEmail == contact.email) {
-            return contacts.indexOf(contact);
-        }
+        if (currentEmail == contact.email) return contacts.indexOf(contact);
     }
 }
 
@@ -102,17 +100,16 @@ function renderContacts() {
     contactContainer = document.getElementById('loadedContacts');
     contactContainer.innerHTML = '';
     for (let i = 0; i < contacts.length;) {
-        if (contacts[i].email == currentEmail) {
-            i++
-        } else {
-            contactContainer.innerHTML += `
+        if (contacts[i].email == currentEmail) i++;
+        else {
+            contactContainer.innerHTML += /*html*/ `
             <div class="dd-placeholder gray-hover" onclick="selectedForTask(contacts[${i}], 'contacts[${i}]')">
                 <div>${contacts[i].firstname} ${contacts[i].lastname}</div>
                 <div class="task-select-box center">
                     <div id="contacts[${i}]"></div>
                 </div>
             </div>`;
-            i++
+            i++;
         }
     }
 }
@@ -131,9 +128,7 @@ function selectCategory(category, categoryColor) {
             </div>`
     selectedCategory = category;
     let classStatus = document.getElementById('category').classList
-    if (classStatus.contains('dropdown-category-open')) {
-        pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
-    }
+    if (classStatus.contains('dropdown-category-open')) pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
 }
 
 
@@ -144,14 +139,17 @@ function selectCategory(category, categoryColor) {
  * @param {string} id - ID of the contact's select box.
  */
 function selectedForTask(selected, id) {
-    if (taskContactList.includes(selected) == false) {
-        taskContactList.push(selected);
-        addSelectedPoint(id);
-        switchContactIcons(selected);
-    } else {
+
+    if (taskContactList.includes(selected)) {
+
         removeContactsForTask(selected);
-        removeSelectedPoint(id);
+        toggleSelectionPoint(id, false);
         switchContactIcons();
+
+    } else {
+        taskContactList.push(selected);
+        toggleSelectionPoint(id, true);
+        switchContactIcons(selected);
     }
 }
 
@@ -161,26 +159,19 @@ function selectedForTask(selected, id) {
  * @param {object} selected - Contact to remove.
  */
 function removeContactsForTask(selected) {
-    let index = taskContactList.indexOf(selected);
+    const index = taskContactList.indexOf(selected);
     taskContactList.splice(index, 1);
 }
 
 
 /**
- * This function add a CSS property.
- * @param {string} id - ID of the contact's select box.
+ * Toggles a CSS property.
+ * @param {string} id ID of the contact's select box
+ * @param {boolean} direction_of_operation true for adding the selection point, false for removing it
  */
-function addSelectedPoint(id) {
-    document.getElementById(id).classList.add('selection-point');
-}
+function toggleSelectionPoint(id, direction_of_operation) {
 
-
-/**
- * This function remove a CSS property
- * @param {string} id - ID of the contact's select box.
- */
-function removeSelectedPoint(id) {
-    document.getElementById(id).classList.remove('selection-point');
+    document.getElementById(id).classList.toggle('selection-point', direction_of_operation);
 }
 
 
@@ -190,7 +181,7 @@ function removeSelectedPoint(id) {
 function createInitials() {
     initials = [];
     taskContactList.forEach(currentContact => {
-        let initial = getFirstLetters(currentContact);
+        const initial = getFirstLetters(currentContact);
         initials.push(initial);
     });
 }
@@ -199,10 +190,10 @@ function createInitials() {
 /**
  * This function creates initials from the first and last name.
  * @param {Object} contact - The complete contact information.
- * @returns - The first letter of the first and last name.
+ * @returns {string} - The first letter of the first and last name.
  */
 function getFirstLetters(contact) {
-    let firstLetters = contact.firstname.charAt(0) + contact.lastname.charAt(0);;
+    const firstLetters = contact.firstname.charAt(0) + contact.lastname.charAt(0);;
     return firstLetters;
 }
 
@@ -212,10 +203,8 @@ function getFirstLetters(contact) {
  * closes the drop down menu and re-renders the contacts.
  */
 function clearContacts() {
-    let classStatus = document.getElementById('assingedTo').classList
-    if (classStatus.contains('dropdown-category-open')) {
-        pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
-    }
+    const classStatus = document.getElementById('assingedTo').classList;
+    if (classStatus.contains('dropdown-category-open')) pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
     collectedContact = [];
     taskContactList = [];
     initials = [];
@@ -247,7 +236,7 @@ function renderInitials() {
     initialsContainer.innerHTML = '';
     if (taskContactList.length > 0) {
         for (let i = 0; i < initials.length; i++) {
-            initialsContainer.innerHTML += `
+            initialsContainer.innerHTML += /*html*/ `
             <div class="task-initials" style="background-color: ${contactColor(i)}" id="contactInitials${[i]}">${initials[i]}</div>`
         }
     }
@@ -260,7 +249,7 @@ function renderInitials() {
  * @returns  - The color of the contact (rgb).
  */
 function contactColor(i) {
-    return taskContactList[i].color
+    return taskContactList[i].color;
 }
 
 
@@ -270,19 +259,19 @@ function contactColor(i) {
  * @param {string} img - The ID of the Image from the clicked button.
  */
 function priority(clicked, img) {
-    resetPrioButtom();
+    resetPrioButton();
     element = document.getElementById(clicked);
     prioImg = document.getElementById(img);
     if (clicked == 'prioHigh') {
-        setStyleforPrioButton(element, prioImg)
+        setStyleforPrioButton(element, prioImg);
         element.style.backgroundColor = 'rgb(236, 85, 32)';
         prio = 'high';
     } if (clicked == 'prioMedium') {
-        setStyleforPrioButton(element, prioImg)
+        setStyleforPrioButton(element, prioImg);
         element.style.backgroundColor = 'rgb(243, 173, 50)';
         prio = 'medium';
     } if (clicked == 'prioLow') {
-        setStyleforPrioButton(element, prioImg)
+        setStyleforPrioButton(element, prioImg);
         element.style.backgroundColor = 'rgb(147, 222, 70)';
         prio = 'low';
     }
@@ -296,23 +285,21 @@ function priority(clicked, img) {
  */
 function setStyleforPrioButton(element, prioImg) {
     element.style.fontWeight = '700';
-    element.style.color = 'white'
+    element.style.color = 'white';
     prioImg.style.filter = 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(24%) hue-rotate(114deg) brightness(108%) contrast(108%)';
 }
 
 
 /**
  * This function resets the CSS classes and the images to default.
- * @param {string} notClicked - The ID of the button that was not clicked.
- * @param {string} alsoNotClicked - The ID of the button that was not clicked.
  */
-function resetPrioButtom() {
-    document.getElementById('prioHigh').style = ``;
-    document.getElementById('prioMedium').style = ``;
-    document.getElementById('prioLow').style = ``;
-    document.getElementById('prioHighImg').style = ``;
-    document.getElementById('prioMediumImg').style = ``;
-    document.getElementById('prioLowImg').style = ``;
+function resetPrioButton() {
+
+    const ids = ['prioHigh', 'prioMedium', 'prioLow', 'prioHighImg', 'prioMediumImg', 'prioLowImg'];
+
+    ids.forEach(id => {
+        document.getElementById(id).style = ``;
+    });
 }
 
 
@@ -321,13 +308,13 @@ function resetPrioButtom() {
  * Renders the subtask and changes the icons.
  */
 function addSubtask() {
-    let subtaskInput = document.getElementById('subtaskInput').value;
+    const subtaskInput = document.getElementById('subtaskInput').value;
     if (containsBrackets(subtaskInput)) {
         document.getElementById('subTaskReport').classList.remove('d-none');
-        document.getElementById('subTaskReport').innerHTML = 'The following characters are not allowed { } [ ] "'
-    } else if (subtaskInput == '') {
+        document.getElementById('subTaskReport').innerHTML = 'The following characters are not allowed { } [ ] "';
+    } else if (!subtaskInput) {
         document.getElementById('subTaskReport').classList.remove('d-none');
-        document.getElementById('subTaskReport').innerHTML = 'Empty subtasks are not allowed'
+        document.getElementById('subTaskReport').innerHTML = 'Empty subtasks are not allowed';
     } else {
         document.getElementById('subTaskReport').classList.add('d-none');
         subtasks.push(subtaskInput);
@@ -356,12 +343,12 @@ function renderSubtasks() {
     let subtaskContainer = document.getElementById('addetSubtasks');
     subtaskContainer.innerHTML = '';
     for (let i = 0; i < subtasks.length; i++) {
-        subtaskContainer.innerHTML += `<div class="sub-task">
+        subtaskContainer.innerHTML += /*html*/ `<div class="sub-task">
             <div onclick="setStatus('selectboxSubtask${i}', ${i})" class="selectbox-subtask pointer">
             <img class="subtaskDone ${getClass(i)}" id="selectboxSubtask${i}" src="assets/img/create_subtask.png">
             </div>
             <div class="pointer" onclick="removeSubtask(${i}), ${i}">${subtasks[i]}</div>
-            </div>`
+            </div>`;
     }
 }
 
@@ -369,14 +356,11 @@ function renderSubtasks() {
 /**
  * This function checks whether a subtask is done or not and then returns the corresponding value.
  * @param {number} i - Index of the subtask.
- * @returns - CSS class or ''.
+ * @returns {string} - CSS class or ''.
  */
 function getClass(i) {
-    if (subtaskStatus[i] == 'true') {
-        return setClass = '';
-    } else {
-        return setClass = 'd-none';
-    }
+    if (subtaskStatus[i] == 'true') return setClass = '';
+    else return setClass = 'd-none';
 }
 
 

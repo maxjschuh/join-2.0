@@ -1,6 +1,6 @@
 /**
  * @param {string} firstLetter 
- * @returns renders the HTML content of the alphabetical category of the contact list
+ * @returns {string} the HTML content of the alphabetical category of the contact list
  */
  function templateContactFirstLetters(firstLetter) {
     return /*html*/`
@@ -13,7 +13,7 @@
 /**
  * @param {object} userData - all contact data
  * @param {number} i - index of the database.contacts array
- * @returns renders the HTML code of the overview user data in the contact list 
+ * @returns {string} the HTML code of the overview user data in the contact list 
  */
 function templateContactList(userData, i) {
     return /*html*/`
@@ -32,7 +32,7 @@ function templateContactList(userData, i) {
 
 /**
  * @param {number} i - index of the database.contacts array
- * @returns the HTML code of the selected user details
+ * @returns {string} the HTML code of the selected user details
  */
 function templateContactDetails(i) {
     let userDetails = contacts[i];
@@ -68,7 +68,7 @@ function templateContactDetails(i) {
 
 <div class="contact-info-buttons" id="contact-info-buttons">
     <img class="trash-icon d-none" id="trash-icon" src="assets/img/contact_delete_button.png" alt=""
-        onclick="closeMobileVersion(), deleteContact(${i})">
+        onclick="changeMobileView(false), deleteContact(${i})">
     <img class="edit-contact-icon d-none" id="edit-contact-icon" onclick="editContact(${i})"
         src="assets/img/contact_edit_small.png" alt="">
 </div>
@@ -77,7 +77,8 @@ function templateContactDetails(i) {
 
 
 /**
- * renders the HTML code of the add new contact overlay form
+ * HTML Template for the add new contact overlay form
+ * @returns {string} the html code of the add new contact overlay form
  */
 function templateAddContactOverlay() {
     return /*html*/ `
@@ -134,7 +135,7 @@ function templateAddContactOverlay() {
  * 
  * @param {number} i - index of the database.contacts array
  * @param {object} editDetails - shows the selected user details for editing
- * @returns the HMTL code of the edit contact form
+ * @returns {string} the HMTL code of the edit contact form
  */
 function templateContactOverlayEdit(i, editDetails) {
     return /*html*/ `

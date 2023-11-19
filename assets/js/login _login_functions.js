@@ -30,14 +30,12 @@ async function getData() {
  * This function is used to get the data from the local storage
  */
 function getDataLocalStorage() {
-    let localStorageData = getItemLocalStorage('loggedInUser');
+    const localStorageData = getItemLocalStorage('loggedInUser');
     if (localStorageData) {
         currentEmail = localStorageData['email'];
         currentPassword = localStorageData['password'];
         currentRememberMe = localStorageData['remember'];
-        if (currentRememberMe == true) {
-            fillInData()
-        }
+        if (currentRememberMe == true) fillInData();
     }
 }
 
@@ -54,9 +52,7 @@ function checkForChangePassword() {
     if (changePasswordEmail === null) { //Checks if there is a variable in the link
         waitForAnimation();
     }
-    else {
-        openResetPw();
-    }
+    else openResetPw();
 }
 
 //Login functions
@@ -68,9 +64,9 @@ function checkForChangePassword() {
  * @param {string} username This is the username of the user which wants to login
  */
 function login(email, username) {
-    let password = document.getElementById('password').value
+    const password = document.getElementById('password').value;
 
-    let localStorageData = { email: email, username: username, remember: rememberMe, password: password };
+    const localStorageData = { email: email, username: username, remember: rememberMe, password: password };
 
     setItemLocalStorage('loggedInUser', localStorageData);
 
@@ -83,8 +79,8 @@ function login(email, username) {
  * This function will login the user as a guest
  */
 function guestLogin() {
-    let email = 'guest@mail.com';
-    let username = 'Guest';
+    const email = 'guest@mail.com';
+    const username = 'Guest';
     login(email, username);
 }
 
@@ -92,16 +88,17 @@ function guestLogin() {
 /**
  * This function will check if the email or the password is correct
  * 
- * @returns The function will stop logged in succesfully
+ * @returns The function will stop if logged in succesfully
  */
 function checkLogin() {
-    let emailLogIn = document.getElementById('email').value;
-    let passwordLogIn = document.getElementById('password').value;
+    const emailLogIn = document.getElementById('email').value;
+    const passwordLogIn = document.getElementById('password').value;
 
     for (let i = 0; i < users.length; i++) {
+
         if (emailLogIn == users[i]['email'] && passwordLogIn == users[i]['password']) {
-            let email = users[i]['email'];
-            let username = users[i]['username'];
+            const email = users[i]['email'];
+            const username = users[i]['username'];
             login(email, username);
             return;
         }
@@ -148,23 +145,21 @@ function signUpUser(account, contact) {
  * @returns If the user already exists, the function will be stopped at that point
  */
 function accountData() {
-    let usernameSignUp = document.getElementById('username').value;
-    let emailSignUp = document.getElementById('signUpEmail').value;
-    let passwordSignUp = document.getElementById('signUpPassword').value;
+    const usernameSignUp = document.getElementById('username').value;
+    const emailSignUp = document.getElementById('signUpEmail').value;
+    const passwordSignUp = document.getElementById('signUpPassword').value;
 
     removeRedBorderSignUp();
 
-    if (checkIfUserExists(usernameSignUp, emailSignUp) == false) {
-        return
-    }
+    if (!checkIfUserExists(usernameSignUp, emailSignUp)) return;
 
-    let account = {
+    const account = {
         "username": usernameSignUp,
         "email": emailSignUp,
         "password": passwordSignUp
-    }
+    };
 
-    let contact = splitName(usernameSignUp, emailSignUp);
+    const contact = splitName(usernameSignUp, emailSignUp);
 
     signUpUser(account, contact);
 }
@@ -175,26 +170,22 @@ function accountData() {
  * 
  * @param {string} usernameSignUp Username from the inputfield
  * @param {string} emailSignUp Email from the inputfield
- * @returns 
+ * @returns {object} user contact
  */
 function splitName(usernameSignUp, emailSignUp) {
     const fullName = usernameSignUp.split(' ');
-    let firstName = fullName[0].charAt(0).toUpperCase() + fullName[0].slice(1);
+    const firstName = fullName[0].charAt(0).toUpperCase() + fullName[0].slice(1);
     let lastName = '';
 
-    if (fullName.length > 1) {
-        lastName = fullName[1].charAt(0).toUpperCase() + fullName[1].slice(1);
-    }
+    if (fullName.length > 1) lastName = fullName[1].charAt(0).toUpperCase() + fullName[1].slice(1);
 
-    let contact = {
+    return {
         "firstname": firstName,
         "lastname": lastName,
         "email": emailSignUp,
         "phone": "",
         "color": generateRandomColor()
-    }
-
-    return contact
+    };
 }
 
 
@@ -202,44 +193,48 @@ function splitName(usernameSignUp, emailSignUp) {
  * This function removes the red border and the the red text in the sign up field
  */
 function removeRedBorderSignUp() {
-    document.getElementById('usernameTaken').style = '';
-    document.getElementById('usernameContainer').style = '';
-    document.getElementById('usernameTaken').style = '';
-    document.getElementById('usernameContainer').style = '';
+
+    ['usernameTaken', 'usernameContainer'].forEach((id) => {
+        document.getElementById(id).style = '';
+    });
 }
+
 
 /**
  * This function will check if the username or the email is already in use
  * 
  * @param {string} usernameSignUp This is the username to sign up
  * @param {string} emailSignUp This is the email to sign up
- * @returns It returns "false" if the email or the username already exists and "true" if they doesn´t exists
+ * @returns {boolean} It returns "false" if the email or the username already exists and "true" if they doesn´t exists
  */
 function checkIfUserExists(usernameSignUp, emailSignUp) {
     for (let i = 0; i < users.length; i++) {
+
         if (usernameSignUp == users[i]['username']) {
             document.getElementById('usernameTaken').style = 'color: red';
             document.getElementById('usernameContainer').style = 'border: 1px solid red';
-            return false
+            return false;
         }
+
         if (emailSignUp == users[i]['email']) {
             document.getElementById('emailTaken').style = 'color: red';
             document.getElementById('emailSignUpContainer').style = 'border: 1px solid red';
-            return false
+            return false;
         }
     }
-
     return true;
 }
 
 
 /**
- * This function will clear the input fields in the sign up user
+ * This function will clear the input fields in the sign up user.
  */
 function clearSignUpInput() {
-    document.getElementById('username').value = '';
-    document.getElementById('signUpEmail').value = '';
-    document.getElementById('signUpPassword').value = '';
+
+    ['username', 'signUpEmail', 'signUpPassword'].forEach((id) => {
+
+        document.getElementById(id).value = '';
+    });
 }
 
 // Reset password functions
@@ -252,7 +247,7 @@ function clearSignUpInput() {
 function emailSent() {
     let forgotPwEmail = document.getElementById('forgotPwEmail').value; // Email from the inputfield to reset the password
 
-    if (getUsername(forgotPwEmail) == false) { // Checks if the email exists
+    if (!getUsername(forgotPwEmail)) { // Checks if the email exists
         document.getElementById('emailDoesntExist').style = 'color: red';
         document.getElementById('forgotPwEmailContainer').style = 'border: 1px solid red';
         return;
@@ -271,10 +266,10 @@ function emailSent() {
  * @returns The username will be returned, if the email does not exists it will return "false"
  */
 function getUsername(forgotPwEmail) {
+
     for (let i = 0; i < users.length; i++) {
-        if (users[i]['email'] == forgotPwEmail) {
-            return users[i]['username'];
-        }
+
+        if (users[i]['email'] == forgotPwEmail) return users[i]['username'];
     }
     return false;
 }
@@ -284,18 +279,18 @@ function getUsername(forgotPwEmail) {
  * This function will set link which includes the email to reset the password
  * 
  * @param {string} forgotPwEmail The Email from which the password should be changed
- * @returns It returns the Link which includes the email to reset the password
+ * @returns {string} It returns the Link which includes the email to reset the password
  */
 function getForgotPwLink(forgotPwEmail) {
-    let url = 'https://mjschuh.com/join/login.html?email=' + encodeURIComponent(forgotPwEmail); 
-    return url;
+
+    return 'https://mjschuh.com/join/login.html?email=' + encodeURIComponent(forgotPwEmail); 
 }
 
 
 /**
  * This function will send the username, the email and the link to the Php-Script
  * 
- * @param {*} forgotPwEmail The Email from which the password should be changed
+ * @param {string} forgotPwEmail The Email from which the password should be changed
  */
 function sentMailToPhp(forgotPwEmail) {  // Email wird das Php skript übergeben
     var username = getUsername(forgotPwEmail);
@@ -311,7 +306,7 @@ function sentMailToPhp(forgotPwEmail) {  // Email wird das Php skript übergeben
     };
     xmlhttp.open("POST", "send_mail.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    var params = "username=" + encodeURIComponent(username) + "&link=" + encodeURIComponent(link) + "&email=" + encodeURIComponent(email);
+    const params = "username=" + encodeURIComponent(username) + "&link=" + encodeURIComponent(link) + "&email=" + encodeURIComponent(email);
     xmlhttp.send(params);
 }
 
@@ -333,10 +328,10 @@ function activatePhp() { //Php skript wird ausgeführt
 
 
 /**
- * This function will start the functions to reset the password
+ * This function will start the functions to reset the password.
  */
 function passwordReset() {
-    if (checkNewPassword() == true) {
+    if (checkNewPassword()) {
         changePassword();
         document.getElementById('resetPassword').classList.remove('d-none');
         setTimeout(() => { document.getElementById('resetPassword').classList.add('d-none'); }, 1000); // Lets the EmailSent-Container vanish after 3 seconds
@@ -350,23 +345,22 @@ function passwordReset() {
 
 
 /**
- *  This function changes the password
+ *  This function changes the password.
  */
 function changePassword() {
-    let newPassword = document.getElementById('newPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
 
     for (let i = 0; i < users.length; i++) {
-        if (changePasswordEmail == users[i]['email']) {
-            users[i]['password'] = newPassword;
-        }
+
+        if (changePasswordEmail == users[i]['email']) users[i]['password'] = newPassword;
     }
 }
 
 
 /**
- * This function checks if the new password and and the confirmed password matches
+ * This function checks if the new password and and the confirmed password matches.
  * 
- * @returns It returns true if the passwords match and false if they don´t match
+ * @returns {boolean} It returns true if the passwords match and false if they don´t match
  */
 function checkNewPassword() {
     let newPassword = document.getElementById('newPassword').value;

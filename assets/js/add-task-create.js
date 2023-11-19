@@ -57,13 +57,10 @@ function activateAddTaskButton() {
  */
 function getName() {
     taskContactList.forEach((ContactName) => {
-        if (ContactName.lastname == '') {
-            fullName = ContactName.firstname
-        } else {
-            fullName = ContactName.firstname + ' ' + ContactName.lastname;
-        }
+        if (ContactName.lastname == '') fullName = ContactName.firstname;
+        else fullName = ContactName.firstname + ' ' + ContactName.lastname;
         collectedContact.push(fullName);
-    })
+    });
     return collectedContact;
 }
 
@@ -80,9 +77,7 @@ function getValue(valueId, reportID) {
     if (description == '' || containsBrackets(description)) {
         document.getElementById(reportID).classList.remove('d-none');
         required = true;
-    } else {
-        return description;
-    }
+    } else return description;
 }
 
 
@@ -94,11 +89,9 @@ function getValue(valueId, reportID) {
 function getCategory() {
     if (selectedCategory == false || selectedCategory == '' || selectedCategory == undefined) {
         document.getElementById('categoryReport').classList.remove('d-none');
-        document.getElementById('categoryReport').innerHTML = `This field is required`
+        document.getElementById('categoryReport').innerHTML = `This field is required`;
         required = true;
-    } else {
-        return selectedCategory;
-    }
+    } else return selectedCategory;
 }
 
 
@@ -113,23 +106,20 @@ function getDate() {
     if (chosenDate == '' || !(date_regex.test(chosenDate))) {
         document.getElementById('dateReport').classList.remove('d-none');
         required = true;
-    } else {
-        return chosenDate;
-    }
+    } else return chosenDate;
 }
 
 
 /**
  * This function checks the variable prio if it is empty and
  * warns the user if no priority is selected.
- * @returns 'urgent', 'medium' or 'low'
+ * @returns {string} 'urgent', 'medium' or 'low'
  */
 function getPrio() {
-    if (prio == undefined) {
+    if (prio) return prio;
+    else {
         document.getElementById('prioReport').classList.remove('d-none');
         required = true;
-    } else {
-        return prio;
     }
 }
 
@@ -209,18 +199,6 @@ function getRandomColor() {
 
 
 /**
- * This function creates random colors.
- * @returns random rgb numbers.
- */
-function generateRandomColor() {
-    let r = Math.floor(Math.random() * 256);
-    let g = Math.floor(Math.random() * 256);
-    let b = Math.floor(Math.random() * 256);
-    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
-}
-
-
-/**
  * This function set a oncklick.
  * @param {string} colorCircle - The ID of a div.
  * @param {string} generatedColor - rgb code.
@@ -262,7 +240,7 @@ function removeSelectedColor() {
 function addCategory() {
     categoryInputFiled = document.getElementById('categoryInput');
     newCategory = categoryInputFiled.value;
-    if (newCategory == '') {
+    if (!newCategory) {
         document.getElementById('categoryReport').classList.remove('d-none');
         document.getElementById('categoryReport').innerHTML = `Please enter a new category name`;
     } else if (newCategory.length > 20) {
@@ -271,9 +249,7 @@ function addCategory() {
     } else if (colorForNewCategory == undefined) {
         document.getElementById('categoryReport').classList.remove('d-none');
         document.getElementById('categoryReport').innerHTML = `Please choose a color`;
-    } else {
-        createCategory(categoryInputFiled);
-    }
+    } else createCategory(categoryInputFiled);
 }
 
 

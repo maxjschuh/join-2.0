@@ -228,10 +228,10 @@ async function getItem(key) {
 /**
  * This function gets the data from the localstorage.
  * @param {string} key - Name of the item you want to download. 
- * @returns It returns the JSON from the localstorage.
+ * @returns {object} It returns the JSON from the localstorage.
  */
 function getItemLocalStorage(key) {
-    let value = localStorage.getItem(key);
+    const value = localStorage.getItem(key);
     return JSON.parse(value);
 }
 
@@ -276,12 +276,10 @@ function showInitialsOnTopBar() {
 function searchContactInfo(index, yoursearchResult, keyword, searchFilter, searchPath) {
     for (let i = 0; i < database[searchPath].length; i++) {
         currentSearch = database[searchPath][i];
+
         if (keyword == database[searchPath][i][searchFilter]) {
-            if (index) {
-                return database[searchPath].indexOf(currentSearch);
-            } else {
-                return currentSearch[yoursearchResult];
-            }
+            if (index) return database[searchPath].indexOf(currentSearch);
+            else return currentSearch[yoursearchResult];
         }
     }
 }
@@ -320,9 +318,7 @@ function containsBrackets(input) {
  * This function logs the user out.
  */
 function logOut() {
-    if (!remember) {
-        localStorage.clear();
-    }
+    if (!remember) localStorage.clear();
     window.location.replace('login.html')
 }
 
@@ -333,7 +329,29 @@ function logOut() {
 function checkForLogin() {
     var previousPage = document.referrer;
     var pageURL = window.location.hostname;
-    if (previousPage.search(pageURL) == -1 || currentEmail == undefined) {
-        window.location.replace('login.html')
-    }
+    if (previousPage.search(pageURL) == -1 || currentEmail == undefined) window.location.replace('login.html');
+}
+
+
+/**
+ * Toggles the classes of the elements with the ids that are passed as parameter.
+ * @param {Array} ids of html elements
+ * @param {string} clss class to add or remove
+ * @param {boolean} direction_of_operation true for adding the class, false for removing it, undefined for toggling it
+ */
+function toggleElements(ids, clss, direction_of_operation) {
+
+    ids.forEach(id => document.getElementById(id).classList.toggle(clss, direction_of_operation));
+}
+
+
+/**
+ * This function creates random colors.
+ * @returns {string} random rgb color.
+ */
+function generateRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 }

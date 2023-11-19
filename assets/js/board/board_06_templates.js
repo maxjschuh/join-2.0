@@ -169,14 +169,9 @@ function htmlTemplateAssigneeIcon(assignee) {
 function returnTemplateForDropContainers(columnId, currentColumnTaskCount) {
     const windowWidth = window.innerWidth;
 
-    if (windowWidth > 700) {
-
-        return htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount);
+    if (windowWidth > 700) return htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount);
         
-    } else {
-
-        return htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount);
-    }
+    else return htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount);
 }
 
 
