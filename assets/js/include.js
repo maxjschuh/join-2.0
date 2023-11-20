@@ -5,7 +5,7 @@ async function includeHTML() {
     const includeElements = document.querySelectorAll('[w3-include-html]');
 
     for (let i = 0; i < includeElements.length; i++) {
-        
+
         const element = includeElements[i];
         file = element.getAttribute("w3-include-html");
         const resp = await fetch(file);
@@ -19,11 +19,16 @@ async function includeHTML() {
  * This function decides which div gets a background color based on the pathname.
  */
 function sideMenuColor() {
-    const pathName = window.location.pathname;
+    const pathname = window.location.pathname;
+    const subPage = pathname.substring(pathname.lastIndexOf('/') + 1);
+    let id;
 
-    if (pathName == '/summary.html') document.getElementById('summaryMenu').classList.add('link-active');
-    else if (pathName == '/board.html') document.getElementById('boardMenu').classList.add('link-active');
-    else if (pathName == '/add-task.html') document.getElementById('addTaskMenu').classList.add('link-active');
-    else if (pathName == '/contacts.html') document.getElementById('contactsMenu').classList.add('link-active');
-    else if (pathName == '/legal-notice.html') document.getElementById('legalNoticeMenu').classList.add('link-active');
+    if (subPage == 'summary.html') id = 'summaryMenu';
+    else if (subPage == 'board.html') id = 'boardMenu';
+    else if (subPage == 'add-task.html') id = 'addTaskMenu';
+    else if (subPage == 'contacts.html') id = 'contactsMenu';
+    else if (subPage == 'legal-notice.html') id = 'legalNoticeMenu';
+    else return; 
+
+    toggleElements([id], 'link-active', true);
 }

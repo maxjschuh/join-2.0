@@ -62,9 +62,9 @@ let databaseJSON = {
         },
         {
             "firstname": "Guest",
-            "lastname": " ",
+            "lastname": "Guest",
             "email": "guest@mail.com",
-            "phone": "",
+            "phone": "+498888888888",
             "color": "rgb(141, 218, 80)"
         },
         {
@@ -251,7 +251,8 @@ function showInitialsOnTopBar() {
         .split(' ')
         .map(word => word.charAt(0))
         .join('');
-    let topbarCircle = document.getElementById('loggedInUserInitials');
+
+    const topbarCircle = document.getElementById('loggedInUserInitials');
     topbarCircle.innerHTML = `${initialLetters}`;
     topbarCircle.style.color = `${searchContactInfo(false, 'color', currentEmail, 'email', 'contacts')}`;
 }
@@ -307,7 +308,7 @@ function userMenuEventListener() {
 /**
  * This function checks whether a string contains { } [ ].
  * @param {string} input - Text from an input field.
- * @returns true or false.
+ * @returns {boolean} true or false.
              */
 function containsBrackets(input) {
     return /[{}[\]"]/.test(input);

@@ -28,7 +28,12 @@ function boardCreateEventListenerMouse(boardDragElement, i) {
         pos3 = e.clientX;
         pos4 = e.clientY;
 
-        document.onmouseup = handleDropping(i);
+        document.onmouseup = function () {
+            
+            handleDropping(i);
+        }
+        
+
 
         document.onmousemove = function (e) {
             e.preventDefault();
