@@ -45,10 +45,10 @@ function templateContactDetails(i) {
             <div class="contact-member">${userDetails['firstname']} ${userDetails['lastname']}</div>
             <div class="editorial">
                 <div class="contact-edit" id="contact-edit" onclick="editContact(${i})">
-                    <div><img src="assets/img/contact_edit_new.png" alt="" class="contact-edit-pen">Edit</div>
+                    <div><img src="./assets/img/contact_edit_new.png" alt="" class="contact-edit-pen">Edit</div>
                 </div>
                 <div class="contact-edit" id="contact-trash" onclick="deleteContact(${i})">
-                    <img class="delete-icon" id="delete-icon" src="assets/img/contacts_trash.png" alt="">Delete
+                    <img class="delete-icon" id="delete-icon" src="./assets/img/contacts_trash.png" alt="">Delete
                 </div>
             </div>
         </div>
@@ -67,10 +67,10 @@ function templateContactDetails(i) {
 </div>
 
 <div class="contact-info-buttons" id="contact-info-buttons">
-    <img class="trash-icon d-none" id="trash-icon" src="assets/img/contact_delete_button.png" alt=""
+    <img class="trash-icon d-none" id="trash-icon" src="./assets/img/contact_delete_button.png" alt=""
         onclick="changeMobileView(false), deleteContact(${i})">
     <img class="edit-contact-icon d-none" id="edit-contact-icon" onclick="editContact(${i})"
-        src="assets/img/contact_edit_small.png" alt="">
+        src="./assets/img/contact_edit_small.png" alt="">
 </div>
 </div> `;
 }
@@ -87,21 +87,21 @@ function templateAddContactOverlay() {
         <div class="contact-overlay-container-section">
             <div class="contact-overlay-section">
                 <div onclick="closeContactOverlay()" class="close-form-mobile">
-                    <img src="assets/img/contact_close_mobile.png" class="cursor-pointer" alt="">
+                    <img src="./assets/img/contact_close_mobile.png" class="cursor-pointer" alt="">
                 </div>
                 <div class="overlay-text-container">
-                    <img class="contact-overlay-logo" src="assets/img/join_small.png" alt="">
+                    <img class="contact-overlay-logo" src="./assets/img/join_small.png" alt="">
                     <div class="contact-overlay-headline">Add contact</div>
                     <div class="contact-overlay-subheadline">Tasks are better with a team</div>
                     <div class="contact-overlay-divider"></div>
                 </div>
             </div>
             <div class="contact-overlay-form-section">
-                <div onclick="closeContactOverlay()" class="close-form"><img src="assets/img/contact_close_form.png" class="cursor-pointer"
+                <div onclick="closeContactOverlay()" class="close-form"><img src="./assets/img/contact_close_form.png" class="cursor-pointer"
                         alt=""></div>
                 <div class="contact-overlay-form-box">
                     <div class="contact-overlay-icon-box"><img class="contact-overlay-icon"
-                            src="assets/img/contact_user_white.png" alt=""></div>
+                            src="./assets/img/contact_user_white.png" alt=""></div>
                             <form class="contact-form-container" >
                             <div id="nameAlert" class="noAlert">This field is required</div>
                         <input id="newContactName" required type="text" placeholder="Name"
@@ -117,11 +117,11 @@ function templateAddContactOverlay() {
                 <div class="contact-overlay-buttons">
                     <button class="contact-cancel-button" onclick="closeContactOverlay()">
                         <div>Cancel</div>
-                        <img class="cancel-icon" src="assets/img/contact_form_cancel.png" alt="">
+                        <img class="cancel-icon" src="./assets/img/contact_form_cancel.png" alt="">
                     </button>
                    <button onclick="if (validateForm()) { addContact(); }" class="contact-create-button" id="create-contact">
                         <div>Create contact</div>
-                        <img src="assets/img/contact_form_check.png" alt="">
+                        <img src="./assets/img/contact_form_check.png" alt="">
                     </button>
                 </div>
             </div>
@@ -144,15 +144,15 @@ function templateContactOverlayEdit(i, editDetails) {
         <div class="contact-overlay-container-section">
             <div class="contact-overlay-section">
                 <div onclick="closeOverlayEdit()" class="close-form-mobile"><img
-                        src="assets/img/contact_close_mobile.png" class="cursor-pointer" alt=""></div>
+                        src="./assets/img/contact_close_mobile.png" class="cursor-pointer" alt=""></div>
                 <div class="overlay-text-container">
-                    <img class="contact-overlay-logo" src="assets/img/join_small.png" alt="">
+                    <img class="contact-overlay-logo" src="./assets/img/join_small.png" alt="">
                     <div class="contact-overlay-headline">Edit contact</div>
                     <div class="contact-overlay-divider"></div>
                 </div>
             </div>
             <div class="contact-overlay-form-section">
-                <div onclick="closeOverlayEdit()" class="close-form"><img src="assets/img/contact_close_form.png" class="cursor-pointer"
+                <div onclick="closeOverlayEdit()" class="close-form"><img src="./assets/img/contact_close_form.png" class="cursor-pointer"
                         alt=""></div>
                 <div class="contact-overlay-form-box">
                     <div class="contact-initialen" style="background-color:${editDetails['color']}">

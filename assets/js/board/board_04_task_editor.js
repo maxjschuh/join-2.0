@@ -32,14 +32,10 @@ function taskEditorInitAssigneePicker(assignees) {
     renderContacts();
     taskContactList = [];
 
-    for (let i = 0; i < assignees.length; i++) {
-        const assignee = assignees[i];
-
-        taskEditorSetAssigneeAsSelected(assignee);
-    }
+    assignees.forEach(assignee => taskEditorSetAssigneeAsSelected(assignee));
 
     addContacts();
-    pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
+    pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
     document.getElementById('ddArrow').classList.remove('d-none');
     document.getElementById('clearAddButtons').classList.add('d-none');
 }
@@ -73,13 +69,25 @@ function boardHideTaskEditor() {
     document.removeEventListener('click', closeMenuIfClickedOutside);
 
     taskContactList = [];
-    document.getElementById('board-detail-view-subtasks').innerHTML = '';
     document.getElementById('board-task-editor').parentNode.classList.add('board-display-none');
     document.getElementById('board-task-editor').classList.add('board-display-none');
     document.getElementById('board-kanban').classList.remove('board-display-none-700px');
-    document.getElementById('board-task-editor-assignee-picker').innerHTML = '';
-    document.getElementById('board-task-editor-subtasks').innerHTML = '';
+
+    emptyInnerHTML(['board-detail-view-subtasks', 'board-task-editor-assignee-picker', 'board-task-editor-subtasks']);
+
     boardCreateAllEventListeners();
+}
+
+
+/**
+ * Sets the inner html of the elements with the passed ids to an empty string.
+ * @param {Array} ids html ids
+ */
+function emptyInnerHTML(ids) {
+
+    ids.forEach(id => {
+        document.getElementById(id).innerHTML = '';
+    });
 }
 
 
@@ -111,12 +119,12 @@ async function boardConfirmEditorChanges() {
 function taskEditorSaveContacts() {
     let newAssignees = [];
 
-    for (let i = 0; i < taskContactList.length; i++) {
-        const contact = taskContactList[i];
-        const name = contact.firstname + ' ' + contact.lastname;
+    taskContactList.forEach(contact => {
 
+        const name = contact.firstname + ' ' + contact.lastname;
         newAssignees.push(name);
-    }
+    });
+
     database.tasks[boardCurrentTaskInDetailView].assigned_to = newAssignees;
 }
 
@@ -139,9 +147,7 @@ function taskEditorRenderPrioButtons(selectedPrio) {
     for (let i = 0; i < prios.length; i++) {
 
         const unselectedPrio = prios[i];
-
         const iconId = `task-editor-prio-icon-${unselectedPrio}`;
-
         stylePrioButton(iconId, 'background-color:rgb(255, 255, 255)', false, unselectedPrio);
     }
 
@@ -217,23 +223,20 @@ function boardRenderSubtasks(subtasks, containerId) {
  * @param {string} name name of the subtask
  * @param {string} status "false" = not done, "true" = done
  * @param {string} containerId html id of the container where the subtask is rendered
- * @returns HTML Template for a subtask
+ * @returns {string} HTML Template for a subtask
  */
 function taskEditorSubtaskTemplate(i, name, status, containerId) {
-    const html = /*html*/ `
+    return /*html*/ `
     
-            <div class="sub-task">
-            <div onclick="taskEditorSetCheckbox(${i})" class="selectbox-subtask pointer">
-            <img class="subtaskDone ${taskEditorGetSubtaskStatus(status)}" id="taskEditorCheckmark${i}" src="./assets/img/create_subtask.png">
-            </div>
-            <div class="board-detail-view-subtask">${name}
-            <img class="board-cursor-pointer" src="./assets/img/board/close.svg"
-            onclick="boardRemoveSubtask(${i}, '${containerId}')" alt="delete-icon"></div>
-
-            
-            </div>`;
-
-    return html;
+        <div class="sub-task">
+        <div onclick="taskEditorSetCheckbox(${i})" class="selectbox-subtask pointer">
+        <img class="subtaskDone ${taskEditorGetSubtaskStatus(status)}" id="taskEditorCheckmark${i}" src="./assets/img/create_subtask.png">
+        </div>
+        <div class="board-detail-view-subtask">${name}
+        <img class="board-cursor-pointer" src="./assets/img/board/close.svg"
+        onclick="boardRemoveSubtask(${i}, '${containerId}')" alt="delete-icon"></div>
+        
+        </div>`;
 }
 
 
@@ -317,12 +320,13 @@ function replaceForbiddenCharacters(string) {
  * This function starts an event listener that checks whether enter is pressed in the subtask input field.
  */
 function boardTaskEditorSubtaskEnter() {
+
     setTimeout(() => {
         let subTaskInputField = document.getElementById('subtaskInput');
+
         subTaskInputField.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                taskEditorAddSubtask();
-            }
+
+            if (event.key === "Enter") taskEditorAddSubtask();
         });
     }, 150);
 }

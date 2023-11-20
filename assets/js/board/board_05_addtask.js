@@ -11,15 +11,14 @@ function boardShowAddtaskOverlay(progress) {
     boardIncludeAssignePickerOnAddTask();
     document.getElementById('board-add-task-subtasks').innerHTML = boardAddTaskTemplateSubtasks();
 
-    renderCategorys();
+    renderCategories();
     renderContacts();
     startEventListener();
 
     clearAllFields();
-    document.getElementById('board-add-task').classList.remove('board-display-none');
     document.getElementById('board-add-task').parentNode.classList.remove('board-display-none');
-    document.getElementById('board-kanban').classList.add('board-display-none-700px');
-    document.getElementById('mobileCreateTask').classList.remove('board-display-none');
+    toggleElements(['board-kanban'], 'board-display-none-700px', true);
+    toggleElements(['mobileCreateTask', 'board-add-task'], 'board-display-none', false);
 }
 
 
@@ -29,14 +28,12 @@ function boardShowAddtaskOverlay(progress) {
 function boardHideAddtaskOverlay() {
 
     document.removeEventListener('click', closeMenuIfClickedOutside);
- 
-    document.getElementById('board-add-task').classList.add('board-display-none');
-    document.getElementById('board-add-task').parentNode.classList.add('board-display-none');
-    document.getElementById('board-kanban').classList.remove('board-display-none-700px');
-    document.getElementById('mobileCreateTask').classList.add('board-display-none');
 
-    document.getElementById('board-add-task-assignee-picker').innerHTML = '';
-    document.getElementById('board-add-task-subtasks').innerHTML = '';
+    document.getElementById('board-add-task').parentNode.classList.add('board-display-none');
+    toggleElements(['board-kanban'], 'board-display-none-700px', false);
+    toggleElements(['board-add-task', 'mobileCreateTask'], 'board-display-none', true);
+
+    emptyInnerHTML(['board-add-task-assignee-picker', 'board-add-task-subtasks']);
 }
 
 

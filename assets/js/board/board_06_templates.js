@@ -3,13 +3,13 @@
  * @param {number} i the index of the task that the function should render in the database or searchResults array
  * @param {object} task the task whose information should be rendered
  * @param {number} currentColumnTaskCount count of tasks in the current column
- * @returns HTML Template for a task card on the kanban board.
+ * @returns {string} HTML Template for a task card on the kanban board.
  */
 function htmlTemplateTaskCard(i, task, currentColumnTaskCount) {
 
-    let topPosition = 260 * currentColumnTaskCount;
+    const topPosition = 260 * currentColumnTaskCount;
 
-    let html = /*html*/ `
+    return /*html*/ `
 
         <div id="task${i}" class="board-kanban-task-card board-cursor-pointer board-draggable" style="top:${topPosition}px">
 
@@ -29,15 +29,14 @@ function htmlTemplateTaskCard(i, task, currentColumnTaskCount) {
                     <img src="./assets/img/board/prio_${task.prio}.svg" alt="prio-icon">
                 </div>
 
-            </div>
-        `;
-    return html;
+        </div>
+    `;
 }
 
 
 /**
  * HTML Template for the subtask editor on the add task overlay.
- * @returns HTML Template
+ * @returns {string} HTML Template
  */
 function boardAddTaskTemplateSubtasks() {
 
@@ -54,9 +53,9 @@ function boardAddTaskTemplateSubtasks() {
                 class="input-cat-sub no-outline" onclick="switchSubtaskIcons()">
             <div class="center" id="addSubtask">
                 <img onclick="switchSubtaskIcons()" class="padding-17-right pointer"
-                    src="assets/img/add_subtask.png">
+                    src="./assets/img/add_subtask.png">
             </div>
-            <div class="center spcae-between clear-add-button-container padding-17-right d-none"
+            <div class="center space-between clear-add-button-container padding-17-right d-none"
                 id="createSubtask">
                 <img class="clear-input pointer" onclick="switchSubtaskIcons()"
                     src="./assets/img/Clear_task_input.png">
@@ -72,7 +71,7 @@ function boardAddTaskTemplateSubtasks() {
 
 /**
  * HTML Template for the subtask editor on the task editor overlay.
- * @returns HTML Template
+ * @returns {string} HTML Template
  */
 function boardTaskEditorTemplateSubtasks() {
 
@@ -89,9 +88,9 @@ function boardTaskEditorTemplateSubtasks() {
                 class="input-cat-sub no-outline" onclick="switchSubtaskIcons()">
             <div class="center" id="addSubtask">
                 <img onclick="switchSubtaskIcons()" class="padding-17-right pointer"
-                    src="assets/img/add_subtask.png">
+                    src="./assets/img/add_subtask.png">
             </div>
-            <div class="center spcae-between clear-add-button-container padding-17-right d-none"
+            <div class="center space-between clear-add-button-container padding-17-right d-none"
                 id="createSubtask">
                 <img class="clear-input pointer" onclick="switchSubtaskIcons()"
                     src="./assets/img/Clear_task_input.png">
@@ -107,7 +106,7 @@ function boardTaskEditorTemplateSubtasks() {
 
 /**
  * Returns the html template for the assignee picker.
- * @returns HTML template
+ * @returns {string} HTML template
  */
 function boardTemplateAssigneePicker() {
 
@@ -118,13 +117,13 @@ function boardTemplateAssigneePicker() {
                 <div id="contactReport" class="report d-none">This field is required</div>
             </div>
 
-            <div class="dropdown-category-closed" id="assingedTo">
+            <div class="dropdown-category-closed" id="assignedTo">
 
-                <div onclick="pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys')" class="dd-placeholder" id="contactsToAssingContainer">
+                <div onclick="pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories')" class="dd-placeholder" id="contactsToAssingContainer">
                     <div>Contacts to assign</div>
-                    <img id="ddArrow" src="assets/img/drop_down.png">
+                    <img id="ddArrow" src="./assets/img/drop_down.png">
 
-                    <div class="center spcae-between clear-add-button-container d-none" id="clearAddButtons">
+                    <div class="center space-between clear-add-button-container d-none" id="clearAddButtons">
                         <img class="clear-input pointer" onclick="clearContacts()" src="./assets/img/Clear_task_input.png">
                         <div>|</div>
                         <img onclick="addContacts()" class="pointer" src="./assets/img/create_subtask.png">
@@ -147,7 +146,7 @@ function boardTemplateAssigneePicker() {
 /**
  * HTML Template for the assignee bubble icon in the task card footer.
  * @param {string} assignee assignee with firstname and lastname
- * @returns HTML Template for the assignee bubble icon in the task card footer.
+ * @returns {string} HTML Template for the assignee bubble icon in the task card footer.
  */
 function htmlTemplateAssigneeIcon(assignee) {
 
@@ -164,13 +163,13 @@ function htmlTemplateAssigneeIcon(assignee) {
  * Returns the html template for all drop containers in a specific column.
  * @param {string} columnId html id of the column in which the containers should be rendered
  * @param {number} currentColumnTaskCount count of tasks in the column in which the containers should be rendered
- * @returns the html template for all drop containers in a specific column
+ * @returns {string} the html template for all drop containers in a specific column
  */
 function returnTemplateForDropContainers(columnId, currentColumnTaskCount) {
     const windowWidth = window.innerWidth;
 
     if (windowWidth > 700) return htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount);
-        
+
     else return htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount);
 }
 
@@ -179,7 +178,7 @@ function returnTemplateForDropContainers(columnId, currentColumnTaskCount) {
  * Returns the desktop html template (for sreen widths above 700 pixels) for all drop containers in a specific column.
  * @param {string} columnId html id of the column in which the containers should be rendered
  * @param {number} currentColumnTaskCount count of tasks in the column in which the containers should be rendered
- * @returns the html template for all drop containers in a specific column
+ * @returns {string} the html template for all drop containers in a specific column
  */
 function htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount) {
 
@@ -210,7 +209,7 @@ function htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount) {
  * Returns the mobile html template (for sreen widths under 700 pixels) for all drop containers in a specific column.
  * @param {string} columnId html id of the column in which the containers should be rendered
  * @param {number} currentColumnTaskCount count of tasks in the column in which the containers should be rendered
- * @returns the html template for all drop containers in a specific column
+ * @returns {string} the html template for all drop containers in a specific column
  */
 function htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount) {
 
@@ -227,7 +226,7 @@ function htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount) {
             <div id="${targetId}" class="board-drop-target board-display-none" style="${firstTargetSpecialStyle}"></div>
         </div>
         `;
-        
+
         containerId = `${columnId}-drop-container-${i + 1}`;
         targetId = `${columnId}-drop-target-${i + 1}`;
         firstContainerSpecialStyle = '';

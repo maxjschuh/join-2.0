@@ -171,10 +171,10 @@ function boardSwitchResponsiveMode() {
 
     } else document.getElementById('board-kanban').style = 'display: flex';
 
-    for (let i = 0; i < columnIds.length; i++) {
-        const column = columnIds[i];
+    columnIds.forEach(column => {
+
         document.getElementById(column).parentNode.style = `${columnStyle}`;
-    }
+    });
 }
 
 
@@ -305,11 +305,26 @@ function getAssigneeColor(assignee) {
     const firstname = assigneeTrimmed.substring(0, assigneeTrimmed.indexOf(' '));
     const lastname = assigneeTrimmed.substring(assigneeTrimmed.indexOf(' ') + 1);
 
-    for (let i = 0; i < database.contacts.length; i++) {
-        const contact = database.contacts[i];
+    database.contacts.forEach(contact => {
 
-        if ((firstname == contact.firstname && lastname == contact.lastname) ||
-            (assignee == contact.firstname)) return contact.color;
+        if (contactMatchesAssignee(contact, firstname, lastname, assignee)) return contact.color;
+    });
+}
+
+
+/**
+ * Checks if the passed assignee name matches the name of the passed contact.
+ * @param {object} contact that should be checked for a match
+ * @param {string} firstname of the assignee
+ * @param {string} lastname of the assignee
+ * @param {string} assignee full name of the assigne; is checked in case the assignee only has a firstname
+ * @returns {boolean} true when the contact matches the assignee
+ */
+function contactMatchesAssignee(contact, firstname, lastname, assignee) {
+
+    if ((firstname == contact.firstname && lastname == contact.lastname) || (assignee == contact.firstname)) {
+        
+        return true;
     }
 }
 

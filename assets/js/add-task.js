@@ -27,7 +27,7 @@ let newCategory;
 let colorForNewCategory;
 let colorForNewCategoryID;
 let required = '';
-let initialsRenderd = false;
+let initialsRendered = false;
 
 
 /**
@@ -38,7 +38,7 @@ async function initTask() {
     tasks = database.tasks;
     contacts = database.contacts;
     categories = database.categories;
-    renderCategorys();
+    renderCategories();
     renderContacts();
     datePicker();
     renderloggedInUserinContactList();
@@ -76,8 +76,8 @@ function searchContactwithEmail() {
 /**
  * This function renders the list of categories.
  */
-function renderCategorys() {
-    categoryContainer = document.getElementById('loadedCategorys');
+function renderCategories() {
+    categoryContainer = document.getElementById('loadedCategories');
     categoryContainer.innerHTML = '';
     for (let i = 0; i < categories.length; i++) {
         let category = categories[i].name;
@@ -128,7 +128,7 @@ function selectCategory(category, categoryColor) {
             </div>`
     selectedCategory = category;
     let classStatus = document.getElementById('category').classList
-    if (classStatus.contains('dropdown-category-open')) pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+    if (classStatus.contains('dropdown-category-open')) pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
 }
 
 
@@ -203,8 +203,8 @@ function getFirstLetters(contact) {
  * closes the drop down menu and re-renders the contacts.
  */
 function clearContacts() {
-    const classStatus = document.getElementById('assingedTo').classList;
-    if (classStatus.contains('dropdown-category-open')) pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
+    const classStatus = document.getElementById('assignedTo').classList;
+    if (classStatus.contains('dropdown-category-open')) pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
     collectedContact = [];
     taskContactList = [];
     initials = [];
@@ -220,11 +220,11 @@ function clearContacts() {
  * closes the drop down menu and changes the icons.
  */
 function addContacts() {
-    initialsRenderd = true;
+    initialsRendered = true;
     createInitials();
     switchContactIcons();
     renderInitials();
-    pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
+    pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
 }
 
 
@@ -345,7 +345,7 @@ function renderSubtasks() {
     for (let i = 0; i < subtasks.length; i++) {
         subtaskContainer.innerHTML += /*html*/ `<div class="sub-task">
             <div onclick="setStatus('selectboxSubtask${i}', ${i})" class="selectbox-subtask pointer">
-            <img class="subtaskDone ${getClass(i)}" id="selectboxSubtask${i}" src="assets/img/create_subtask.png">
+            <img class="subtaskDone ${getClass(i)}" id="selectboxSubtask${i}" src="./assets/img/create_subtask.png">
             </div>
             <div class="pointer" onclick="removeSubtask(${i}), ${i}">${subtasks[i]}</div>
             </div>`;

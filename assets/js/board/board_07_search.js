@@ -1,7 +1,7 @@
 /**
  * Decides on whether to use the search results or the full database to render the tasks.
  * @param {boolean} newBoardSearch true = return search results; false = return database
- * @returns JSON containing tasks
+ * @returns {object} JSON containing tasks
  */
 function boardUseSearchResults(newBoardSearch) {
 
@@ -24,7 +24,7 @@ function boardValidateSearchInput() {
     }
     const userInput = inputField.value.trim();
 
-    if (userInput.length == 0) {
+    if (!userInput.length) {
         boardActiveSearch = false;
         renderAllTaskCards();
         boardCreateAllEventListeners();
@@ -72,8 +72,7 @@ function boardSearchTask(task, userInput, databaseIndex) {
         return;
     }
 
-    for (let i = 0; i < task.assigned_to.length; i++) {
-        const assignee = task.assigned_to[i];
+    task.assigned_to.forEach(assignee => {
 
         if (boardFieldIncludes(assignee, userInput)) {
 
@@ -81,7 +80,7 @@ function boardSearchTask(task, userInput, databaseIndex) {
             searchResultsDatabaseIndexes.push(databaseIndex);
             return;
         }
-    }
+    });
 }
 
 

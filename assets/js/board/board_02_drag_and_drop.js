@@ -28,13 +28,10 @@ function boardCreateEventListenerMouse(boardDragElement, i) {
         pos3 = e.clientX;
         pos4 = e.clientY;
 
-        document.onmouseup = function () {
-            handleDropping(i);
-        }
+        document.onmouseup = handleDropping(i);
 
         document.onmousemove = function (e) {
             e.preventDefault();
-
             boardUpdateCoordinates(e);
             boardHandleDragging(boardDragElement, i);
         }
@@ -128,8 +125,7 @@ function boardResetVariablesForDragging() {
  */
 function boardSetDropTargets() {
 
-    for (let i = 0; i < columnIds.length; i++) {
-        const columnId = columnIds[i];
+    columnIds.forEach((columnId, i) => {
 
         for (let j = 0; j < (taskCountPerColumn[i] + 1); j++) {
 
@@ -138,13 +134,14 @@ function boardSetDropTargets() {
             if (boardDropTargetContainer != targetId) {
 
                 try {
-                    document.getElementById(targetId).classList.add('board-display-none');
+
+                    toggleElements([targetId], 'board-display-none', true);
                 } catch (error) { }
             }
         }
-    }
+    });
 
-    if (boardDropTargetContainer) document.getElementById(boardDropTargetContainer).classList.remove('board-display-none');
+    if (boardDropTargetContainer) toggleElements([boardDropTargetContainer], 'board-display-none', false);    
 }
 
 
@@ -297,9 +294,8 @@ function openGapInTaskColumn(draggingTask) {
             const taskId = `task${tasksInCurrentColumn[i]}`;
             let newTopPosition = 260 * i;
 
-            if (i >= positionOfDraggedOverTask) {
-                newTopPosition = newTopPosition + 260;
-            }
+            if (i >= positionOfDraggedOverTask) newTopPosition = newTopPosition + 260;
+            
             document.getElementById(taskId).style = `top:${newTopPosition}px`;
         }
     }

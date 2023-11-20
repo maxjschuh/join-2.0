@@ -115,9 +115,9 @@ function boardDetailViewSubtasks(task) {
         for (let i = 0; i < task.subtasks.name.length; i++) {
             const subtaskName = task.subtasks.name[i];
 
-            html += `<li>${subtaskName}</li>`;
+            html += /*html*/ `<li>${subtaskName}</li>`;
         }
-        html += '</ul>';
+        html += /*html*/ `</ul>`;
         container.innerHTML = html;
     }
 }

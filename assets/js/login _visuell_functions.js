@@ -154,7 +154,7 @@ function openLogin() {
  * This function will open the window to request a passwort change
  */
 function openForgotPw() {
-    
+
     toggleElements(['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'], 'd-none', true);
     toggleElements(['forgotPwContainer'], 'd-none', false);
 }
@@ -164,11 +164,9 @@ function openForgotPw() {
  * This function will open the window to change the password
  */
 function openResetPw() {
-    document.getElementById('signUp').classList.add('d-none');
-    document.getElementById('loginContainer').classList.add('d-none');
-    document.getElementById('resetPwContainer').classList.remove('d-none');
-    document.getElementById('forgotPwContainer').classList.add('d-none');
-    document.getElementById('signUpContainer').classList.add('d-none');
+    
+    toggleElements(['signUp', 'loginContainer', 'forgotPwContainer', 'signUpContainer'], 'd-none', true);
+    toggleElements(['resetPwContainer'], 'd-none', false);
 }
 
 
@@ -178,9 +176,10 @@ function openResetPw() {
 function waitForAnimation() {
     if (checkScreenSize()) {
         // Der Code für den Fall, dass die Bildschirmbreite kleiner oder gleich 900px ist
-        document.getElementById('mobileStartScreen').classList.remove('d-none');
-        document.getElementById('loginContainer').classList.add('d-none');
-        document.getElementById('signUp').classList.add('d-none');
+
+        toggleElements(['mobileStartScreen'], 'd-none', false);
+        toggleElements(['loginContainer', 'signUp'], 'd-none', true);
+
         setTimeout(() => { document.getElementById('mobileStartScreen').classList.add('d-none'); document.getElementById('joinPic').style = 'display: block'; }, 300);
         setTimeout(() => { document.getElementById('loginContainer').classList.remove('d-none'); document.getElementById('signUp').classList.remove('d-none'); }, 1300);
     }

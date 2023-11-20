@@ -14,9 +14,7 @@ function subtaskEventListener() {
     setTimeout(() => {
         let subTaskInputField = document.getElementById('subtaskInput');
         subTaskInputField.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                addSubtask();
-            }
+            if (event.key === "Enter") addSubtask();
         });
     }, 150)
 }
@@ -54,14 +52,14 @@ function datePicker() {
  * @param {string} notVisible - This is the id where the classlist "d-none" will added
  */
 function pullDownMenu(clicked, notClicked, visible, notVisible) {
-    let openMenu = document.getElementById(clicked).classList;
+    const openMenu = document.getElementById(clicked).classList;
     if (openMenu == 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
     else closeDropDownMenu(clicked, visible, notVisible);
-    
-    if (clicked == 'assingedTo') {
+
+    if (clicked == 'assignedTo') {
         switchContactIcons();
         renderInitials();
-        initialsRenderd = false;
+        initialsRendered = false;
     }
 }
 
@@ -70,11 +68,12 @@ function pullDownMenu(clicked, notClicked, visible, notVisible) {
  * This function adds and removes CSS classes
  */
 function openDropDownMenu(clicked, notClicked, visible, notVisible) {
+
     document.getElementById(clicked).classList.add('dropdown-category-open');
     document.getElementById(notClicked).classList.remove('dropdown-category-open');
     document.getElementById(visible).classList.remove('d-none');
-    document.getElementById(notVisible).classList.add('d-none');
-    document.getElementById('initialsContainer').classList.add('d-none');
+
+    toggleElements([notVisible, 'initialsContainer'], 'd-none', true);
 }
 
 
@@ -82,9 +81,9 @@ function openDropDownMenu(clicked, notClicked, visible, notVisible) {
  * This function adds and removes CSS classes
  */
 function closeDropDownMenu(clicked, visible, notVisible) {
+
     document.getElementById(clicked).classList.remove('dropdown-category-open');
-    document.getElementById(visible).classList.add('d-none');
-    document.getElementById(notVisible).classList.add('d-none');
+    toggleElements([visible, notVisible], 'd-none', true);
     document.getElementById('initialsContainer').classList.remove('d-none');
 }
 
@@ -103,21 +102,19 @@ function clickOutsideDropdownMenu() {
  */
 function closeMenuIfClickedOutside(event) {
     const categoryMenu = document.getElementById('category');
-    const assignedToMenu = document.getElementById('assingedTo');
+    const assignedToMenu = document.getElementById('assignedTo');
 
-    if (!categoryMenu.contains(event.target) &&
-        categoryMenu.classList.contains('dropdown-category-open')) {
-        pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts')
+    if (!categoryMenu.contains(event.target) && categoryMenu.classList.contains('dropdown-category-open')) {
+        pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts')
     }
 
-    if (!assignedToMenu.contains(event.target) &&
-        assignedToMenu.classList.contains('dropdown-category-open')) {
-        pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
-        initialsRenderd = true;
+    if (!assignedToMenu.contains(event.target) && assignedToMenu.classList.contains('dropdown-category-open')) {
+        pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
+        initialsRendered = true;
         switchContactIcons();
         setTimeout(() => {
-            initialsRenderd = false;
-        }, 20)
+            initialsRendered = false;
+        }, 20);
     }
 }
 
@@ -131,12 +128,10 @@ function switchSubtaskIcons() {
     let addSubtask = document.getElementById('addSubtask');
     let createSubtask = document.getElementById('createSubtask');
     let subtaskInput = document.getElementById('subtaskInput');
-    let createSubtaskClass = createSubtask.classList.value;
-    if (createSubtaskClass.includes('d-none') == true) {
-        showAddClearIcons(addSubtask, createSubtask, subtaskInput);
-    } else {
-        removeAddClearIcons(addSubtask, createSubtask, subtaskInput);
-    }
+    const createSubtaskClass = createSubtask.classList.value;
+
+    if (createSubtaskClass.includes('d-none')) showAddClearIcons(addSubtask, createSubtask, subtaskInput);
+    else removeAddClearIcons(addSubtask, createSubtask, subtaskInput);
 }
 
 
@@ -175,7 +170,7 @@ function removeAddClearIcons(addSubtask, createSubtask, subtaskInput) {
  * This function adds and/or removes css classes to create a drop down menu.
  */
 function switchContactIcons() {
-    if (taskContactList.length == false || initialsRenderd == true) {
+    if (!taskContactList.length || initialsRendered) {
         document.getElementById('clearAddButtons').classList.add('d-none');
         document.getElementById('ddArrow').classList.remove('d-none');
         setTimeout(setAttribute, 200)
@@ -191,7 +186,8 @@ function switchContactIcons() {
  * This function adds an onclick.
  */
 function setAttribute() {
-    document.getElementById('contactsToAssingContainer').setAttribute("onclick", "pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys')");
+    document.getElementById('contactsToAssingContainer').setAttribute("onclick",
+        "pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories')");
 }
 
 
@@ -199,11 +195,9 @@ function setAttribute() {
  * This function clears all input fields and selected fields.
  */
 function clearAllFields() {
-    document.getElementById('tileInput').value = '';
-    document.getElementById('descriptionInput').value = '';
     clearCreateCategory();
     clearContacts();
-    document.getElementById('date').value = '';
+    resetValues(['tileInput', 'descriptionInput', 'date']);
     resetPrioButton();
     resetSubTasks();
     resetWarnings();
@@ -211,14 +205,27 @@ function clearAllFields() {
 
 
 /**
+ * Sets the value property of the html elements with the passed ids to an empty string.
+ * @param {Array} ids html ids
+ */
+function resetValues(ids) {
+
+    ids.forEach(id => {
+        document.getElementById(id).value = '';
+    });
+}
+
+
+/**
  * This function resets the input field under new category in the category dropdown menu.
  */
 function clearCreateCategory() {
-    document.getElementById('chosenCategory').innerHTML = `Select task category`
+    document.getElementById('chosenCategory').innerHTML = `Select task category`;
     selectedCategory = category;
-    let classStatus = document.getElementById('category').classList
+    const classStatus = document.getElementById('category').classList;
+
     if (classStatus.contains('dropdown-category-open')) {
-        pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+        pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
     }
 }
 
@@ -258,9 +265,6 @@ function renderContactsAfterCreate() {
  * This function clears the warnings.
  */
 function resetWarnings() {
-    document.getElementById('titleReport').classList.add('d-none');
-    document.getElementById('descriptionReport').classList.add('d-none');
-    document.getElementById('categoryReport').classList.add('d-none');
-    document.getElementById('dateReport').classList.add('d-none');
-    document.getElementById('prioReport').classList.add('d-none');
+
+    toggleElements(['titleReport', 'descriptionReport', 'categoryReport', 'dateReport', 'prioReport'], 'd-none', true);
 }

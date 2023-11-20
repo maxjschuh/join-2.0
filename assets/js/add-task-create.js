@@ -5,30 +5,33 @@
  */
 function collectAllInfos() {
     disableAddTaskButton();
-    task.title = getValue('tileInput', 'titleReport')
-    task.description = getValue('descriptionInput', 'descriptionReport')
+    task.title = getValue('tileInput', 'titleReport');
+    task.description = getValue('descriptionInput', 'descriptionReport');
     task.category = getCategory();
     task.assigned_to = getName();
     task.due_date = getDate();
     task.prio = getPrio();
-    collectUnnecessaryInfors();
+    collectUnnecessaryInfos();
 }
 
 
 /**
  * This function checks whether all the required information is available and adds the optional information.
  */
-function collectUnnecessaryInfors() {
+function collectUnnecessaryInfos() {
+
     setTimeout(() => {
-        if (required == '') {
+
+        if (required) {
+            activateAddTaskButton();
+            required = '';
+
+        } else {
             pushSubtask();
             pushStatus();
-            saveDatabase()
-        } else {
-            activateAddTaskButton();
-            required = ''
+            saveDatabase();
         }
-    }, 300)
+    }, 300);
 }
 
 
@@ -70,11 +73,11 @@ function getName() {
  * checks if it is empty and warns the user that this input field cannot be empty.
  * @param {string} valueId - Input field ID.
  * @param {string} reportID - Alert Message ID.
- * @returns value from input field.
+ * @returns {string} value from input field.
  */
 function getValue(valueId, reportID) {
-    let description = document.getElementById(valueId).value;
-    if (description == '' || containsBrackets(description)) {
+    const description = document.getElementById(valueId).value;
+    if (!description || containsBrackets(description)) {
         document.getElementById(reportID).classList.remove('d-none');
         required = true;
     } else return description;
@@ -87,7 +90,7 @@ function getValue(valueId, reportID) {
  * @returns selected category
  */
 function getCategory() {
-    if (selectedCategory == false || selectedCategory == '' || selectedCategory == undefined) {
+    if (!selectedCategory) {
         document.getElementById('categoryReport').classList.remove('d-none');
         document.getElementById('categoryReport').innerHTML = `This field is required`;
         required = true;
@@ -101,12 +104,15 @@ function getCategory() {
  * @returns value from input field.
  */
 function getDate() {
-    let date_regex = /^(?:19|20)\d{2}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|[1-2][0-9]|3[0-1])$/;
-    let chosenDate = document.getElementById('date').value;
-    if (chosenDate == '' || !(date_regex.test(chosenDate))) {
+    const date_regex = /^(?:19|20)\d{2}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|[1-2][0-9]|3[0-1])$/;
+    const chosenDate = document.getElementById('date').value;
+
+    if (chosenDate && date_regex.test(chosenDate)) return chosenDate;
+
+    else {
         document.getElementById('dateReport').classList.remove('d-none');
         required = true;
-    } else return chosenDate;
+    }
 }
 
 
@@ -129,7 +135,7 @@ function getPrio() {
  */
 function pushSubtask() {
     for (let i = 0; i < subtasks.length; i++) {
-        task.subtasks.name.push(subtasks[i]) || [];
+        task.subtasks.name.push(subtasks[i]);
     }
 }
 
@@ -149,12 +155,12 @@ function pushStatus() {
  * Starts the upload on the remote server and redirects the user to the summary page.
  */
 async function saveDatabase() {
-    document.getElementById('addetToBoard').classList.add('addet-to-board-position-animate')
+    document.getElementById('addedToBoard').classList.add('added-to-board-position-animate');
     database.tasks.push(task);
     await setItem('database', database);
     setTimeout(() => {
-        window.location.replace('board.html')
-    }, 1500)
+        window.location.replace('board.html');
+    }, 1500);
 }
 
 
@@ -162,9 +168,9 @@ async function saveDatabase() {
  * This function opens an input field and a div with selectable random colors.
  */
 function openCreateCategory() {
-    document.getElementById('newCategoryContainer').classList.remove('d-none');
-    document.getElementById('color-picker').classList.remove('d-none');
-    pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+
+    toggleElements(['newCategoryContainer', 'color-picker'], 'd-none', false);
+    pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
     getRandomColor();
     document.getElementById('category').classList.add('d-none');
 }
@@ -174,13 +180,11 @@ function openCreateCategory() {
  * This function removes an input field and a div with selectable random colors.
  */
 function closeCreateCategory() {
-    document.getElementById('category').classList.remove('d-none');
-    document.getElementById('categoryPlaceholder').classList.remove('d-none');
-    document.getElementById('newCategoryContainer').classList.add('d-none');
-    document.getElementById('color-picker').classList.add('d-none');
-    document.getElementById('categoryReport').classList.add('d-none');
+
+    toggleElements(['category', 'categoryPlaceholder'], 'd-none', false);
+    toggleElements(['newCategoryContainer', 'color-picker', 'categoryReport'], 'd-none', true);
     document.getElementById('categoryInput').value = '';
-    // pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+    // pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
     removeSelectedColor();
 }
 
@@ -238,18 +242,22 @@ function removeSelectedColor() {
  * If both exist, a function is started.
  */
 function addCategory() {
-    categoryInputFiled = document.getElementById('categoryInput');
-    newCategory = categoryInputFiled.value;
+    categoryInputFilled = document.getElementById('categoryInput');
+    newCategory = categoryInputFilled.value;
+
     if (!newCategory) {
         document.getElementById('categoryReport').classList.remove('d-none');
         document.getElementById('categoryReport').innerHTML = `Please enter a new category name`;
+
     } else if (newCategory.length > 20) {
         document.getElementById('categoryReport').classList.remove('d-none');
         document.getElementById('categoryReport').innerHTML = `Maximum 20 characters allowed`;
-    } else if (colorForNewCategory == undefined) {
+
+    } else if (!colorForNewCategory) {
         document.getElementById('categoryReport').classList.remove('d-none');
         document.getElementById('categoryReport').innerHTML = `Please choose a color`;
-    } else createCategory(categoryInputFiled);
+
+    } else createCategory(categoryInputFilled);
 }
 
 
@@ -257,9 +265,9 @@ function addCategory() {
  * This function saves a new category, empty and close an input field,
  * select and shows the new category.
  */
-function createCategory(categoryInputFiled) {
+function createCategory(categoryInputFilled) {
     saveNewCategory();
-    categoryInputFiled.value = '';
+    categoryInputFilled.value = '';
     closeCreateCategory();
     selectCategory(newCategory, colorForNewCategory);
 }
@@ -273,14 +281,14 @@ function saveNewCategory() {
         "name": `${newCategory}`,
         "color": `${colorForNewCategory}`
     };
-    pushCategoryInCategorys();
+    pushCategoryInCategories();
 }
 
 
 /**
  * This function pushes a new category into the database array.
  */
-async function pushCategoryInCategorys() {
+function pushCategoryInCategories() {
     categories.push(category);
-    renderCategorys();
+    renderCategories();
 }
