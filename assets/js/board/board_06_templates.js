@@ -63,7 +63,7 @@ function boardAddTaskTemplateSubtasks() {
                 <img id="board-button-submit-new-subtask" onclick="addSubtask()" class="pointer" src="./assets/img/create_subtask.png">
             </div>
         </div>
-        <div id="addetSubtasks"></div>
+        <div id="addedSubtasks"></div>
         </div>
     `;
 }
@@ -98,7 +98,7 @@ function boardTaskEditorTemplateSubtasks() {
                 <img id="board-button-submit-new-subtask" onclick="taskEditorAddSubtask()" class="pointer" src="./assets/img/create_subtask.png">
             </div>
         </div>
-        <div id="addetSubtasks"></div>
+        <div id="addedSubtasks"></div>
         </div>
     `;
 }

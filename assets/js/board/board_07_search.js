@@ -5,7 +5,7 @@
  */
 function boardUseSearchResults(newBoardSearch) {
 
-    if (newBoardSearch == true || boardActiveSearch == true) return searchResults;
+    if (newBoardSearch || boardActiveSearch) return searchResults;
 
     else return database;
 }
@@ -19,19 +19,19 @@ function boardValidateSearchInput() {
     let inputField;
     searchResultsDatabaseIndexes = [];
 
-    if (window.innerWidth > 700) {inputField = document.getElementById('board-search-input-desktop');} else {
-        inputField = document.getElementById('board-search-input-mobile');
-    }
+    if (window.innerWidth > 700) inputField = document.getElementById('board-search-input-desktop');
+    else inputField = document.getElementById('board-search-input-mobile');
+
     const userInput = inputField.value.trim();
 
-    if (!userInput.length) {
+    if (userInput.length) {
+        boardActiveSearch = true;
+        boardSearch(userInput);
+
+    } else {
         boardActiveSearch = false;
         renderAllTaskCards();
         boardCreateAllEventListeners();
-
-    } else {
-        boardActiveSearch = true;
-        boardSearch(userInput);
     }
 }
 
@@ -44,11 +44,8 @@ function boardSearch(userInput) {
 
     searchResults = { "tasks": [] };
 
-    for (let i = 0; i < database.tasks.length; i++) {
-        const task = database.tasks[i];
+    database.tasks.forEach((task, i) => boardSearchTask(task, userInput, i));
 
-        boardSearchTask(task, userInput, i);
-    }
     renderAllTaskCards(true);
     boardCreateAllEventListeners(true);
 }
@@ -59,7 +56,6 @@ function boardSearch(userInput) {
  * @param {object} task task that is checked for fitting the search input
  * @param {string} userInput validated search input string typed by the user
  * @param {number} databaseIndex the index of the examined task in the database array
- * @returns as soon as the task is found to fit the search input to decrease function run-time
  */
 function boardSearchTask(task, userInput, databaseIndex) {
 
@@ -69,10 +65,22 @@ function boardSearchTask(task, userInput, databaseIndex) {
 
         boardSaveSearchResults(task);
         searchResultsDatabaseIndexes.push(databaseIndex);
-        return;
-    }
 
-    task.assigned_to.forEach(assignee => {
+    } else boardSearchTaskAssignees(task, userInput, databaseIndex);
+}
+
+
+/**
+ * Checks if the input string is found in the assignees of the task that is passed as parameter.
+ * @param {object} task task that is checked for fitting the search input
+ * @param {string} userInput validated search input string typed by the user
+ * @param {number} databaseIndex the index of the examined task in the database array
+ * @returns as soon as a assignee of the task matches the search input, to decrease function run-time
+ */
+function boardSearchTaskAssignees(task, userInput, databaseIndex) {
+
+    for (let i = 0; i < task.assigned_to.length; i++) {
+        const assignee = task.assigned_to[i];
 
         if (boardFieldIncludes(assignee, userInput)) {
 
@@ -80,7 +88,7 @@ function boardSearchTask(task, userInput, databaseIndex) {
             searchResultsDatabaseIndexes.push(databaseIndex);
             return;
         }
-    });
+    }
 }
 
 
@@ -112,7 +120,7 @@ function boardSaveSearchResults(task) {
     if (searchResultsAsString.length > 20) searchResultsAsString = searchResultsAsString + ',' + taskAsString;
 
     else searchResultsAsString = searchResultsAsString + taskAsString;
-    
+
     searchResultsAsString = searchResultsAsString + ']}';
     searchResults = JSON.parse(searchResultsAsString);
 }

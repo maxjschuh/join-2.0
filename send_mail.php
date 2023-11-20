@@ -20,9 +20,9 @@ $recipient = $variable;
 #   This script has been created to send an email to the $recipient
 #   
 #  1) Upload this file to your FTP Server
-#  2) Send a POST rewquest to this file, including
+#  2) Send a POST request to this file, including
 #     [name] The name of the sender (Absender)
-#     [message] Message that should be send to you
+#     [message] Message that should be sent to you
 #
 ##################################
 
@@ -46,7 +46,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         header("Access-Control-Allow-Origin: *");
 
         $subject = "Reset password for " . $username;
-        $headers = "From: noreply@developerakademie.com";
+        $headers = "From: noreply@mjschuh.com";
 
         mail($recipient, $subject, $link, $headers);
         header("Location: " . $redirect); 

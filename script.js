@@ -233,11 +233,11 @@ function getItemLocalStorage(key) {
  * This function will get the email of the logged in user from the link of the page.
  */
 function includeUser() {
-    let localStorageData = getItemLocalStorage('loggedInUser');
-    if (localStorageData !== null) {
-        currentEmail = localStorageData['email'];
-        currentUsername = localStorageData['username'];
-        remember = localStorageData['remember'];
+    const localStorageData = getItemLocalStorage('loggedInUser');
+    if (localStorageData) {
+        currentEmail = localStorageData.email;
+        currentUsername = localStorageData.username;
+        remember = localStorageData.remember;
     }
 }
 
@@ -267,31 +267,38 @@ function showInitialsOnTopBar() {
  * @returns - The information you're looking for.
  */
 function searchContactInfo(index, yoursearchResult, keyword, searchFilter, searchPath) {
+
     for (let i = 0; i < database[searchPath].length; i++) {
         currentSearch = database[searchPath][i];
 
-        if (keyword == database[searchPath][i][searchFilter]) {
-            if (index) return database[searchPath].indexOf(currentSearch);
-            else return currentSearch[yoursearchResult];
-        }
+        const condition = keyword == database[searchPath][i][searchFilter];
+
+        if (condition && index) return database[searchPath].indexOf(currentSearch);
+        
+        else if (condition) currentSearch[yoursearchResult];
     }
 }
 
 
 /**
  * This function monitors where was clicked and shows or hides the user menu.
- * @param {boolean} e - The e parameter contains information about the position of the click,
+ * @param {object} e - The e parameter contains information about the position of the click,
  * the item clicked, or other properties of the event.
  */
 function userMenuEventListener() {
     window.onclick = function (e) {
+        let bool;
+
         if (window.location.pathname !== '/login.html') {
+
             if (!e.target.matches('.user-menu', '.user-initials', '#navID') &&
-                !document.getElementById('userMenu').classList.contains('d-none')) {
-                document.getElementById('userMenu').classList.add('d-none');
-            } else if (e.target.matches('.user-initials')) {
-                document.getElementById('userMenu').classList.remove('d-none');
-            }
+                !document.getElementById('userMenu').classList.contains('d-none')) bool = true;
+
+            else if (e.target.matches('.user-initials')) bool = false;
+
+            else return;
+
+            toggleElements(['userMenu'], 'd-none', bool);
         }
     }
 }

@@ -4,12 +4,12 @@
  */
 function boardCreateAllEventListeners(newBoardSearch) {
 
-    let dataForBoard = boardUseSearchResults(newBoardSearch);
+    const dataForBoard = boardUseSearchResults(newBoardSearch);
 
     for (let i = 0; i < dataForBoard.tasks.length; i++) {
 
         const taskId = `task${i}`;
-        let boardDragElement = document.getElementById(taskId);
+        const boardDragElement = document.getElementById(taskId);
 
         boardCreateEventListenerMouse(boardDragElement, i);
         boardCreateEventListenerTouch(boardDragElement, i);
@@ -171,7 +171,7 @@ function checkDragOverlapping(boardDragElement, taskNumber) {
         if (isDraggedElementOverBoardColumn(columnId, boardDragElement, i, taskNumber)) {
 
             boardDropTargetColumn = columnId;
-            
+
             boardSetPlaceholder(columnId, true);
 
         } else boardSetPlaceholder(columnId, false);
@@ -337,7 +337,7 @@ function handleDropping(i) {
 
 /**
  * This function assigns the new progress to the dragged task in the database calls the function for posting the database to the backend.
- * @param {*} index 
+ * @param {number} index 
  */
 function boardSetAndSaveProgress(index) {
 
@@ -352,7 +352,7 @@ function boardSetAndSaveProgress(index) {
 
 /**
  * Function with which the corresponding value for the progress field is read from the html id in which the dragged task was dropped.
- * @returns new value for task progress
+ * @returns {string} new value for task progress
  */
 function boardColumnRouter() {
 

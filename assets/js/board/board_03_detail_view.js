@@ -106,20 +106,19 @@ function boardDetailViewPriorityTag(task) {
  */
 function boardDetailViewSubtasks(task) {
 
-    if (task.subtasks.name) {
+    if (!task.subtasks.name) return;
 
-        const container = document.getElementById('board-detail-view-subtasks');
-        
-        let html = /*html*/ `Subtasks: <ul>`;
+    const container = document.getElementById('board-detail-view-subtasks');
 
-        for (let i = 0; i < task.subtasks.name.length; i++) {
-            const subtaskName = task.subtasks.name[i];
+    let html = /*html*/ `Subtasks: <ul>`;
 
-            html += /*html*/ `<li>${subtaskName}</li>`;
-        }
-        html += /*html*/ `</ul>`;
-        container.innerHTML = html;
-    }
+    task.subtasks.name.forEach(subtaskName => {
+
+        html += /*html*/ `<li>${subtaskName}</li>`;
+    });
+
+    html += /*html*/ `</ul>`;
+    container.innerHTML = html;
 }
 
 
@@ -144,11 +143,10 @@ function boardGetPrioColor(taskPrio) {
  */
 function boardDetailViewAssignees(task) {
 
-    let container = document.getElementById('board-detail-view-assignees');
+    const container = document.getElementById('board-detail-view-assignees');
     container.innerHTML = 'Assigned to:';
 
-    for (let i = 0; i < task.assigned_to.length; i++) {
-        const assignee = task.assigned_to[i];
+    task.assigned_to.forEach(assignee => {
 
         container.innerHTML += /*html*/ `
         
@@ -156,7 +154,7 @@ function boardDetailViewAssignees(task) {
             ${htmlTemplateAssigneeIcon(assignee)}
             ${assignee}
         </div> `;
-    }
+    });
 }
 
 
@@ -164,13 +162,13 @@ function boardDetailViewAssignees(task) {
  * Deletes a task from the board by splicing it from the database. Then the board is re-rendered and the database is fetched to the backend.
  */
 async function boardDeleteTask() {
- 
+
     database.tasks.splice(boardCurrentTaskInDetailView, 1);
 
     boardHideTaskDetails();
     renderAllTaskCards();
     boardCreateAllEventListeners();
-    await setItem('database', database);  
+    await setItem('database', database);
 }
 
 

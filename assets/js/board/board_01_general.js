@@ -43,7 +43,7 @@ function boardSetMaximumDescriptionLength() {
 
     else if ((windowWidth < 1100 && windowWidth > 900) || (windowWidth < 750 && windowWidth > 700)) {
         boardMaximumDescriptionLength = 25;
-        
+
     } else if (windowWidth > 280) boardMaximumDescriptionLength = 40;
 
     else boardMaximumDescriptionLength = 25;
@@ -358,14 +358,14 @@ function boardGetShortenedDescription(description) {
  */
 function boardCheckForSubtasks(task) {
 
-    if (task.subtasks.name.length == 0) return "display:none;";
+    if (!task.subtasks.name.length) return "display:none;";
 }
 
 
 /**
  * Returns the html template for the progress bar on the task card.
  * @param {object} task the task whose information should be rendered
- * @returns the html template for the progress bar on the task card
+ * @returns {string} the html template for the progress bar on the task card
  */
 function boardSubtasksProgress(task) {
     const subtasksCount = task.subtasks.name.length;
@@ -382,14 +382,14 @@ function boardSubtasksProgress(task) {
 /**
  * Calculates how many subtask have the status "done".
  * @param {object} task the task whose information should be rendered
- * @returns count of done subtasks
+ * @returns {number} count of done subtasks
  */
 function determineSubtasksProgress(task) {
     let subtasksProgress = 0;
 
-    task.subtasks.status.forEach(subtask => {
+    task.subtasks.status.forEach(subtaskStatus => {
 
-        if (subtask === "true") subtasksProgress++;
+        if (subtaskStatus === "true") subtasksProgress++;
     });
 
     return subtasksProgress;

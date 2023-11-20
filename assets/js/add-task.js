@@ -338,7 +338,7 @@ function removeSubtask(i) {
  * This function renders the subtasks.
  */
 function renderSubtasks() {
-    let subtaskContainer = document.getElementById('addetSubtasks');
+    let subtaskContainer = document.getElementById('addedSubtasks');
     subtaskContainer.innerHTML = '';
     for (let i = 0; i < subtasks.length; i++) {
         subtaskContainer.innerHTML += /*html*/ `<div class="sub-task">

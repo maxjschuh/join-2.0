@@ -13,7 +13,7 @@ function boardShowTaskEditor() {
     document.getElementById('board-task-editor-subtasks').innerHTML = boardTaskEditorTemplateSubtasks();
 
     taskEditorInitAssigneePicker(task.assigned_to);
-    boardRenderSubtasks(task.subtasks, 'addetSubtasks');
+    boardRenderSubtasks(task.subtasks, 'addedSubtasks');
 
     clickOutsideDropdownMenu();
     boardTaskEditorSubtaskEnter();
@@ -43,21 +43,21 @@ function taskEditorInitAssigneePicker(assignees) {
 
 /**
  * Accepts an assigned person as a parameter. Imitates the process of selecting this person as assignee as it would happen on the add task subpage. This results in all assignees already being marked as selected when the user opens the task editor.
- * @param {*} assignee an already assigned person with first- and lastname
+ * @param {string} assignee an already assigned person with first- and lastname
  */
 function taskEditorSetAssigneeAsSelected(assignee) {
 
     const firstname = assignee.substring(0, assignee.indexOf(' '));
     const lastname = assignee.substring(assignee.indexOf(' ') + 1);
 
-    for (let j = 0; j < database.contacts.length; j++) {
-        const contact = database.contacts[j];
+    database.contacts.forEach((contact, i) => {
 
-        if (firstname == contact.firstname && lastname == contact.lastname) {
-            const id = `contacts[${j}]`;
-            selectedForTask(contact, id);
-        }
-    }
+        if (firstname !== contact.firstname || lastname !== contact.lastname) return;
+
+        const id = `contacts[${i}]`;
+        selectedForTask(contact, id);
+
+    });
 }
 
 
@@ -70,8 +70,9 @@ function boardHideTaskEditor() {
 
     taskContactList = [];
     document.getElementById('board-task-editor').parentNode.classList.add('board-display-none');
-    document.getElementById('board-task-editor').classList.add('board-display-none');
-    document.getElementById('board-kanban').classList.remove('board-display-none-700px');
+
+    toggleElements(['board-task-editor'], 'board-display-none', true);
+    toggleElements(['board-kanban'], 'board-display-none-700px', false);
 
     emptyInnerHTML(['board-detail-view-subtasks', 'board-task-editor-assignee-picker', 'board-task-editor-subtasks']);
 
@@ -129,15 +130,13 @@ function taskEditorRenderPrioButtons(selectedPrio) {
 
     const selectedIconId = `task-editor-prio-icon-${selectedPrio}`;
 
-    const index = prios.indexOf(selectedPrio);
-    prios.splice(index, 1);
+    prios.splice(prios.indexOf(selectedPrio), 1);
 
-    for (let i = 0; i < prios.length; i++) {
+    prios.forEach(unselectedPrio => {
 
-        const unselectedPrio = prios[i];
         const iconId = `task-editor-prio-icon-${unselectedPrio}`;
         stylePrioButton(iconId, 'background-color:rgb(255, 255, 255)', false, unselectedPrio);
-    }
+    });
 
     stylePrioButton(selectedIconId, 'color:rgb(255, 255, 255)', true, selectedPrio);
 }
@@ -153,17 +152,17 @@ function taskEditorRenderPrioButtons(selectedPrio) {
 function stylePrioButton(id, style, selected, prioName) {
 
     let button = document.getElementById(id);
-    let src;
+    let src = `./assets/img/board/prio_${prioName}`;
+    let bool = false;
 
-    if (selected) {
-        src = `./assets/img/board/prio_${prioName}_white.svg`;
-        button.parentNode.classList.remove('board-cursor-pointer');
+    if (selected) src = src + '_white.svg';
 
-    } else {
-        src = `./assets/img/board/prio_${prioName}.svg`;
-        button.parentNode.classList.add('board-cursor-pointer');
+    else {
+        src = src + '.svg';
+        bool = true;
     }
 
+    button.parentNode.classList.toggle('board-cursor-pointer', bool);
     button.parentNode.style = style;
     button.src = src;
 }
@@ -186,20 +185,21 @@ function taskEditorRenderData() {
  * Renders subtasks into the detail view and task editor overlay.
  * @param {string} subtasks subtasks of the task whose information should be rendered
  * @param {string} containerId html id of the container where the subtasks should be rendered
+ * @returns if there are no subtasks to render
  */
 function boardRenderSubtasks(subtasks, containerId) {
 
     let html = '';
     let container = document.getElementById(containerId);
 
-    if (subtasks.name.length == 0) {
-        html = 'No subtasks';
+    if (!subtasks.name.length) {
+        container.innerHTML = 'No subtasks';
+        return;
+    }
 
-    } else {
-        for (let i = 0; i < subtasks.name.length; i++) {
+    for (let i = 0; i < subtasks.name.length; i++) {
 
-            html += taskEditorSubtaskTemplate(i, subtasks.name[i], subtasks.status[i], containerId);
-        }
+        html += taskEditorSubtaskTemplate(i, subtasks.name[i], subtasks.status[i], containerId);
     }
     container.innerHTML = html;
 }
@@ -233,7 +233,7 @@ function taskEditorSubtaskTemplate(i, name, status, containerId) {
  */
 function boardIncludeAssignePickerOnTaskEditor() {
 
-    let container = document.getElementById('board-task-editor-assignee-picker');
+    const container = document.getElementById('board-task-editor-assignee-picker');
 
     container.innerHTML = boardTemplateAssigneePicker();
 }
@@ -246,16 +246,16 @@ function boardIncludeAssignePickerOnTaskEditor() {
 async function taskEditorSetCheckbox(i) {
 
     const id = `taskEditorCheckmark${i}`;
+    let bool = true;
 
     if (database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] == 'false') {
 
-        document.getElementById(id).classList.remove('d-none');
+        bool = false;
         database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] = 'true';
 
-    } else {
-        document.getElementById(id).classList.add('d-none');
-        database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] = 'false';
-    }
+    } else database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] = 'false';
+
+    toggleElements([id], 'd-none', bool);
     renderAllTaskCards();
     await setItem('database', database);
 }
@@ -278,23 +278,22 @@ function taskEditorGetSubtaskStatus(status) {
 function taskEditorAddSubtask() {
 
     const subtaskInput = replaceForbiddenCharacters(document.getElementById('subtaskInput').value);
+    if (!subtaskInput) return;
 
-    if (subtaskInput) {
-        database.tasks[boardCurrentTaskInDetailView].subtasks.name.push(subtaskInput);
-        database.tasks[boardCurrentTaskInDetailView].subtasks.status.push('false');
-        boardRenderSubtasks(database.tasks[boardCurrentTaskInDetailView].subtasks, 'addetSubtasks');
-        document.getElementById('subtaskInput').value = '';
-        renderAllTaskCards();
-        boardCreateAllEventListeners();
-        setItem('database', database);
-    }
+    database.tasks[boardCurrentTaskInDetailView].subtasks.name.push(subtaskInput);
+    database.tasks[boardCurrentTaskInDetailView].subtasks.status.push('false');
+    boardRenderSubtasks(database.tasks[boardCurrentTaskInDetailView].subtasks, 'addedSubtasks');
+    resetValue(['subtaskInput']);
+    renderAllTaskCards();
+    boardCreateAllEventListeners();
+    setItem('database', database);
 }
 
 
 /**
  * Replaces [] and {} brackets in the input string (they are used for formatting the JSON database) with () brackets. 
  * @param {string} string string that the function should validate 
- * @returns validated string
+ * @returns {string} validated string
  */
 function replaceForbiddenCharacters(string) {
 

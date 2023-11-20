@@ -23,7 +23,7 @@ function loadContacts() {
         if (!firstLetters.includes(firstLetter)) firstLetters.push(firstLetter);
     }
     firstLetters.sort();
-    let contactList = document.getElementById('contact-list');
+    const contactList = document.getElementById('contact-list');
     contactList.innerHTML = '';
     renderContactList(firstLetters);
 }
@@ -34,12 +34,15 @@ function loadContacts() {
  * @param {string} firstLetters - The first letter of contact['firstname'].
  */
 function renderContactList(firstLetters) {
-    for (let i = 0; i < firstLetters.length; i++) {
-        const firstLetter = firstLetters[i];
-        let contactList = document.getElementById('contact-list');
+
+    const contactList = document.getElementById('contact-list');
+
+    firstLetters.forEach(firstLetter => {
+
         contactList.innerHTML += templateContactFirstLetters(firstLetter);
         renderFirstLetter(firstLetter);
-    }
+
+    });
 }
 
 
@@ -80,7 +83,7 @@ function openContactDetails(i) {
     const id = `userSmall-${i}`;
     toggleElements([id], 'change-background-color', true);
 
-    let showDetails = document.getElementById('selectedContact');
+    const showDetails = document.getElementById('selectedContact');
     showDetails.innerHTML = templateContactDetails(i);
 
     if (window.matchMedia('screen and (max-width: 900px)').matches) changeMobileView(true);
