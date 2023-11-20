@@ -197,22 +197,10 @@ function setAttribute() {
 function clearAllFields() {
     clearCreateCategory();
     clearContacts();
-    resetValues(['tileInput', 'descriptionInput', 'date']);
+    resetValue(['tileInput', 'descriptionInput', 'date']);
     resetPrioButton();
     resetSubTasks();
     resetWarnings();
-}
-
-
-/**
- * Sets the value property of the html elements with the passed ids to an empty string.
- * @param {Array} ids html ids
- */
-function resetValues(ids) {
-
-    ids.forEach(id => {
-        document.getElementById(id).value = '';
-    });
 }
 
 

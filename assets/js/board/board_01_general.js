@@ -41,9 +41,10 @@ function boardSetMaximumDescriptionLength() {
 
     if (windowWidth > 1500 || (windowWidth < 700 && windowWidth > 370)) boardMaximumDescriptionLength = 90;
 
-    else if ((windowWidth < 1100 && windowWidth > 900) || (windowWidth < 750 && windowWidth > 700)) boardMaximumDescriptionLength = 25;
-
-    else if (windowWidth > 280) boardMaximumDescriptionLength = 40;
+    else if ((windowWidth < 1100 && windowWidth > 900) || (windowWidth < 750 && windowWidth > 700)) {
+        boardMaximumDescriptionLength = 25;
+        
+    } else if (windowWidth > 280) boardMaximumDescriptionLength = 40;
 
     else boardMaximumDescriptionLength = 25;
 }
@@ -99,30 +100,15 @@ function setMaximumScrollY() {
 
 
 /**
- * Shows the "No tasks to do" Placeholder in the column that is passed as a parameter.
- * @param {string} columnId the html id of the column in which the placeholder should be shown
+ * Shows or hides the "No tasks to do" Placeholder in the column that is passed as a parameter.
+ * @param {string} columnId the html id of the column in which the placeholder
+ * @param {boolean} direction_of_operation true for showing the placeholder, false for hiding it
  */
-function boardShowPlaceholder(columnId) {
+function boardSetPlaceholder(columnId, direction_of_operation) {
 
     try {
         const id = `${columnId}-placeholder`;
-        let placeholder = document.getElementById(id);
-        placeholder.classList.remove('board-display-none');
-
-    } catch (error) { }
-}
-
-
-/**
- * Hides the "No tasks to do" Placeholder in the column that is passed as a parameter.
- * @param {string} columnId the html id of the column in which the placeholder should be hidden
- */
-function boardHidePlaceholder(columnId) {
-
-    try {
-        const id = `${columnId}-placeholder`;
-        let placeholder = document.getElementById(id);
-        placeholder.classList.add('board-display-none');
+        toggleElements([id], 'board-display-none', direction_of_operation);
 
     } catch (error) { }
 }
@@ -143,15 +129,30 @@ function renderBoardColumn(id, progress, newBoardSearch, dataForBoard, columnPos
     container.innerHTML = '';
     let columnEmpty = true;
 
-    for (let i = 0; i < dataForBoard.tasks.length; i++) {
+    dataForBoard.tasks.forEach((task, i) => {
 
-        if (dataForBoard.tasks[i].progress == progress) {
-            columnEmpty = false;
-            container.innerHTML += htmlTemplateTaskCard(i, dataForBoard.tasks[i], currentColumnTaskCount);
-            currentColumnTaskCount++;
-            tasksInColumn[columnPosition].push(i);
-        }
-    }
+        if (task.progress !== progress) return;
+
+        columnEmpty = false;
+        container.innerHTML += htmlTemplateTaskCard(i, task, currentColumnTaskCount);
+        currentColumnTaskCount++;
+        tasksInColumn[columnPosition].push(i);
+    });
+
+    finalizeBoardColumn(container, id, currentColumnTaskCount, columnEmpty, newBoardSearch);
+}
+
+
+/**
+ * Adds utility elements to the column that are necessary for the drag-and-drop functionality.
+ * @param {object} container the html element that represents the column that is rendered by the function
+ * @param {string} id of the column that is rendered by the function
+ * @param {number} currentColumnTaskCount amount of tasks in the column that is rendered by the function
+ * @param {boolean} columnEmpty true if the column is empty, false if not
+ * @param {boolean} newBoardSearch true if the board currently renders search results, false if not
+ */
+function finalizeBoardColumn(container, id, currentColumnTaskCount, columnEmpty, newBoardSearch) {
+
     container.innerHTML += returnTemplateForDropContainers(id, currentColumnTaskCount);
     boardRenderColumnPlaceholder(id, container, columnEmpty, newBoardSearch);
     taskCountPerColumn.push(currentColumnTaskCount);
@@ -166,10 +167,11 @@ function boardSwitchResponsiveMode() {
     let columnStyle = '';
 
     if (windowWidth <= 700) {
-        document.getElementById('board-kanban').style = 'position: relative';
+
+        setInlineStyle(['board-kanban'], 'position: relative');
         columnStyle = 'position: absolute';
 
-    } else document.getElementById('board-kanban').style = 'display: flex';
+    } else setInlineStyle(['board-kanban'], 'display: flex');
 
     columnIds.forEach(column => {
 
@@ -205,7 +207,7 @@ function columnSetOffsetY() {
  */
 function boardComputeOffsetY(offsetY, i) {
 
-    if (taskCountPerColumn[i] === 0) return offsetY + 264;
+    if (!taskCountPerColumn[i]) return offsetY + 264;
 
     else return offsetY + (260 * (taskCountPerColumn[i] - 1)) + 253;
 }
@@ -323,7 +325,7 @@ function getAssigneeColor(assignee) {
 function contactMatchesAssignee(contact, firstname, lastname, assignee) {
 
     if ((firstname == contact.firstname && lastname == contact.lastname) || (assignee == contact.firstname)) {
-        
+
         return true;
     }
 }

@@ -80,18 +80,6 @@ function boardHideTaskEditor() {
 
 
 /**
- * Sets the inner html of the elements with the passed ids to an empty string.
- * @param {Array} ids html ids
- */
-function emptyInnerHTML(ids) {
-
-    ids.forEach(id => {
-        document.getElementById(id).innerHTML = '';
-    });
-}
-
-
-/**
  * Saves the changes made in the editor to the database, fetches it to the backend and hides the overlay.
  */
 async function boardConfirmEditorChanges() {

@@ -9,47 +9,30 @@ let valueJson;
 async function initSummary() {
     await init()
     includeUser();
-    await getData();
-    if (checkForAnimation()) {
-        openMobileGreeting();
-    }
+    getData();
+    if (checkForAnimation()) openMobileGreeting();
 }
 
 
 /**
- * This function will add the hover effect to the div
- * 
- * @param {*} id This is the id where the hover effect will be added
+ * Will change the image src of the html element with the id that is passed as parameter, thereby implementing a hover effect.
+ * @param {string} id of the html element over which the mouse hovers or has been hovering
+ * @param {boolean} mouseIsHovering true for adding the hover effect, false for removing it
  */
-function addHoverEffect(id) {
-    if (id == 'todoPicture') {
-        document.getElementById(id).src = 'assets/img/pen_hover.png';
-    }
-    if (id == 'donePicture') {
-        document.getElementById(id).src = 'assets/img/tick_hover.png';
-    }
-}
+function setHoverEffect(id, mouseIsHovering) {
 
+    let addToImgPath = '.png';
+    if (mouseIsHovering) addToImgPath = '_hover.png';
 
-/**
- * This function will remove the hover effect from the div
- * 
- * @param {*} id This is the id where the hover effect will be removed
- */
-function removeHoverEffect(id) {
-    if (id == 'todoPicture') {
-        document.getElementById(id).src = 'assets/img/pen.png';
-    }
-    if (id == 'donePicture') {
-        document.getElementById(id).src = 'assets/img/tick.png';
-    }
+    if (id == 'todoPicture') document.getElementById(id).src = './assets/img/pen' + addToImgPath;
+    if (id == 'donePicture') document.getElementById(id).src = './assets/img/tick' + addToImgPath;
 }
 
 
 /**
  * This function will get the data from the backend
  */
-async function getData() {
+function getData() {
     tasks = database['tasks'];
     users = database['users'];
     switchHtml();
@@ -73,26 +56,24 @@ function switchHtml() {
 
 
 /**
- * This function get all the data from the database
- * 
+ * Returns the amount of tasks in the database that fit the data that is passed as parameter.
  * @param {string} category This is the category we want to search in 
  * @param {string} searchFor this is what we are looking for 
- * @returns 
+ * @returns {number} amount of tasks that fit the passed parameters
  */
 function getInfo(category, searchFor) {
     let info = 0;
 
     for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i][category] == searchFor) {
-            info++;
-        }
+
+        if (tasks[i][category] == searchFor) info++;
     }
     return info;
 }
 
 
 /**
- * This function is used to get the upcoming Deadline
+ * This function is used to get the upcoming Deadline.
  * 
  * @returns If there is an upcoming Date then it will be returned, if not 'No' will be returned
  */
@@ -100,28 +81,25 @@ function getUpcomingDeadline() {
     let dateArray = [];
 
     for (let i = 0; i < tasks.length; i++) {
-        dateArray.push(tasks[i]['due_date'])
+        
+        dateArray.push(tasks[i]['due_date']);
     }
-    if (findUpcomingDate(dateArray) == 'No') {
-        return 'No'
-    }
-    else {
-        return formateDate(findUpcomingDate(dateArray));
-    }
+
+    if (findUpcomingDate(dateArray) == 'No') return 'No';
+
+    else return formateDate(findUpcomingDate(dateArray));
 }
 
 
 /**
- * This function is used to get the next upcoming task
+ * This function is used to get the next upcoming task.
  * 
  * @param {Array} dateArray This Array contains the due dates of the tasks
  * @returns it returns the upcoming Task
  */
 function findUpcomingDate(dateArray) {
     // Check if the array is empty or zero
-    if (!dateArray || dateArray.length === 0) {
-        return 'No';
-    }
+    if (!dateArray || dateArray.length === 0) return 'No';
 
     // get current date
     const today = new Date();
@@ -138,10 +116,10 @@ function findUpcomingDate(dateArray) {
 
 
 /**
- * This function is used to change the format of the date
+ * This function is used to change the format of the date.
  * 
  * @param {date} date This is the date in the wrong way
- * @returns It returns the date in the right format
+ * @returns {string} It returns the date in the right format
  */
 function formateDate(date) {
     const months = [
@@ -150,28 +128,26 @@ function formateDate(date) {
     ];
 
     const [year, month, day] = date.split("-").map(Number);
-    const formatedDate = `${months[month - 1]} ${day}, ${year}`;
+    const formattedDate = `${months[month - 1]} ${day}, ${year}`;
 
-    return formatedDate;
+    return formattedDate;
 }
 
 
 /**
  * This function will get the current time of the day
  * 
- * @returns it returns the greeting for each part of the day
+ * @returns {string} it returns the greeting for each part of the day
  */
 function getTimeOfDay() {
-    let currentTime = new Date();
-    let currentHour = currentTime.getHours();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
 
-    if (currentHour >= 0 && currentHour <= 8) {
-        return "Good morning,";
-    } else if (currentHour > 8 && currentHour <= 16) {
-        return "Good day,";
-    } else {
-        return "Good evening,";
-    }
+    if (currentHour >= 0 && currentHour <= 8) return "Good morning,";
+    
+    else if (currentHour > 8 && currentHour <= 16) return "Good day,";
+    
+    else return "Good evening,";
 }
 
 
@@ -181,8 +157,8 @@ function getTimeOfDay() {
  * @returns It returns true if the animation has to appear
  */
 function checkForAnimation() {
-    var previousPage = document.referrer;
-    var pageURL = "login.html";
+    const previousPage = document.referrer;
+    const pageURL = "login.html";
     return animation = previousPage.includes(pageURL);
 }
 
@@ -194,18 +170,17 @@ function openMobileGreeting() {
     const screenWidth = window.innerWidth;
 
     if (screenWidth < 900) {
-        document.getElementById('headerContainer').style = 'display: none;';
-        document.getElementById('mainLeftContainer').style = 'display: none;';
-        document.getElementById('mainRightContainer').style = 'display: flex;';
-        document.getElementById('main').style = 'height: inherit;';
-        document.getElementById('summaryContainer').style = 'height: 100%; top: 0;'
+
+        setInlineStyle(['headerContainer', 'mainLeftContainer'], 'display: none;');
+        setInlineStyle(['mainRightContainer'], 'display: flex;');
+        setInlineStyle(['main'], 'height: inherit;');
+        setInlineStyle(['summaryContainer'], 'height: 100%; top: 0;');
+
         setTimeout(() => {
-            document.getElementById('headerContainer').style = '';
-            document.getElementById('mainLeftContainer').style = '';
-            document.getElementById('mainRightContainer').style = '';
-            document.getElementById('main').style = '';
-            document.getElementById('summaryContainer').style = '';
+
+            const ids = ['headerContainer', 'mainLeftContainer', 'mainRightContainer', 'main', 'summaryContainer'];
+            setInlineStyle(ids, '');
+            
         }, 2000);
     }
 }
-

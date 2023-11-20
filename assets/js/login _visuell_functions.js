@@ -4,14 +4,11 @@
  * This function will set and reset the tick in the "Remember me" box
  */
 function setTick() {
-    if (!tickCount) {
-        document.getElementById('tick').classList.remove('d-none');
-        rememberMe = true;
-    }
-    else {
-        document.getElementById('tick').classList.add('d-none');
-        rememberMe = false;
-    }
+
+    if (!tickCount) rememberMe = true;
+    else rememberMe = false;
+
+    toggleElements(['tick'], 'd-none', !rememberMe);
     tickCount++;
     if (tickCount >= 2) tickCount = 0;
 }
@@ -32,7 +29,7 @@ function fillInData() {
  * 
  * @returns it returns true when the screen is smaller than 900px
  */
-function checkScreenSize() {
+function screenSmallerThan900Px() {
     return window.innerWidth <= 900;
 }
 
@@ -64,43 +61,46 @@ function switchPasswordPicture() {
 /**
  * This function is used to switch the password inputfield image onclick
  */
-function showPassword1() {
+function showPassword() {
     let passwordInput = document.getElementById("password");
+    let bool;
 
     if (passwordInput.type === "password") {
+
         passwordInput.type = "text";
-        document.getElementById('showPassword').classList.remove('d-none');
-        document.getElementById('hidePassword').classList.add('d-none');
+        bool = false;
 
     } else {
+
         passwordInput.type = "password";
-        document.getElementById('showPassword').classList.add('d-none');
-        document.getElementById('hidePassword').classList.remove('d-none');
+        bool = true;
     }
+
+    toggleElements(['showPassword'], 'd-none', bool);
+    toggleElements(['hidePassword'], 'd-none', !bool);
 }
 
 
 /**
  * This function is used to change the border of the parent-element of the inputfield
- * 
- * @param {string} event This is the active event
+ * @param {string} event the active event
+ * @returns if the event target is not "input", the event type is not "focus" or "blur"
  */
 function activeInputfield(event) {
     // Hole das aktuell aktive Element
     const activeInput = event.target;
+    let style;
 
-    // Überprüfe, ob das aktive Element ein Input-Feld ist
-    if (activeInput.tagName === "INPUT") {
-        if (event.type === "focus") {
-            // Das Input-Feld hat den Fokus erhalten
-            const activeInputfieldId = activeInput.id;
-            document.getElementById(activeInputfieldId).parentNode.style = "border: 1px solid #29ABE2;";
-        } else if (event.type === "blur") {
-            // Das Input-Feld hat den Fokus verloren
-            const activeInputfieldId = activeInput.id;
-            document.getElementById(activeInputfieldId).parentNode.style = "";
-        }
-    }
+    if (activeInput.tagName !== "INPUT") return;
+
+    if (event.type === "focus") style = "border: 1px solid #29ABE2;"; // Das Input-Feld hat den Fokus erhalten
+
+    else if (event.type === "blur") style = ""; // Das Input-Feld hat den Fokus verloren
+
+    else return;
+
+    const activeInputfieldId = activeInput.id;
+    document.getElementById(activeInputfieldId).parentNode.style = style;
 }
 
 
@@ -130,43 +130,18 @@ function disableButton(buttonId) {
 
 //HTML functions
 
-/**
- * This function will open the window to register a user
- */
-function openRegister() {
-
-    toggleElements(['signUp', 'loginContainer', 'resetPwContainer'], 'd-none', true);
-    toggleElements(['signUpContainer'], 'd-none', false);
-}
 
 
 /**
- * This function will open the window to login
+ * Shows or hides the elements whose ids are passed as parameter by adding or removing the class "d-none".
+ * @param {Array} idsToShow elements that will be shown
+ * @param {Array} idsToHide elements that will be hidden
  */
-function openLogin() {
+function showAndHideElements(idsToShow, idsToHide) {
 
-    toggleElements(['signUp', 'loginContainer'], 'd-none', false);
-    toggleElements(['signUpContainer', 'resetPwContainer', 'forgotPwContainer'], 'd-none', true);
-}
+    if (idsToShow) toggleElements(idsToShow, 'd-none', false);
 
-
-/**
- * This function will open the window to request a passwort change
- */
-function openForgotPw() {
-
-    toggleElements(['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'], 'd-none', true);
-    toggleElements(['forgotPwContainer'], 'd-none', false);
-}
-
-
-/**
- * This function will open the window to change the password
- */
-function openResetPw() {
-    
-    toggleElements(['signUp', 'loginContainer', 'forgotPwContainer', 'signUpContainer'], 'd-none', true);
-    toggleElements(['resetPwContainer'], 'd-none', false);
+    if (idsToHide) toggleElements(idsToHide, 'd-none', true);
 }
 
 
@@ -174,37 +149,41 @@ function openResetPw() {
  * This function waits till the animation is done and shows then the login windows
  */
 function waitForAnimation() {
-    if (checkScreenSize()) {
-        // Der Code für den Fall, dass die Bildschirmbreite kleiner oder gleich 900px ist
 
-        toggleElements(['mobileStartScreen'], 'd-none', false);
-        toggleElements(['loginContainer', 'signUp'], 'd-none', true);
+    let timeout;
 
-        setTimeout(() => { document.getElementById('mobileStartScreen').classList.add('d-none'); document.getElementById('joinPic').style = 'display: block'; }, 300);
-        setTimeout(() => { document.getElementById('loginContainer').classList.remove('d-none'); document.getElementById('signUp').classList.remove('d-none'); }, 1300);
-    }
-    else {
-        // Der Code für den Fall, dass die Bildschirmbreite größer als 900px ist
-        setTimeout(() => { document.getElementById('loginContainer').classList.remove('d-none'); document.getElementById('signUp').classList.remove('d-none'); }, 1000);
-    }
+    if (screenSmallerThan900Px()) { // Der Code für den Fall, dass die Bildschirmbreite kleiner oder gleich 900px ist
+
+        showAndHideElements(['mobileStartScreen'], ['loginContainer', 'signUp']);
+
+        setTimeout(() => {
+            toggleElements(['mobileStartScreen'], 'd-none', true);
+            setInlineStyle(['joinPic'], 'display: block');
+        }, 300);
+
+        timeout = 1300;
+
+    } else timeout = 1000; // Der Code für den Fall, dass die Bildschirmbreite größer als 900px ist
+
+    setTimeout(() => {
+            
+        toggleElements(['loginContainer', 'signUp'], 'd-none', false);
+    }, timeout);
 }
 
 
 /**
- * Will start the animation that the email was sent
+ * Will start an animation for the element with the id that is passed as parameter.
+ * @param {string} id of html element
  */
-function emailSentAnimation() {
-    document.getElementById('emailSent').classList.remove('d-none');
-    setTimeout(() => { document.getElementById('emailSent').classList.add('d-none'); }, 1000); // Lets the EmailSent-Container vanish after 3 seconds
-}
+function playAnimation(id) {
 
+    toggleElements([id], 'd-none', false);
 
-/**
- * Will start the animation that an account has been created
- */
-function accountCreatedAnimation() {
-    document.getElementById('accountCreated').classList.remove('d-none');
-    setTimeout(() => { document.getElementById('accountCreated').classList.add('d-none'); }, 1000); // Lets the EmailSent-Container vanish after 3 seconds
+    setTimeout(() => {
+
+        toggleElements([id], 'd-none', true); // Lets the EmailSent-Container vanish after 3 seconds
+     }, 1000);
 }
 
 //Eventlistener

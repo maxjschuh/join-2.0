@@ -22,7 +22,7 @@ function initLogin() {
  */
 async function getData() {
     await getItem('database');
-    users = database['users'];
+    users = database.users;
 }
 
 
@@ -31,11 +31,13 @@ async function getData() {
  */
 function getDataLocalStorage() {
     const localStorageData = getItemLocalStorage('loggedInUser');
+
     if (localStorageData) {
-        currentEmail = localStorageData['email'];
-        currentPassword = localStorageData['password'];
-        currentRememberMe = localStorageData['remember'];
-        if (currentRememberMe == true) fillInData();
+        currentEmail = localStorageData.email;
+        currentPassword = localStorageData.password;
+        currentRememberMe = localStorageData.remember;
+
+        if (currentRememberMe) fillInData();
     }
 }
 
@@ -45,14 +47,13 @@ function getDataLocalStorage() {
  */
 function checkForChangePassword() {
     // URL-Parameter auslesen
-    var queryString = window.location.search;
-    var urlParams = new URLSearchParams(queryString);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
 
     changePasswordEmail = urlParams.get('email');
-    if (changePasswordEmail === null) { //Checks if there is a variable in the link
-        waitForAnimation();
-    }
-    else openResetPw();
+    if (!changePasswordEmail) waitForAnimation(); //Checks if there is a variable in the link
+
+    else showAndHideElements(['resetPwContainer'], ['signUp', 'loginContainer', 'forgotPwContainer', 'signUpContainer']);
 }
 
 //Login functions
@@ -94,17 +95,18 @@ function checkLogin() {
     const emailLogIn = document.getElementById('email').value;
     const passwordLogIn = document.getElementById('password').value;
 
-    for (let i = 0; i < users.length; i++) {
+    users.forEach(user => {
 
-        if (emailLogIn == users[i]['email'] && passwordLogIn == users[i]['password']) {
-            const email = users[i]['email'];
-            const username = users[i]['username'];
-            login(email, username);
+        if (emailLogIn == user.email && passwordLogIn == user.password) {
+
+            login(user.email, user.username);
             return;
         }
-    }
-    document.getElementById('wrongPassword').style = 'color: red';
-    document.getElementById('passwordContainer').style = 'border: 1px solid red';
+
+    });
+
+    setInlineStyle(['wrongPassword'], 'color: red');
+    setInlineStyle(['passwordContainer'], 'border: 1px solid red');
 }
 
 
@@ -127,13 +129,14 @@ function setItemLocalStorage(key, value) {
  * @param {string} contact This is the data of the contact which will be pushed
  */
 function signUpUser(account, contact) {
-    database['users'].push(account);
-    database['contacts'].push(contact);
+    database.users.push(account);
+    database.contacts.push(contact);
     setItem('database', database);
-    accountCreatedAnimation();
-    clearSignUpInput();
+    playAnimation('accountCreated');
+    resetValue(['username', 'signUpEmail', 'signUpPassword']);
+
     setTimeout(() => {
-        login(account['email'], account['username']);
+        login(account.email, account.username);
     }, 2000);
 
 }
@@ -149,7 +152,7 @@ function accountData() {
     const emailSignUp = document.getElementById('signUpEmail').value;
     const passwordSignUp = document.getElementById('signUpPassword').value;
 
-    removeRedBorderSignUp();
+    setInlineStyle(['usernameTaken', 'usernameContainer'], '');
 
     if (!checkIfUserExists(usernameSignUp, emailSignUp)) return;
 
@@ -190,17 +193,6 @@ function splitName(usernameSignUp, emailSignUp) {
 
 
 /**
- * This function removes the red border and the the red text in the sign up field
- */
-function removeRedBorderSignUp() {
-
-    ['usernameTaken', 'usernameContainer'].forEach((id) => {
-        document.getElementById(id).style = '';
-    });
-}
-
-
-/**
  * This function will check if the username or the email is already in use
  * 
  * @param {string} usernameSignUp This is the username to sign up
@@ -226,17 +218,6 @@ function checkIfUserExists(usernameSignUp, emailSignUp) {
 }
 
 
-/**
- * This function will clear the input fields in the sign up user.
- */
-function clearSignUpInput() {
-
-    ['username', 'signUpEmail', 'signUpPassword'].forEach((id) => {
-
-        document.getElementById(id).value = '';
-    });
-}
-
 // Reset password functions
 
 /**
@@ -245,7 +226,7 @@ function clearSignUpInput() {
  * @returns the function will stop if the email does not exist
  */
 function emailSent() {
-    let forgotPwEmail = document.getElementById('forgotPwEmail').value; // Email from the inputfield to reset the password
+    const forgotPwEmail = document.getElementById('forgotPwEmail').value; // Email from the inputfield to reset the password
 
     if (!getUsername(forgotPwEmail)) { // Checks if the email exists
         document.getElementById('emailDoesntExist').style = 'color: red';
@@ -255,7 +236,7 @@ function emailSent() {
 
     sentMailToPhp(forgotPwEmail);
     activatePhp();
-    emailSentAnimation();
+    playAnimation('emailSent');
 }
 
 
@@ -283,7 +264,7 @@ function getUsername(forgotPwEmail) {
  */
 function getForgotPwLink(forgotPwEmail) {
 
-    return 'https://mjschuh.com/join/login.html?email=' + encodeURIComponent(forgotPwEmail); 
+    return 'https://mjschuh.com/join/login.html?email=' + encodeURIComponent(forgotPwEmail);
 }
 
 
@@ -293,21 +274,25 @@ function getForgotPwLink(forgotPwEmail) {
  * @param {string} forgotPwEmail The Email from which the password should be changed
  */
 function sentMailToPhp(forgotPwEmail) {  // Email wird das Php skript übergeben
-    var username = getUsername(forgotPwEmail);
-    var link = getForgotPwLink(forgotPwEmail);
-    var email = forgotPwEmail;
+    const username = getUsername(forgotPwEmail);
+    const link = getForgotPwLink(forgotPwEmail);
+    const mail = forgotPwEmail;
 
-    var xmlhttp = new XMLHttpRequest();
+    let xmlhttp = new XMLHttpRequest();
+
     xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            // Erfolgreiche Antwort vom Server erhalten
-            console.log("E-Mail gesendet");
-        }
-    };
+
+        if (this.readyState == 4 && this.status == 200) console.log("E-Mail gesendet"); // Erfolgreiche Antwort vom Server erhalten
+    }
+
     xmlhttp.open("POST", "send_mail.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    const params = "username=" + encodeURIComponent(username) + "&link=" + encodeURIComponent(link) + "&email=" + encodeURIComponent(email);
-    xmlhttp.send(params);
+
+    const paramsUsername = "username=" + encodeURIComponent(username);
+    const paramsLink = "&link=" + encodeURIComponent(link);
+    const paramsMail = "&email=" + encodeURIComponent(mail);
+
+    xmlhttp.send(paramsUsername + paramsLink + paramsMail);
 }
 
 
@@ -315,13 +300,15 @@ function sentMailToPhp(forgotPwEmail) {  // Email wird das Php skript übergeben
  * This function will activate the Php-Script to send the mail
  */
 function activatePhp() { //Php skript wird ausgeführt
-    var xmlhttp = new XMLHttpRequest();
+    let xmlhttp = new XMLHttpRequest();
+
     xmlhttp.onreadystatechange = function () {
+
         if (this.readyState == 4 && this.status == 200) {
             // Erfolgreiche Antwort vom Server erhalten
             console.log(this.responseText);
         }
-    };
+    }
     xmlhttp.open("GET", "send_mail.php", true);
     xmlhttp.send();
 }
@@ -331,13 +318,19 @@ function activatePhp() { //Php skript wird ausgeführt
  * This function will start the functions to reset the password.
  */
 function passwordReset() {
+
     if (checkNewPassword()) {
+
         changePassword();
         document.getElementById('resetPassword').classList.remove('d-none');
-        setTimeout(() => { document.getElementById('resetPassword').classList.add('d-none'); }, 1000); // Lets the EmailSent-Container vanish after 3 seconds
-        openLogin();
-    }
-    else {
+
+        setTimeout(() => {
+            document.getElementById('resetPassword').classList.add('d-none');
+        }, 1000); // Lets the EmailSent-Container vanish after 3 seconds
+
+        showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']);
+
+    } else {
         document.getElementById('passwordDontMatch').style = 'color: red';
         document.getElementById('confirmedPasswordContainer').style = 'border: 1px solid red';
     }
@@ -350,21 +343,21 @@ function passwordReset() {
 function changePassword() {
     const newPassword = document.getElementById('newPassword').value;
 
-    for (let i = 0; i < users.length; i++) {
+    users.forEach(user => {
 
-        if (changePasswordEmail == users[i]['email']) users[i]['password'] = newPassword;
-    }
+        if (changePasswordEmail == user.email) user.password = newPassword;
+    });
 }
 
 
 /**
  * This function checks if the new password and and the confirmed password matches.
  * 
- * @returns {boolean} It returns true if the passwords match and false if they don´t match
+ * @returns {boolean} Returns true if the passwords match and false if they don´t match
  */
 function checkNewPassword() {
-    let newPassword = document.getElementById('newPassword').value;
-    let confirmedPassword = document.getElementById('confirmedPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmedPassword = document.getElementById('confirmedPassword').value;
 
     return newPassword == confirmedPassword;
 }

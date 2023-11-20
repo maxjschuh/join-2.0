@@ -141,7 +141,7 @@ function boardSetDropTargets() {
         }
     });
 
-    if (boardDropTargetContainer) toggleElements([boardDropTargetContainer], 'board-display-none', false);    
+    if (boardDropTargetContainer) toggleElements([boardDropTargetContainer], 'board-display-none', false);
 }
 
 
@@ -171,10 +171,10 @@ function checkDragOverlapping(boardDragElement, taskNumber) {
         if (isDraggedElementOverBoardColumn(columnId, boardDragElement, i, taskNumber)) {
 
             boardDropTargetColumn = columnId;
+            
+            boardSetPlaceholder(columnId, true);
 
-            boardHidePlaceholder(columnId);
-
-        } else boardShowPlaceholder(columnId);
+        } else boardSetPlaceholder(columnId, false);
     }
 }
 
@@ -295,7 +295,7 @@ function openGapInTaskColumn(draggingTask) {
             let newTopPosition = 260 * i;
 
             if (i >= positionOfDraggedOverTask) newTopPosition = newTopPosition + 260;
-            
+
             document.getElementById(taskId).style = `top:${newTopPosition}px`;
         }
     }

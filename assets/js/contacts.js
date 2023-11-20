@@ -15,9 +15,11 @@ async function initContact() {
  * This function gets the first letter of a name and puts it in alphabetical order.
  */
 function loadContacts() {
+
     for (let i = 0; i < contacts.length; i++) {
         const contact = contacts[i];
-        const firstLetter = contact['firstname'].charAt(0).toLowerCase();
+        const firstLetter = contact.firstname.charAt(0).toLowerCase();
+
         if (!firstLetters.includes(firstLetter)) firstLetters.push(firstLetter);
     }
     firstLetters.sort();
@@ -48,7 +50,8 @@ function renderContactList(firstLetters) {
 function renderFirstLetter(firstLetter) {
     for (let i = 0; i < contacts.length; i++) {
         const userData = contacts[i];
-        const contactFirstLetter = userData['firstname'].charAt(0).toLowerCase();
+        const contactFirstLetter = userData.firstname.charAt(0).toLowerCase();
+
         if (contactFirstLetter === firstLetter) {
             let contactList = document.getElementById('contact-list');
             contactList.innerHTML += templateContactList(userData, i);
@@ -73,10 +76,13 @@ function changeContactColor() {
  */
 function openContactDetails(i) {
     changeContactColor();
-    document.getElementById(`userSmall-${i}`).classList.add('change-background-color');
+
+    const id = `userSmall-${i}`;
+    toggleElements([id], 'change-background-color', true);
+
     let showDetails = document.getElementById('selectedContact');
-    showDetails.innerHTML = '';
     showDetails.innerHTML = templateContactDetails(i);
+
     if (window.matchMedia('screen and (max-width: 900px)').matches) changeMobileView(true);
 }
 
@@ -89,12 +95,14 @@ function changeMobileView(direction_of_operation) {
 
     document.getElementById('contact-left-arrow').classList.toggle('visibility', direction_of_operation);
 
-    toggleElements(['contacts-container', 'contact-kanban', 'headline', 'selectedContact'], 'show-contact-selection-overlay', direction_of_operation);
+    let ids = ['contacts-container', 'contact-kanban', 'headline', 'selectedContact'];
+    toggleElements(ids, 'show-contact-selection-overlay', direction_of_operation);
 
-    toggleElements(['contact-list', 'contact-edit', 'contact-trash', 'mobile-contact-button-container'], 'd-none', direction_of_operation);
+    ids = ['contact-list', 'contact-edit', 'contact-trash', 'mobile-contact-button-container']
+    toggleElements(ids, 'd-none', direction_of_operation);
 
-    toggleElements(['edit-contact-icon', 'trash-icon', 'contact-kanban'], 'd-none', !direction_of_operation);
-
+    ids = ['edit-contact-icon', 'trash-icon', 'contact-kanban']
+    toggleElements(ids, 'd-none', !direction_of_operation);
 }
 
 
@@ -104,9 +112,11 @@ function changeMobileView(direction_of_operation) {
 function openNewContactForm() {
     let newContact = document.getElementById('overlaySection');
     newContact.innerHTML = templateAddContactOverlay();
+
     setTimeout(() => {
-        document.getElementById('contactOverlayBoxAdd').classList.add('contact-overlay-box-animate');
-    }, 10)
+
+        toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
+    }, 10);
 }
 
 
@@ -125,10 +135,10 @@ function validateForm() {
 
     inputFields.forEach((inputField) => {
 
-        if (!inputField.value) {
-            showAlert(inputField.alertId);
-            form_complete = false;
-        }
+        if (inputField.value) return;
+
+        showAlert(inputField.alertId);
+        form_complete = false;
     });
 
     return form_complete;
@@ -141,8 +151,8 @@ function validateForm() {
  */
 function showAlert(id) {
 
-    document.getElementById(id).classList.remove('noAlert');
-    document.getElementById(id).classList.add('alert');
+    toggleElements([id], 'noAlert', false);
+    toggleElements([id], 'alert', true);
 }
 
 
@@ -164,9 +174,8 @@ function getContactData() {
  */
 async function addContact() {
     const { name, email, phone } = getContactData();
-    const initialColor = generateRandomColor();
     const { firstName, lastName } = getFirstAndLastName(name);
-    addContactToContacts(firstName, lastName, email, phone, initialColor);
+    addContactToContacts(firstName, lastName, email, phone, generateRandomColor());
 
     try {
         await setItem('database', JSON.stringify(database));
@@ -234,8 +243,10 @@ function resetForm(name, email, phone) {
  */
 function disableButton() {
     document.getElementById('create-contact').removeAttribute("onclick");
+
     if (window.location.pathname == '/contacts.html') {
-        document.getElementById('user-contact-button').classList.remove("button-hover:hover");
+
+        toggleElements(['user-contact-button'], 'button-hover:hover', false);
     }
 }
 
@@ -246,8 +257,9 @@ function disableButton() {
 function userCreatedSuccess() {
     const popup = document.createElement('div');
     popup.classList.add('popup-contact-created');
-    popup.innerHTML = `<p>Contact successfully created</p>`;
+    popup.innerHTML = /*html*/ `<p>Contact successfully created</p>`;
     document.body.appendChild(popup);
+
     setTimeout(() => {
         popup.remove();
     }, 2000);
@@ -280,7 +292,8 @@ function closeContactOverlay() {
 
     toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', false);
     setTimeout(() => {
-        document.getElementById('overlaySection').innerHTML = '';
+
+        emptyInnerHTML(['overlaySection']);
     }, 300);
 }
 

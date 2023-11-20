@@ -55,14 +55,14 @@
                         </div>
                     </a>
                     <div class="tasks-bottom-row">
-                        <a onmouseover="addHoverEffect('todoPicture')" onmouseout="removeHoverEffect('todoPicture')"
+                        <a onmouseover="setHoverEffect('todoPicture', true)" onmouseout="setHoverEffect('todoPicture', false)"
                             href="board.html" class="todo-done">
                             <div class="todo-done-inner-container">
                                 <img id="todoPicture" src="./assets/img/pen.png">
                                 <div><b id="todo">1</b>To-do</div>
                             </div>
                         </a>
-                        <a onmouseover="addHoverEffect('donePicture')" onmouseout="removeHoverEffect('donePicture')"
+                        <a onmouseover="setHoverEffect('donePicture', true)" onmouseout="setHoverEffect('donePicture', false)"
                             href="board.html" class="todo-done" style="margin-right: 0;">
                             <div class="todo-done-inner-container">
                                 <img id="donePicture" src="./assets/img/tick.png">

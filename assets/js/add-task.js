@@ -297,9 +297,7 @@ function resetPrioButton() {
 
     const ids = ['prioHigh', 'prioMedium', 'prioLow', 'prioHighImg', 'prioMediumImg', 'prioLowImg'];
 
-    ids.forEach(id => {
-        document.getElementById(id).style = ``;
-    });
+    setInlineStyle(ids, '');
 }
 
 

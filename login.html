@@ -39,9 +39,9 @@
             <div id="passwordContainer" class="input-container"><input onkeyup="switchPasswordPicture()" required
                     id="password" type="password" placeholder="Password">
                 <img id="lock" src="./assets/img/lock.png" alt="">
-                <img onclick="showPassword1()" id="hidePassword" class="d-none" src="./assets/img/hide_password.png"
+                <img onclick="showPassword()" id="hidePassword" class="d-none" src="./assets/img/hide_password.png"
                     alt="">
-                <img onclick="showPassword1()" id="showPassword" class="d-none" src="./assets/img/show_password.png"
+                <img onclick="showPassword()" id="showPassword" class="d-none" src="./assets/img/show_password.png"
                     alt="">
             </div>
             <div id="wrongPassword">Wrong password and / or e-mail!</div>
@@ -63,7 +63,7 @@
 
         <form onsubmit="accountData(); return false; disableButton('signUpButton')" id="signUpContainer"
             class="login-container d-none">
-            <img onclick="openLogin()" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
             <span>Sign up</span>
             <div class="blue-line"></div>
             <div id="usernameContainer" class="input-container"><input required id="username" type="text"
@@ -80,7 +80,7 @@
 
         <form onsubmit="emailSent(); return false; disableButton('sendMailButton')" id="forgotPwContainer"
             class="login-container d-none">
-            <img onclick="openLogin()" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
             <span class="padding-left-right-40px">I forgot my password</span>
             <div class="blue-line"></div>
             <div class="forgot-text">Don´t worry! We will send you an e-mail with the instructions to <br> reset your
@@ -94,7 +94,7 @@
 
         <form onsubmit="passwordReset(); return false; disableButton('continueButton')" id="resetPwContainer"
             class="login-container d-none">
-            <img onclick="openForgotPw()" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['forgotPwContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'])" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
             <span class="padding-left-right-40px">Reset your password</span>
             <div class="blue-line"></div>
             <div class="forgot-text">Change your account password</div>
@@ -107,7 +107,7 @@
             <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
         </form>
 
-        <div class="d-none" id="signUp">Not a Join user? <button onclick="openRegister()"
+        <div class="d-none" id="signUp">Not a Join user? <button onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer'])"
                 class="button-dark mob-width-100px">Sign
                 up</button>
         </div>

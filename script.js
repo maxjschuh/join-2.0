@@ -214,9 +214,7 @@ async function getItem(key) {
             data = value.data.value;
             dataJSON = data.replace(/'/g, '"').replaceAll(`$`, `'`);
             database = JSON.parse(dataJSON);
-        }).catch(err => {
-            console.log(err);
-        });
+        }).catch();
 }
 
 
@@ -322,9 +320,9 @@ function logOut() {
  * This function checks whether you come from an external website.
  */
 function checkForLogin() {
-    var previousPage = document.referrer;
-    var pageURL = window.location.hostname;
-    if (previousPage.search(pageURL) == -1 || currentEmail == undefined) window.location.replace('login.html');
+    const previousPage = document.referrer;
+    const pageURL = window.location.hostname;
+    if (previousPage.search(pageURL) == -1 || !currentEmail) window.location.replace('login.html');
 }
 
 
@@ -349,4 +347,40 @@ function generateRandomColor() {
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+}
+
+/**
+ * Sets the inline style of the elements with the ids that are passed as parameter to to the passed string.
+ * @param {Array} ids array of html ids
+ * @param {string} inline_style that should be set for the elements
+ */
+function setInlineStyle(ids, inline_style) {
+
+    ids.forEach((id) => {
+        document.getElementById(id).style = inline_style;
+    });
+}
+
+
+/**
+ * Sets the value property of the html elements with the passed ids to an empty string.
+ * @param {Array} ids html ids
+ */
+function resetValue(ids) {
+
+    ids.forEach(id => {
+        document.getElementById(id).value = '';
+    });
+}
+
+
+/**
+ * Sets the inner html of the elements with the passed ids to an empty string.
+ * @param {Array} ids html ids
+ */
+function emptyInnerHTML(ids) {
+
+    ids.forEach(id => {
+        document.getElementById(id).innerHTML = '';
+    });
 }
