@@ -180,16 +180,12 @@ async function addContact() {
     const { firstName, lastName } = getFirstAndLastName(name);
     addContactToContacts(firstName, lastName, email, phone, generateRandomColor());
 
-    try {
-        await setItem('database', JSON.stringify(database));
-    } catch (e) {
-        console.error('Loading error:', e);
-    }
-
+    await setItem('database', database);
     resetForm(name, email, phone);
     disableButton();
     userCreatedSuccess();
     closeContactOverlay();
+
     if (window.location.pathname == '/contacts.html') loadContacts();
 }
 
@@ -277,11 +273,8 @@ async function deleteContact(i) {
     const toDelete = contacts[i];
     deleteContatctsFromTask(toDelete);
     contacts.splice(i, 1);
-    try {
-        await setItem('database', JSON.stringify(database));
-    } catch (e) {
-        console.error('Loading error:', e);
-    }
+    await setItem('database', database);
+
     if (document.getElementById("contactOverlayBoxEdit")) closeOverlayEdit();
     await initContact();
     updateContactSelection();
@@ -327,11 +320,7 @@ async function saveEditedUser(i) {
     contacts[i]['email'] = document.getElementById('editEmail').value;
     contacts[i]['phone'] = document.getElementById('editPhone').value;
 
-    try {
-        await setItem('database', JSON.stringify(database));
-    } catch (e) {
-        console.error('Loading error:', e);
-    }
+    await setItem('database', database);
 
     closeOverlayEdit();
     openContactDetails(i);

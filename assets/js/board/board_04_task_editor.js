@@ -9,7 +9,7 @@ function boardShowTaskEditor() {
     taskEditorRenderPrioButtons(task.prio);
     taskEditorRenderData();
     boardIncludeAssignePickerOnTaskEditor();
-    document.getElementById('board-detail-view-subtasks').innerHTML = '';
+    emptyInnerHTML(['board-detail-view-subtasks']);
     document.getElementById('board-task-editor-subtasks').innerHTML = boardTaskEditorTemplateSubtasks();
 
     taskEditorInitAssigneePicker(task.assigned_to);
@@ -18,8 +18,8 @@ function boardShowTaskEditor() {
     clickOutsideDropdownMenu();
     boardTaskEditorSubtaskEnter();
 
-    document.getElementById('board-detail-view').classList.add('board-display-none');
-    document.getElementById('board-task-editor').classList.remove('board-display-none');
+    toggleElements(['board-detail-view'], 'board-display-none', true);
+    toggleElements(['board-task-editor'], 'board-display-none', false);
 }
 
 
@@ -36,8 +36,7 @@ function taskEditorInitAssigneePicker(assignees) {
 
     addContacts();
     pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
-    document.getElementById('ddArrow').classList.remove('d-none');
-    document.getElementById('clearAddButtons').classList.add('d-none');
+    showAndHideElements(['ddArrow'], ['clearAddButtons']);
 }
 
 
@@ -275,7 +274,7 @@ function taskEditorGetSubtaskStatus(status) {
 /**
  * Adds a subtask in the task editor overlay.
  */
-function taskEditorAddSubtask() {
+async function taskEditorAddSubtask() {
 
     const subtaskInput = replaceForbiddenCharacters(document.getElementById('subtaskInput').value);
     if (!subtaskInput) return;
@@ -286,7 +285,7 @@ function taskEditorAddSubtask() {
     resetValue(['subtaskInput']);
     renderAllTaskCards();
     boardCreateAllEventListeners();
-    setItem('database', database);
+    await setItem('database', database);
 }
 
 
@@ -311,9 +310,10 @@ function boardTaskEditorSubtaskEnter() {
     setTimeout(() => {
         let subTaskInputField = document.getElementById('subtaskInput');
 
-        subTaskInputField.addEventListener("keypress", function (event) {
+        subTaskInputField.addEventListener("keypress", async function (event) {
 
-            if (event.key === "Enter") taskEditorAddSubtask();
+            if (event.key === "Enter") await taskEditorAddSubtask();
         });
+
     }, 150);
 }

@@ -11,12 +11,15 @@ function startEventListener() {
  * This function starts an event listener that checks whether enter is pressed in the subtask input field.
  */
 function subtaskEventListener() {
+
     setTimeout(() => {
+
         let subTaskInputField = document.getElementById('subtaskInput');
+
         subTaskInputField.addEventListener("keypress", function (event) {
             if (event.key === "Enter") addSubtask();
         });
-    }, 150)
+    }, 150);
 }
 
 
@@ -25,6 +28,7 @@ function subtaskEventListener() {
  * Source: https://github.com/qodesmith/datepicker
  */
 function datePicker() {
+
     const picker = datepicker('#date', {
         startDay: 1,
         minDate: new Date(),
@@ -36,7 +40,7 @@ function datePicker() {
             const isoDate = `${year}-${month}-${day}`;
             input.value = isoDate;
         }
-    })
+    });
 }
 
 

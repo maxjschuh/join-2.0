@@ -33,8 +33,8 @@ function setHoverEffect(id, mouseIsHovering) {
  * This function will get the data from the backend
  */
 function getData() {
-    tasks = database['tasks'];
-    users = database['users'];
+    tasks = database.tasks;
+    users = database.users;
     switchHtml();
 }
 

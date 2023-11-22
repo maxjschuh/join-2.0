@@ -2,7 +2,7 @@ const STORAGE_TOKEN = 'ZMJ47U2DC30BKGMR7L4WEJ23CI92P62X9O7JLEOF';
 const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 
 
-let database = [];
+let database = {};
 let data = [];
 let currentEmail;
 let currentUsername;
@@ -14,49 +14,49 @@ let databaseJSON = {
         {
             "firstname": "Anton",
             "lastname": "Mayer",
-            "email": "antom@gmail.com",
+            "email": "antom@mail.com",
             "phone": "+491111111111",
             "color": "rgb(135, 206, 250)"
         },
         {
             "firstname": "Tanja",
             "lastname": "Wolf",
-            "email": "wolf@gmail.com",
+            "email": "wolf@mail.com",
             "phone": "+492222222222",
             "color": "rgb(144, 238, 144)"
         },
         {
             "firstname": "Sofia",
             "lastname": "Müller",
-            "email": "sofiam@gmail.com",
+            "email": "sofiam@mail.com",
             "phone": "+493333333333",
             "color": "rgb(255, 192, 203)"
         },
         {
             "firstname": "Herbert",
             "lastname": "Braun",
-            "email": "hbraun@gmail.com",
+            "email": "hbraun@mail.com",
             "phone": "+494444444444",
             "color": "rgb(255, 165, 0)"
         },
         {
             "firstname": "David",
             "lastname": "Eisenberg",
-            "email": "daveis@gmail.com",
+            "email": "daveis@mail.com",
             "phone": "+495555555555",
             "color": "rgb(255, 0, 0)"
         },
         {
             "firstname": "Benedikt",
             "lastname": "Ziegler",
-            "email": "ziegel@gmail.com",
+            "email": "ziegel@mail.com",
             "phone": "+496666666666",
             "color": "rgb(0, 255, 0)"
         },
         {
             "firstname": "Marcel",
             "lastname": "Bauer",
-            "email": "mbauer@gmail.com",
+            "email": "mbauer@mail.com",
             "phone": "+497777777777",
             "color": "rgb(0, 0, 255)"
         },
@@ -103,7 +103,7 @@ let databaseJSON = {
             "description": "Modify the contents of the main website. Adjust the UI to the company's brand design. Check responsive",
             "category": "Design",
             "assigned_to": ["Anton Mayer", "Tanja Wolf", "Benedikt Ziegler"],
-            "due_date": "2023-08-23",
+            "due_date": "2023-12-23",
             "prio": "low",
             "subtasks": {
                 "name": ["Modify contents", "Create new icons", "Revise the homepage responsively"],
@@ -116,7 +116,7 @@ let databaseJSON = {
             "description": "Make the product presentation to prospective buyers",
             "category": "Sales",
             "assigned_to": ["David Eisenberg", "Tanja Wolf", "Sofia Müller"],
-            "due_date": "2023-06-28",
+            "due_date": "2024-01-28",
             "prio": "high",
             "subtasks": {
                 "name": [],
@@ -130,7 +130,7 @@ let databaseJSON = {
             "description": "Write open invoices for customer",
             "category": "Backoffice",
             "assigned_to": ["Herbert Braun"],
-            "due_date": "2023-02-13",
+            "due_date": "2024-02-13",
             "prio": "medium",
             "subtasks": {
                 "name": [],
@@ -156,7 +156,7 @@ let databaseJSON = {
             "description": "Edit the new company video",
             "category": "Media",
             "assigned_to": ["Tanja Wolf"],
-            "due_date": "2023-03-02",
+            "due_date": "2023-04-02",
             "prio": "medium",
             "subtasks": {
                 "name": [],
@@ -190,31 +190,49 @@ async function init() {
 
 
 /**
- * This function fetches a JSON and uploads it.
- * @param {string} key - The name of the key.
- * @param {boolean} value - JSON array.
- * @returns - Status
+ * This function function stringifies a JSON and posts it to the server.
+ * @param {string} key name of the key
+ * @param {object} value the JSON to upload
  */
 async function setItem(key, value) {
     const payload = { key, value, token: STORAGE_TOKEN };
-    return fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload).replaceAll(`'`, `$`) })
-        .then(res => res.json());
+
+    try {
+
+        const response = await fetch(STORAGE_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload).replaceAll(`'`, `$`)
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    } catch (error) {
+
+        console.error('Error setting data:', error);
+    }
 }
 
 
 /**
- * This function downloads a JSON and parses it.
- * @param {string} key - Name of the item you want to download.
- * @returns - JSON array, database.
+ * Fetches a JSON and parses it.
+ * @param {string} key name of the item to be downloaded
  */
 async function getItem(key) {
     const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
-    return fetch(url).then(res => res.json())
-        .then(value => {
-            data = value.data.value;
-            dataJSON = data.replace(/'/g, '"').replaceAll(`$`, `'`);
-            database = JSON.parse(dataJSON);
-        }).catch();
+
+    try {
+        const response = await fetch(url);
+        const responseBody = await response.json();
+
+        const responseBodyValidated = responseBody.data.value.replace(/'/g, '"').replaceAll(`$`, `'`);
+        database = JSON.parse(responseBodyValidated);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
 
 
@@ -234,6 +252,7 @@ function getItemLocalStorage(key) {
  */
 function includeUser() {
     const localStorageData = getItemLocalStorage('loggedInUser');
+
     if (localStorageData) {
         currentEmail = localStorageData.email;
         currentUsername = localStorageData.username;
@@ -246,7 +265,7 @@ function includeUser() {
  * This function renders the initials in the circle of the topbar.
  */
 function showInitialsOnTopBar() {
-    loggedInUserName = searchContactInfo(false, 'firstname', currentEmail, 'email', 'contacts') + ' ' + searchContactInfo(false, 'lastname', currentEmail, 'email', 'contacts');
+    loggedInUserName = `${searchContactInfo(false, 'firstname', currentEmail, 'email', 'contacts')} ${searchContactInfo(false, 'lastname', currentEmail, 'email', 'contacts')}`;
     initialLetters = loggedInUserName
         .split(' ')
         .map(word => word.charAt(0))
@@ -265,7 +284,7 @@ function showInitialsOnTopBar() {
  * @param {string} keyword - The keyword you use to search for the information. (an e-mail address, a first name, a surname, ...)
  * @param {string} searchFilter - The searchFilter is related to the keyword. if you search with an email address of a contact, the search filter must be email.
  * @param {string} searchPath - The place where to search. There are only 4 possibilities. (categories, contacts, tasks, users)
- * @returns - The information you're looking for.
+ * @returns {*} - The information you're looking for.
  */
 function searchContactInfo(index, yoursearchResult, keyword, searchFilter, searchPath) {
 
@@ -275,7 +294,7 @@ function searchContactInfo(index, yoursearchResult, keyword, searchFilter, searc
         const condition = keyword == database[searchPath][i][searchFilter];
 
         if (condition && index) return database[searchPath].indexOf(currentSearch);
-        
+
         else if (condition) currentSearch[yoursearchResult];
     }
 }
@@ -391,4 +410,17 @@ function emptyInnerHTML(ids) {
     ids.forEach(id => {
         document.getElementById(id).innerHTML = '';
     });
+}
+
+
+/**
+ * Shows or hides the elements whose ids are passed as parameter by adding or removing the class "d-none".
+ * @param {Array} idsToShow elements that will be shown
+ * @param {Array} idsToHide elements that will be hidden
+ */
+function showAndHideElements(idsToShow, idsToHide) {
+
+    if (idsToShow) toggleElements(idsToShow, 'd-none', false);
+
+    if (idsToHide) toggleElements(idsToHide, 'd-none', true);
 }

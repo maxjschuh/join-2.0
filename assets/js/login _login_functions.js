@@ -10,8 +10,8 @@ let rememberMe = false;
 /**
  * This function will initialize the page
  */
-function initLogin() {
-    getData();
+async function initLogin() {
+    await getData();
     getDataLocalStorage();
     checkForChangePassword();
 }
@@ -37,8 +37,9 @@ function getDataLocalStorage() {
         currentPassword = localStorageData.password;
         currentRememberMe = localStorageData.remember;
 
-        if (currentRememberMe) fillInData();
-    }
+    } else return;
+
+    if (currentRememberMe) fillInData();
 }
 
 

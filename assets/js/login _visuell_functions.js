@@ -130,21 +130,6 @@ function disableButton(buttonId) {
 
 //HTML functions
 
-
-
-/**
- * Shows or hides the elements whose ids are passed as parameter by adding or removing the class "d-none".
- * @param {Array} idsToShow elements that will be shown
- * @param {Array} idsToHide elements that will be hidden
- */
-function showAndHideElements(idsToShow, idsToHide) {
-
-    if (idsToShow) toggleElements(idsToShow, 'd-none', false);
-
-    if (idsToHide) toggleElements(idsToHide, 'd-none', true);
-}
-
-
 /**
  * This function waits till the animation is done and shows then the login windows
  */
