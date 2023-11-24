@@ -308,7 +308,7 @@ body {
     }
 }
 
-#wrongPassword, #usernameTaken, #emailTaken, #emailDoesntExist {
+#wrongPassword, #usernameTaken, #emailTaken {
     color: white;
     font-size: 12px;
     width: 100%;

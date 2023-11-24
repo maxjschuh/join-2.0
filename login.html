@@ -51,7 +51,7 @@
                             src="./assets/img/create_subtask.png" alt=""></div>
                     <div> Remember me </div>
                 </div>
-                <div class="forgot-pw"></div>
+                <div onclick="openForgotPw()" class="forgot-pw">Forgot my password</div>
             </div>
             <div class="login-buttons">
                 <button id="logInButton" class="button-dark">Login</button>
@@ -63,7 +63,8 @@
 
         <form onsubmit="accountData(); return false; disableButton('signUpButton')" id="signUpContainer"
             class="login-container d-none">
-            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])"
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
             <span>Sign up</span>
             <div class="blue-line"></div>
             <div id="usernameContainer" class="input-container"><input required id="username" type="text"
@@ -78,15 +79,16 @@
         </form>
 
 
-        <form onsubmit="emailSent(); return false; disableButton('sendMailButton')" id="forgotPwContainer"
+        <form onsubmit="requestPasswordReset(); return false; disableButton('sendMailButton')" id="forgotPwContainer"
             class="login-container d-none">
-            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])"
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
             <span class="padding-left-right-40px">I forgot my password</span>
             <div class="blue-line"></div>
             <div class="forgot-text">Don´t worry! We will send you an e-mail with the instructions to <br> reset your
                 password.</div>
-            <div id="forgotPwEmailContainer" class="input-container"><input id="forgotPwEmail" type="email" placeholder="E-mail"><img
-                    src="./assets/img/mail.png" alt=""></div>
+            <div id="forgotPwEmailContainer" class="input-container"><input id="forgotPwEmail" type="email"
+                    placeholder="E-mail"><img src="./assets/img/mail.png" alt=""></div>
             <div id="emailDoesntExist">E-mail does not exist</div>
             <button id="sendMailButton" class="button-dark margin-top-20px width-180px">Send me the e-mail</button>
         </form>
@@ -94,7 +96,8 @@
 
         <form onsubmit="passwordReset(); return false; disableButton('continueButton')" id="resetPwContainer"
             class="login-container d-none">
-            <img onclick="showAndHideElements(['forgotPwContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'])" class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['forgotPwContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'])"
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
             <span class="padding-left-right-40px">Reset your password</span>
             <div class="blue-line"></div>
             <div class="forgot-text">Change your account password</div>
@@ -107,13 +110,14 @@
             <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
         </form>
 
-        <div class="d-none" id="signUp">Not a Join user? <button onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer'])"
+        <div class="d-none" id="signUp">Not a Join user? <button
+                onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer'])"
                 class="button-dark mob-width-100px">Sign
                 up</button>
         </div>
 
     </div>
-    
+
     <div id="emailSent" class="d-none">
         <img src="./assets/img/SendCheck.png" alt="">
         An e-mail has been sent to you

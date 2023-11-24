@@ -4,6 +4,7 @@ let tickCount = 0;
 let changePasswordEmail;
 let currentPassword;
 let rememberMe = false;
+let users;
 
 //Init functions
 
@@ -226,17 +227,11 @@ function checkIfUserExists(usernameSignUp, emailSignUp) {
  * 
  * @returns the function will stop if the email does not exist
  */
-function emailSent() {
+async function requestPasswordReset() {
     const forgotPwEmail = document.getElementById('forgotPwEmail').value; // Email from the inputfield to reset the password
 
-    if (!getUsername(forgotPwEmail)) { // Checks if the email exists
-        document.getElementById('emailDoesntExist').style = 'color: red';
-        document.getElementById('forgotPwEmailContainer').style = 'border: 1px solid red';
-        return;
-    }
-
-    sentMailToPhp(forgotPwEmail);
-    activatePhp();
+    if (getUsername(forgotPwEmail)) await sendEmail(forgotPwEmail);
+    
     playAnimation('emailSent');
 }
 
@@ -250,8 +245,9 @@ function emailSent() {
 function getUsername(forgotPwEmail) {
 
     for (let i = 0; i < users.length; i++) {
+        const user = users[i];
 
-        if (users[i]['email'] == forgotPwEmail) return users[i]['username'];
+        if (user.email == forgotPwEmail) return user.username;
     }
     return false;
 }
@@ -270,48 +266,31 @@ function getForgotPwLink(forgotPwEmail) {
 
 
 /**
- * This function will send the username, the email and the link to the Php-Script
- * 
- * @param {string} forgotPwEmail The Email from which the password should be changed
+ * Makes a fetch request to the php script for sending the password reset link to the user's e-mail adress.
+ * @param {*} forgotPwEmail The e-mail to where the link will be sent, which is the e-mail of the user who wants his / her password to be resetted
  */
-function sentMailToPhp(forgotPwEmail) {  // Email wird das Php skript übergeben
-    const username = getUsername(forgotPwEmail);
-    const link = getForgotPwLink(forgotPwEmail);
-    const mail = forgotPwEmail;
+async function sendEmail(forgotPwEmail) {
 
-    let xmlhttp = new XMLHttpRequest();
+    try {
+        const url = "./send_mail.php";
+        const data = {
+            email: forgotPwEmail,
+            username: getUsername(forgotPwEmail),
+            message: passwordResetMail(this.username, forgotPwEmail)
+        };
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(data)
+        };
 
-    xmlhttp.onreadystatechange = function () {
+        const response = await fetch(url, options);
 
-        if (this.readyState == 4 && this.status == 200) console.log("E-Mail gesendet"); // Erfolgreiche Antwort vom Server erhalten
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    } catch (error) {
+
     }
-
-    xmlhttp.open("POST", "send_mail.php", true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-    const paramsUsername = "username=" + encodeURIComponent(username);
-    const paramsLink = "&link=" + encodeURIComponent(link);
-    const paramsMail = "&email=" + encodeURIComponent(mail);
-
-    xmlhttp.send(paramsUsername + paramsLink + paramsMail);
-}
-
-
-/**
- * This function will activate the Php-Script to send the mail
- */
-function activatePhp() { //Php skript wird ausgeführt
-    let xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.onreadystatechange = function () {
-
-        if (this.readyState == 4 && this.status == 200) {
-            // Erfolgreiche Antwort vom Server erhalten
-            console.log(this.responseText);
-        }
-    }
-    xmlhttp.open("GET", "send_mail.php", true);
-    xmlhttp.send();
 }
 
 
@@ -361,4 +340,85 @@ function checkNewPassword() {
     const confirmedPassword = document.getElementById('confirmedPassword').value;
 
     return newPassword == confirmedPassword;
+}
+
+
+
+
+/**
+ * This function will open the window to request a passwort change
+ */
+function openForgotPw() {
+
+    showAndHideElements(['forgotPwContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer']);
+}
+
+
+function passwordResetMail(username, forgotPwEmail) {
+
+    const link = getForgotPwLink(forgotPwEmail)
+
+    return /*html*/ `
+            <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Password Reset - Join</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f4f4f4;
+                }
+            
+                .container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    background-color: #fff;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+            
+                h1 {
+                    color: #333;
+                }
+            
+                p {
+                    color: #666;
+                }
+            
+                a {
+                    color: #007BFF;
+                }
+            
+                .footer {
+                    margin-top: 20px;
+                    padding-top: 10px;
+                    border-top: 1px solid #ddd;
+                    text-align: center;
+                    color: #777;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Password Reset</h1>
+                <p>Hello ${username},</p>
+                <p>We hope this message finds you well. It seems you've requested to reset your password for your Join account. No worries, we've got you covered!</p>
+                <p>To reset your password, please click on the following link:</p>
+                <p><a href="${link}">${link}</a></p>
+                <p>If you did not initiate this request, please ignore this email, and your password will remain unchanged.</p>
+                <p>For security reasons, this link will expire in 24 hours. You may request a new link anytime.</p>
+                <p>Best regards</p>
+                <p>The Join Team</p>
+                <div class="footer">
+                    <img src="www.mjschuh.com/join/assets/img/Join_dark.png" alt="Join Logo">
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
 }
