@@ -44,8 +44,12 @@ body {
     top: 0px;
 }
 
+.join-pic:hover {
+    cursor: pointer;
+}
+
 @keyframes JoinPicAni {
-    0% {   
+    0% {
         transform: translate(50vw, 50vh);
     }
 
@@ -93,11 +97,12 @@ body {
     align-items: center;
     justify-content: space-between;
     border: 0.5px solid #D1D1D1;
-    padding: 10px;
     border-radius: 8px;
     margin-top: 10px;
     margin-bottom: 10px;
-
+    padding-right: 10px;
+    width: 100%;
+    max-width: 380px;
 }
 
 .input-container:hover {
@@ -110,8 +115,20 @@ body {
 
 .input-container input {
     border: 0px;
-    width: 386px;
+    padding: 8px;
+    margin: 2px;
+    width: 100%;
 }
+
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+} */
 
 .input-container input:hover {
     cursor: pointer;
@@ -119,7 +136,7 @@ body {
 
 .input-container input:focus {
     outline: none;
-    
+
 }
 
 .input-container img {
@@ -228,6 +245,12 @@ body {
 
 .blue-arrow:hover {
     cursor: pointer;
+    filter: brightness(120%);
+}
+
+.blue-arrow:active {
+    cursor: pointer;
+    filter: brightness(40%);
 }
 
 .forgot-text {
@@ -308,19 +331,13 @@ body {
     }
 }
 
-#wrongPassword, #usernameTaken, #emailTaken {
+#wrongPassword,
+#usernameTaken,
+#emailTaken {
     color: white;
     font-size: 12px;
     width: 100%;
 }
-
-#passwordDontMatch {
-    color: white;
-    font-size: 12px;
-    width: 100%;
-    text-align: center;
-}
-
 
 @media(max-width: 900px) {
     body {
@@ -361,10 +378,10 @@ body {
     }
 
     @keyframes JoinPicAniMobile {
-        0% {   
-            transform: translate( 35vw, 47vh);
+        0% {
+            transform: translate(35vw, 47vh);
         }
-    
+
         100% {
             transform: translate(0, 0);
         }
@@ -376,14 +393,6 @@ body {
         top: auto;
         right: auto;
         position: relative;
-    }
-
-    .input-container {
-        width: 100%;
-    }
-
-    .input-container input {
-        width: 80%;
     }
 
     .remember-forgot-container {
@@ -406,7 +415,8 @@ body {
         display: none;
     }
 
-    #emailSent, #resetPassword {
+    #emailSent,
+    #resetPassword {
         bottom: 7%;
         top: auto;
         right: 0;
@@ -414,7 +424,7 @@ body {
         animation: none;
     }
 
-    
+
 
 }
 
@@ -441,7 +451,6 @@ body {
     #forgotPwContainer span {
         font-size: 25px;
     }
-
 }
 
 @media(max-width: 360px) {
@@ -470,7 +479,7 @@ body {
         font-size: 14px !important;
         height: 40px !important;
     }
-    
+
     .website {
         margin-top: 130px;
     }
@@ -479,5 +488,3 @@ body {
         padding-bottom: 50px;
     }
 }
-
-

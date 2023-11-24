@@ -23,38 +23,59 @@
 
 <body onload="initLogin()">
 
-    <div id="mobileStartScreen" class="startscreen-mobile"><img src="./assets/img/join_small.png" alt=""></div>
+    <div id="mobileStartScreen" class="startscreen-mobile">
+        <img src="./assets/img/join_small.png" alt="">
+    </div>
 
-    <img id="joinPic" class="join-pic" src="./assets/img/Join_dark.png">
+    <img id="joinPic" class="join-pic" src="./assets/img/Join_dark.png" onclick="showAndHideElements(['loginContainer', 'signUp'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])">
 
     <div class="website">
 
-
         <form onsubmit="checkLogin(); return false; disableButton('logInButton')" id="loginContainer"
             class="login-container d-none">
+
             <span>Login</span>
+
             <div class="blue-line"></div>
-            <div class="input-container"><input required id="email" type="email" placeholder="E-mail"><img
-                    src="./assets/img/mail.png" alt=""></div>
-            <div id="passwordContainer" class="input-container"><input onkeyup="switchPasswordPicture()" required
-                    id="password" type="password" placeholder="Password">
-                <img id="lock" src="./assets/img/lock.png" alt="">
-                <img onclick="showPassword()" id="hidePassword" class="d-none" src="./assets/img/hide_password.png"
-                    alt="">
-                <img onclick="showPassword()" id="showPassword" class="d-none" src="./assets/img/show_password.png"
-                    alt="">
+
+            <div id="emailContainer" class="input-container">
+                <input required id="email" type="email" placeholder="E-mail">
+                <img src="./assets/img/mail.png" alt="">
             </div>
-            <div id="wrongPassword">Wrong password and / or e-mail!</div>
+
+            <div id="passwordContainer" class="input-container">
+
+                <input onkeyup="switchPasswordPicture()" required id="password" type="password" placeholder="Password">
+
+                <img id="lock" src="./assets/img/lock.png" alt="">
+
+                <img onclick="togglePasswordVisibility()" id="hidePassword" class="d-none"
+                    src="./assets/img/hide_password.png" alt="">
+                <img onclick="togglePasswordVisibility()" id="showPassword" class="d-none"
+                    src="./assets/img/show_password.png" alt="">
+            </div>
+
+            <div id="wrongPassword">False login credentials</div>
+
             <div class="remember-forgot-container">
+
                 <div class="remember-container">
-                    <div onclick="setTick()" class="remember-box"><img id="tick" class="d-none"
-                            src="./assets/img/create_subtask.png" alt=""></div>
+
+                    <div onclick="setTick()" class="remember-box">
+                        <img id="tick" class="d-none" src="./assets/img/create_subtask.png" alt="">
+                    </div>
+
                     <div> Remember me </div>
                 </div>
-                <div onclick="openForgotPw()" class="forgot-pw">Forgot my password</div>
+
+                <div onclick="showAndHideElements(['forgotPwContainer'], ['loginContainer'])" class="forgot-pw">Forgot
+                    my password</div>
             </div>
+
             <div class="login-buttons">
-                <button id="logInButton" class="button-dark">Login</button>
+
+                <button type="submit" id="logInButton" class="button-dark">Login</button>
+
                 <button id="guestLogInButton" onclick="guestLogin(); disableButton('guestLogInButton')"
                     class="button-light">Guest Login</button>
             </div>
@@ -63,54 +84,86 @@
 
         <form onsubmit="accountData(); return false; disableButton('signUpButton')" id="signUpContainer"
             class="login-container d-none">
-            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])"
-                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+
+            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer'])" class="blue-arrow"
+                src="./assets/img/blue-arrow-left.png" alt="">
+
             <span>Sign up</span>
             <div class="blue-line"></div>
-            <div id="usernameContainer" class="input-container"><input required id="username" type="text"
-                    placeholder="Username"><img src="./assets/img/user-line.png" alt=""></div>
-            <div id="usernameTaken">Username is already taken</div>
-            <div id="emailSignUpContainer" class="input-container"><input required id="signUpEmail" type="email"
-                    placeholder="E-mail"><img src="./assets/img/mail.png" alt=""></div>
-            <div id="emailTaken">E-mail is already taken</div>
-            <div class="input-container"><input required id="signUpPassword" type="password" placeholder="Password"><img
-                    src="./assets/img/lock.png" alt=""></div>
-            <button id="signUpButton" class="button-dark margin-top-20px">Sign up</button>
+
+            <div id="usernameContainer" class="input-container">
+                <input required id="username" type="text" placeholder="Username" autocomplete="username">
+                <img src="./assets/img/user-line.png" alt="">
+            </div>
+
+            <div id="usernameTaken">Username already exists</div>
+
+            <div id="emailSignUpContainer" class="input-container">
+                <input required id="signUpEmail" type="email" placeholder="E-mail" autocomplete="email">
+                <img src="./assets/img/mail.png" alt="">
+            </div>
+
+            <div id="emailTaken">E-mail already exists</div>
+
+            <div class="input-container">
+                <input required id="signUpPassword" type="password" placeholder="Password" minlength="8"
+                    autocomplete="new-password">
+                <img src="./assets/img/lock.png" alt="">
+
+                <img onclick="togglePasswordVisibility()" id="hidePassword" class="d-none"
+                    src="./assets/img/hide_password.png" alt="">
+                <img onclick="togglePasswordVisibility()" id="showPassword" class="d-none"
+                    src="./assets/img/show_password.png" alt="">
+            </div>
+
+            <button type="submit" id="signUpButton" class="button-dark margin-top-20px">Sign up</button>
         </form>
 
 
         <form onsubmit="requestPasswordReset(); return false; disableButton('sendMailButton')" id="forgotPwContainer"
-            class="login-container d-none">
-            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])"
-                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+            class="login-container d-none" autocomplete="email">
+
+            <img onclick="showAndHideElements(['loginContainer'], ['forgotPwContainer'])" class="blue-arrow"
+                src="./assets/img/blue-arrow-left.png" alt="">
+
             <span class="padding-left-right-40px">I forgot my password</span>
+
             <div class="blue-line"></div>
-            <div class="forgot-text">Don´t worry! We will send you an e-mail with the instructions to <br> reset your
+
+            <div class="forgot-text">Don't worry! We will send you an e-mail with the instructions to <br> reset your
                 password.</div>
-            <div id="forgotPwEmailContainer" class="input-container"><input id="forgotPwEmail" type="email"
-                    placeholder="E-mail"><img src="./assets/img/mail.png" alt=""></div>
-            <button id="sendMailButton" class="button-dark margin-top-20px width-180px">Send me the e-mail</button>
+
+            <div id="forgotPwEmailContainer" class="input-container">
+                <input id="forgotPwEmail" type="email" placeholder="E-mail">
+                <img src="./assets/img/mail.png" alt="">
+            </div>
+
+            <button type="submit" id="sendMailButton" class="button-dark margin-top-20px width-180px">Send me the
+                e-mail</button>
         </form>
 
 
-        <form onsubmit="passwordReset(); return false; disableButton('continueButton')" id="resetPwContainer"
-            class="login-container d-none">
-            <img onclick="showAndHideElements(['forgotPwContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer'])"
-                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+        <form onsubmit="submitNewPassword(); return false; disableButton('continueButton')" id="resetPwContainer"
+            class="login-container d-none" autocomplete="new-password">
+
+            <img onclick="showAndHideElements(['loginContainer'], ['resetPwContainer'])" class="blue-arrow"
+                src="./assets/img/blue-arrow-left.png" alt="">
+
             <span class="padding-left-right-40px">Reset your password</span>
+
             <div class="blue-line"></div>
             <div class="forgot-text">Change your account password</div>
-            <div class="input-container"><input required id="newPassword" type="password" placeholder="New Password">
+
+            <div class="input-container">
+                <input required id="newPassword" type="password" placeholder="New Password" minlength="8">
             </div>
-            <div id="confirmedPasswordContainer" class="input-container"><input required id="confirmedPassword"
-                    type="password" placeholder="Confirm Password">
-            </div>
-            <div id="passwordDontMatch">Your passwords don´t match. Try again</div>
+
             <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
         </form>
 
-        <div class="d-none" id="signUp">Not a Join user? <button
-                onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer'])"
+        <div class="d-none" id="signUp">Not a Join user?
+            <button
+                onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'forgotPwContainer'])"
                 class="button-dark mob-width-100px">Sign
                 up</button>
         </div>
@@ -119,12 +172,15 @@
 
     <div id="emailSent" class="d-none">
         <img src="./assets/img/SendCheck.png" alt="">
-        An e-mail has been sent to you
+        An e-mail has been sent to you!
     </div>
+
     <div id="accountCreated" class="d-none">
-        You signed up successfully
+        You signed up successfully!
     </div>
+
     <div id="resetPassword" class="d-none">
-        You reset your password
+        You reset your password!
     </div>
+
 </body>

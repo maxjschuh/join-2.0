@@ -12,14 +12,14 @@ $subject = "Reset password for " . $username;
 
 switch ($_SERVER['REQUEST_METHOD']) {
 
-    case ("OPTIONS"): //Allow preflighting to take place.
+    case ("OPTIONS"):
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: POST");
         header("Access-Control-Allow-Headers: content-type");
         exit;
 
 
-    case ("POST"): //Send the email;
+    case ("POST"):
         header("Access-Control-Allow-Origin: *");
 
         $headers = "From: noreply@mjschuh.com" . "\r\n";
@@ -29,7 +29,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         mail($recipient, $subject, $message, $headers);
         break;
 
-    default: //Reject any non POST or OPTIONS requests.
+    default:
         header("Allow: POST", true, 405);
         exit;
 }

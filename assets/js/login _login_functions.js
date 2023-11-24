@@ -12,20 +12,13 @@ let users;
  * This function will initialize the page
  */
 async function initLogin() {
-    await getData();
+    includeUser();
+    checkForRunningSession();
+    await getItem('database');
+    users = database.users;
     getDataLocalStorage();
     checkForChangePassword();
 }
-
-
-/**
- * This function will get the data from the backend
- */
-async function getData() {
-    await getItem('database');
-    users = database.users;
-}
-
 
 /**
  * This function is used to get the data from the local storage
@@ -48,14 +41,13 @@ function getDataLocalStorage() {
  * This function will check if there is a request for a password change
  */
 function checkForChangePassword() {
-    // URL-Parameter auslesen
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
     changePasswordEmail = urlParams.get('email');
-    if (!changePasswordEmail) waitForAnimation(); //Checks if there is a variable in the link
+    if (!changePasswordEmail) waitForAnimation();
 
-    else showAndHideElements(['resetPwContainer'], ['signUp', 'loginContainer', 'forgotPwContainer', 'signUpContainer']);
+    else showAndHideElements(['resetPwContainer'], ['loginContainer']);
 }
 
 //Login functions
@@ -73,8 +65,7 @@ function login(email, username) {
 
     setItemLocalStorage('loggedInUser', localStorageData);
 
-    // Zur neuen URL weiterleiten
-    window.location.href = 'summary.html';
+    window.location.href = './summary.html';
 }
 
 
@@ -108,7 +99,7 @@ function checkLogin() {
     });
 
     setInlineStyle(['wrongPassword'], 'color: red');
-    setInlineStyle(['passwordContainer'], 'border: 1px solid red');
+    setInlineStyle(['passwordContainer', 'emailContainer'], 'border: 1px solid red');
 }
 
 
@@ -222,11 +213,6 @@ function checkIfUserExists(usernameSignUp, emailSignUp) {
 
 // Reset password functions
 
-/**
- * 
- * 
- * @returns the function will stop if the email does not exist
- */
 
 /**
  * Checks if the email exists. If the Email exist it will start other functions to send the mail to reset the password.
@@ -234,10 +220,19 @@ function checkIfUserExists(usernameSignUp, emailSignUp) {
 async function requestPasswordReset() {
     const forgotPwEmail = document.getElementById('forgotPwEmail').value;
     const username = getUsername(forgotPwEmail);
+    let response = {
+        ok: true
+    };
 
-    if (username) await sendEmail(forgotPwEmail, username);
+    if (username) response = await sendEmail(forgotPwEmail, username);
+
+    if (!response.ok) {
+        showErrorMessage(response);
+        return;
+    }
 
     playAnimation('emailSent');
+    showAndHideElements(['loginContainer'], ['forgotPwContainer']);
 }
 
 
@@ -258,21 +253,14 @@ function getUsername(forgotPwEmail) {
 }
 
 
-/**
- * This function will set link which includes the email to reset the password
- * 
- * @param {string} forgotPwEmail The Email from which the password should be changed
- * @returns {string} It returns the Link which includes the email to reset the password
- */
-function getForgotPwLink(forgotPwEmail) {
 
-    return 'https://mjschuh.com/join/login.html?email=' + encodeURIComponent(forgotPwEmail);
-}
 
 
 /**
  * Makes a fetch request to the php script for sending the password reset link to the user's e-mail adress.
- * @param {*} forgotPwEmail The e-mail to where the link will be sent, which is the e-mail of the user who wants his / her password to be resetted
+ * @param {string} forgotPwEmail The e-mail to where the link will be sent, which is the e-mail of the user who wants his / her password to be resetted
+ * @param {string} username of the user who requested the password reset
+ * @returns 
  */
 async function sendEmail(forgotPwEmail, username) {
 
@@ -288,36 +276,44 @@ async function sendEmail(forgotPwEmail, username) {
         body: new URLSearchParams(data)
     };
 
-    try {
-        const response = await fetch(url, options);
-
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    } catch (error) {
-
-    }
+    return await fetch(url, options);
 }
+
+
+/**
+ * This function will set link which includes the email to reset the password
+ * 
+ * @param {string} forgotPwEmail The Email from which the password should be changed
+ * @returns {string} It returns the Link which includes the email to reset the password
+ */
+function getForgotPwLink(forgotPwEmail) {
+
+    return 'https://mjschuh.com/join/login.html?email=' + encodeURIComponent(forgotPwEmail);
+}
+
+
 
 
 /**
  * This function will start the functions to reset the password.
  */
-function passwordReset() {
+function submitNewPassword() {
+    const newPassword = document.getElementById('newPassword').value;
 
-    if (checkNewPassword()) {
 
-        changePassword();
-        document.getElementById('resetPassword').classList.remove('d-none');
+    if (containsForbiddenCharacters(newPassword)) {
 
-        setTimeout(() => {
-            document.getElementById('resetPassword').classList.add('d-none');
-        }, 1000); // Lets the EmailSent-Container vanish after 3 seconds
-
-        showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']);
 
     } else {
-        document.getElementById('passwordDontMatch').style = 'color: red';
-        document.getElementById('confirmedPasswordContainer').style = 'border: 1px solid red';
+
+        updatePassword(newPassword);
+        toggleElements(['resetPassword'], 'd-none');
+    
+        setTimeout(() => {
+            toggleElements(['resetPassword'], 'd-none');
+        }, 1000);
+    
+        showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']);
     }
 }
 
@@ -325,8 +321,7 @@ function passwordReset() {
 /**
  *  This function changes the password.
  */
-function changePassword() {
-    const newPassword = document.getElementById('newPassword').value;
+function updatePassword(newPassword) {
 
     users.forEach(user => {
 
@@ -334,28 +329,16 @@ function changePassword() {
     });
 }
 
+function containsForbiddenCharacters(input) {
 
-/**
- * This function checks if the new password and and the confirmed password matches.
- * 
- * @returns {boolean} Returns true if the passwords match and false if they don´t match
- */
-function checkNewPassword() {
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmedPassword = document.getElementById('confirmedPassword').value;
+    const regex = /(´|`|'"\\|[\s])/;
 
-    return newPassword == confirmedPassword;
+    return input.match(regex);
 }
 
 
+function replaceForbiddenCharacters(string) {
 
-
-/**
- * This function will open the window to request a passwort change
- */
-function openForgotPw() {
-
-    showAndHideElements(['forgotPwContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'signUpContainer']);
 }
 
 

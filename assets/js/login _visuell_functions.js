@@ -35,7 +35,7 @@ function screenSmallerThan900Px() {
 
 
 /**
- * This function is switching the image next to the passwort inputfield onkeyup
+ * This function is switching the image next to the password inputfield onkeyup
  */
 function switchPasswordPicture() {
     const passwordInput = document.getElementById("password");
@@ -43,17 +43,16 @@ function switchPasswordPicture() {
     if (!passwordInput.value) {
         toggleElements(['lock'], 'd-none', false);
         toggleElements(['showPassword', 'hidePassword'], 'd-none', true);
+        return;
+
+    }
+    toggleElements(['lock'], 'd-none', true);
+
+    if (passwordInput.type === "password") {
+        showAndHideElements(['hidePassword'], ['lock', 'showPassword']);
 
     } else {
-
-        if (passwordInput.type == "password") {
-            toggleElements(['lock', 'showPassword'], 'd-none', true);
-            toggleElements(['hidePassword'], 'd-none', false);
-
-        } else {
-            toggleElements(['lock', 'hidePassword'], 'd-none', true);
-            toggleElements(['showPassword'], 'd-none', false);
-        }
+        showAndHideElements(['showPassword'], ['lock', 'hidePassword']);
     }
 }
 
@@ -61,7 +60,10 @@ function switchPasswordPicture() {
 /**
  * This function is used to switch the password inputfield image onclick
  */
-function showPassword() {
+
+
+function togglePasswordVisibility() {
+
     let passwordInput = document.getElementById("password");
     let bool;
 
@@ -87,15 +89,15 @@ function showPassword() {
  * @returns if the event target is not "input", the event type is not "focus" or "blur"
  */
 function activeInputfield(event) {
-    // Hole das aktuell aktive Element
+
     const activeInput = event.target;
     let style;
 
     if (activeInput.tagName !== "INPUT") return;
 
-    if (event.type === "focus") style = "border: 1px solid #29ABE2;"; // Das Input-Feld hat den Fokus erhalten
+    if (event.type === "focus") style = "border: 1px solid #29ABE2;";
 
-    else if (event.type === "blur") style = ""; // Das Input-Feld hat den Fokus verloren
+    else if (event.type === "blur") style = "";
 
     else return;
 
@@ -139,21 +141,21 @@ function waitForAnimation() {
 
     if (screenSmallerThan900Px()) { // Der Code für den Fall, dass die Bildschirmbreite kleiner oder gleich 900px ist
 
-        showAndHideElements(['mobileStartScreen'], ['loginContainer', 'signUp']);
+        showAndHideElements(['mobileStartScreen'], ['loginContainer']);
 
         setTimeout(() => {
             toggleElements(['mobileStartScreen'], 'd-none', true);
             setInlineStyle(['joinPic'], 'display: block');
-        }, 300);
+        }, 0); //300
 
         timeout = 1300;
 
     } else timeout = 1000; // Der Code für den Fall, dass die Bildschirmbreite größer als 900px ist
 
     setTimeout(() => {
-            
+
         toggleElements(['loginContainer', 'signUp'], 'd-none', false);
-    }, timeout);
+    }, 0);
 }
 
 
@@ -168,7 +170,7 @@ function playAnimation(id) {
     setTimeout(() => {
 
         toggleElements([id], 'd-none', true); // Lets the EmailSent-Container vanish after 3 seconds
-     }, 1000);
+    }, 1000);
 }
 
 //Eventlistener

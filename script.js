@@ -180,7 +180,7 @@ let databaseJSON = {
  */
 async function init() {
     includeUser();
-    checkForLogin();
+    checkForRunningSession();
     await includeHTML();
     await getItem('database');
     sideMenuColor();
@@ -197,22 +197,15 @@ async function init() {
 async function setItem(key, value) {
     const payload = { key, value, token: STORAGE_TOKEN };
 
-    try {
+    const response = await fetch(STORAGE_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload).replaceAll(`'`, `$`)
+    });
 
-        const response = await fetch(STORAGE_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload).replaceAll(`'`, `$`)
-        });
-
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    } catch (error) {
-
-        console.error('Error setting data:', error);
-    }
+    if (!response.ok) showErrorMessage(response);
 }
 
 
@@ -343,13 +336,18 @@ function logOut() {
 }
 
 
-/**
- * This function checks whether you come from an external website.
- */
-function checkForLogin() {
-    const previousPage = document.referrer;
-    const pageURL = window.location.hostname;
-    if (previousPage.search(pageURL) == -1 || !currentEmail) window.location.replace('login.html');
+
+function checkForRunningSession() {
+
+    const page = window.location.pathname;
+
+    if (currentEmail && page === "/login.html") window.location.replace("./summary.html");
+
+    if (currentEmail) return;
+
+    if (page === "/help.html" || page === "/legal-notice.html" || page === "/login.html") return;
+
+    else window.location.replace("./login.html");
 }
 
 
@@ -423,4 +421,13 @@ function showAndHideElements(idsToShow, idsToHide) {
     if (idsToShow) toggleElements(idsToShow, 'd-none', false);
 
     if (idsToHide) toggleElements(idsToHide, 'd-none', true);
+}
+
+
+
+
+function showErrorMessage(error) {
+
+    alert('The Join Server is not responding. Please try again later.');
+    if (error) console.log('For Developers: ', error);
 }
