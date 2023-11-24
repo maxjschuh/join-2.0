@@ -223,15 +223,20 @@ function checkIfUserExists(usernameSignUp, emailSignUp) {
 // Reset password functions
 
 /**
- * This function checks if the email exists. If the Email exist it will start other functions to send the mail to reset the password
+ * 
  * 
  * @returns the function will stop if the email does not exist
  */
-async function requestPasswordReset() {
-    const forgotPwEmail = document.getElementById('forgotPwEmail').value; // Email from the inputfield to reset the password
 
-    if (getUsername(forgotPwEmail)) await sendEmail(forgotPwEmail);
-    
+/**
+ * Checks if the email exists. If the Email exist it will start other functions to send the mail to reset the password.
+ */
+async function requestPasswordReset() {
+    const forgotPwEmail = document.getElementById('forgotPwEmail').value;
+    const username = getUsername(forgotPwEmail);
+
+    if (username) await sendEmail(forgotPwEmail, username);
+
     playAnimation('emailSent');
 }
 
@@ -269,21 +274,21 @@ function getForgotPwLink(forgotPwEmail) {
  * Makes a fetch request to the php script for sending the password reset link to the user's e-mail adress.
  * @param {*} forgotPwEmail The e-mail to where the link will be sent, which is the e-mail of the user who wants his / her password to be resetted
  */
-async function sendEmail(forgotPwEmail) {
+async function sendEmail(forgotPwEmail, username) {
+
+    const url = "./send_mail.php";
+    const data = {
+        email: forgotPwEmail,
+        username: username,
+        message: passwordResetMail(username, forgotPwEmail)
+    };
+    const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(data)
+    };
 
     try {
-        const url = "./send_mail.php";
-        const data = {
-            email: forgotPwEmail,
-            username: getUsername(forgotPwEmail),
-            message: passwordResetMail(this.username, forgotPwEmail)
-        };
-        const options = {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(data)
-        };
-
         const response = await fetch(url, options);
 
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);

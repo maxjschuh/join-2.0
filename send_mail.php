@@ -5,6 +5,7 @@
 $recipient = $_POST["email"];
 $message = $_POST["message"];
 $username = $_POST["username"];
+$subject = "Reset password for " . $username;
 
 ########### CONFIG END ###########
 
@@ -21,11 +22,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case ("POST"): //Send the email;
         header("Access-Control-Allow-Origin: *");
 
-        $headers = "From: noreply@mjschuh.com";
+        $headers = "From: noreply@mjschuh.com" . "\r\n";
         $headers .= "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $subject = "Reset password for " . $username;
-
 
         mail($recipient, $subject, $message, $headers);
         break;
