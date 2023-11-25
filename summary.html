@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./assets/img/join_small.png">
 
-    <script src="./script.js"></script>
+    <script src="./main.js"></script>
     <script src="./assets/js/include.js"></script>
     <script src="./assets/js/summary.js"></script>
 
@@ -36,21 +36,22 @@
                 <div id="mainLeftContainer" class="main-left-container">
                     <div class="tasks-top-row">
                         <a href="board.html">
-                            <div><b id="tasksInBoard">4</b>Tasks in <br> Board</div>
+                            <div><b id="tasksInBoard"></b>Tasks in <br> Board</div>
                         </a>
                         <a href="board.html">
-                            <div><b id="tasksInProgress">2</b>Tasks in <br> Progress</div>
+                            <div><b id="tasksInProgress"></b>Tasks in <br> Progress</div>
                         </a>
                         <a href="board.html" style="margin-right: 0;">
-                            <div><b id="awaitingFeedback">2</b>Awaiting <br> Feedback</div>
+                            <div><b id="awaitingFeedback"></b>Awaiting <br> Feedback</div>
                         </a>
                     </div>
                     <a href="board.html">
                         <div class="tasks-middle-row">
                             <div class="tasks-middle-row-left"><img src="./assets/img/urgent.png">
-                                <div><b id="urgent">1</b>Urgent</div>
+                                <div><b id="urgent"></b>Urgent</div>
                             </div>
-                            <div class="tasks-middle-row-right"><b id="upcomingDeadline">October 16, 2022</b> Upcoming
+                            <div class="tasks-middle-row-right">
+                                <b id="upcomingDeadline"></b> Upcoming
                                 Deadline</div>
                         </div>
                     </a>
@@ -59,21 +60,21 @@
                             href="board.html" class="todo-done">
                             <div class="todo-done-inner-container">
                                 <img id="todoPicture" src="./assets/img/pen.png">
-                                <div><b id="todo">1</b>To-do</div>
+                                <div><b id="todo"></b>To-do</div>
                             </div>
                         </a>
                         <a onmouseover="setHoverEffect('donePicture', true)" onmouseout="setHoverEffect('donePicture', false)"
                             href="board.html" class="todo-done" style="margin-right: 0;">
                             <div class="todo-done-inner-container">
                                 <img id="donePicture" src="./assets/img/tick.png">
-                                <div><b id="done">1</b>Done</div>
+                                <div><b id="done"></b>Done</div>
                             </div>
                         </a>
                     </div>
                 </div>
                 <div id="mainRightContainer" class="main-right-container">
-                    <b id="greeting">Good morning,</b>
-                    <span id="nameOfUser">Sofia Müller</span>
+                    <b id="greeting"></b>
+                    <span id="nameOfUser"></span>
                 </div>
             </main>
         </div>

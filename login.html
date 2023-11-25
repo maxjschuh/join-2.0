@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./assets/img/join_small.png">
 
-    <script src="./script.js"></script>
-    <script src="./assets/js/include.js"></script>
-    <script src="./assets\js\login _login_functions.js"></script>
-    <script src="./assets\js\login _visuell_functions.js"></script>
+    <script src="./main.js"></script>
+    <script src="./assets/js/login/login-01-general.js"></script>
+    <script src="./assets/js/login/login-02-html-manipulation.js"></script>
+    <script src="./assets/js/login/login-03-reset-password.js"></script>
+    <script src="./assets/js/login/login-04-sign-up.js"></script>
 
     <link rel="stylesheet" href="./assets/css/desktop_top_template.css">
     <link rel="stylesheet" href="./assets/css/desktop_side_menu_template.css">
@@ -27,7 +28,8 @@
         <img src="./assets/img/join_small.png" alt="">
     </div>
 
-    <img id="joinPic" class="join-pic" src="./assets/img/Join_dark.png" onclick="showAndHideElements(['loginContainer', 'signUp'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer'])">
+    <img id="joinPic" class="join-pic" src="./assets/img/Join_dark.png"
+        onclick="showAndHideElements(['loginContainer', 'signUp'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']); resetInputs()">
 
     <div class="website">
 
@@ -45,13 +47,13 @@
 
             <div id="passwordContainer" class="input-container">
 
-                <input onkeyup="switchPasswordPicture()" required id="password" type="password" placeholder="Password">
+                <input oninput="switchPasswordPicture('password')" required id="password" type="password" placeholder="Password">
 
-                <img id="lock" src="./assets/img/lock.png" alt="">
+                <img id="lock-password" src="./assets/img/lock.png" alt="">
 
-                <img onclick="togglePasswordVisibility()" id="hidePassword" class="d-none"
+                <img onclick="togglePasswordVisibility('password')" id="hide-password" class="d-none"
                     src="./assets/img/hide_password.png" alt="">
-                <img onclick="togglePasswordVisibility()" id="showPassword" class="d-none"
+                <img onclick="togglePasswordVisibility('password')" id="show-password" class="d-none"
                     src="./assets/img/show_password.png" alt="">
             </div>
 
@@ -61,14 +63,15 @@
 
                 <div class="remember-container">
 
-                    <div onclick="setTick()" class="remember-box">
+                    <div onclick="toggleRememberMeTick()" class="remember-box">
                         <img id="tick" class="d-none" src="./assets/img/create_subtask.png" alt="">
                     </div>
 
                     <div> Remember me </div>
                 </div>
 
-                <div onclick="showAndHideElements(['forgotPwContainer'], ['loginContainer'])" class="forgot-pw">Forgot
+                <div onclick="showAndHideElements(['forgotPwContainer'], ['loginContainer']); resetInputs()"
+                    class="forgot-pw">Forgot
                     my password</div>
             </div>
 
@@ -85,8 +88,8 @@
         <form onsubmit="accountData(); return false; disableButton('signUpButton')" id="signUpContainer"
             class="login-container d-none">
 
-            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer'])" class="blue-arrow"
-                src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer']); resetInputs()"
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
 
             <span>Sign up</span>
             <div class="blue-line"></div>
@@ -107,12 +110,13 @@
 
             <div class="input-container">
                 <input required id="signUpPassword" type="password" placeholder="Password" minlength="8"
-                    autocomplete="new-password">
-                <img src="./assets/img/lock.png" alt="">
+                    autocomplete="new-password" oninput="switchPasswordPicture('signUpPassword')">
 
-                <img onclick="togglePasswordVisibility()" id="hidePassword" class="d-none"
+                <img id="lock-signUpPassword" src="./assets/img/lock.png" alt="">
+
+                <img onclick="togglePasswordVisibility('signUpPassword')" id="hide-signUpPassword" class="d-none"
                     src="./assets/img/hide_password.png" alt="">
-                <img onclick="togglePasswordVisibility()" id="showPassword" class="d-none"
+                <img onclick="togglePasswordVisibility('signUpPassword')" id="show-signUpPassword" class="d-none"
                     src="./assets/img/show_password.png" alt="">
             </div>
 
@@ -123,8 +127,8 @@
         <form onsubmit="requestPasswordReset(); return false; disableButton('sendMailButton')" id="forgotPwContainer"
             class="login-container d-none" autocomplete="email">
 
-            <img onclick="showAndHideElements(['loginContainer'], ['forgotPwContainer'])" class="blue-arrow"
-                src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['loginContainer'], ['forgotPwContainer']); resetInputs()"
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
 
             <span class="padding-left-right-40px">I forgot my password</span>
 
@@ -146,8 +150,8 @@
         <form onsubmit="submitNewPassword(); return false; disableButton('continueButton')" id="resetPwContainer"
             class="login-container d-none" autocomplete="new-password">
 
-            <img onclick="showAndHideElements(['loginContainer'], ['resetPwContainer'])" class="blue-arrow"
-                src="./assets/img/blue-arrow-left.png" alt="">
+            <img onclick="showAndHideElements(['loginContainer'], ['resetPwContainer']); resetInputs()"
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
 
             <span class="padding-left-right-40px">Reset your password</span>
 
@@ -155,7 +159,14 @@
             <div class="forgot-text">Change your account password</div>
 
             <div class="input-container">
-                <input required id="newPassword" type="password" placeholder="New Password" minlength="8">
+                <input required id="newPassword" type="password" placeholder="New Password" minlength="8" oninput="switchPasswordPicture('newPassword')">
+
+                <img id="lock-newPassword" src="./assets/img/lock.png" alt="">
+
+                <img onclick="togglePasswordVisibility('newPassword')" id="hide-newPassword" class="d-none"
+                    src="./assets/img/hide_password.png" alt="">
+                <img onclick="togglePasswordVisibility('newPassword')" id="show-newPassword" class="d-none"
+                    src="./assets/img/show_password.png" alt="">
             </div>
 
             <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
@@ -163,7 +174,7 @@
 
         <div class="d-none" id="signUp">Not a Join user?
             <button
-                onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'forgotPwContainer'])"
+                onclick="showAndHideElements(['signUpContainer'], ['signUp', 'loginContainer', 'resetPwContainer', 'forgotPwContainer']); resetInputs()"
                 class="button-dark mob-width-100px">Sign
                 up</button>
         </div>
