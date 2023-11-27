@@ -283,16 +283,6 @@ function includeUser() {
     }
 }
 
-// function showInitialsOnTopBar() {
-
-//     const index = currentUsername.indexOf(' ');
-
-
-//     if (index !== -1) {
-
-
-//     }
-// }
 
 /**
  * This function renders the initials in the circle of the topbar.
