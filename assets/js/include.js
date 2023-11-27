@@ -19,14 +19,14 @@ async function includeHTML() {
  * This function decides which div gets a background color based on the pathname.
  */
 function sideMenuColor() {
-    const subPage = window.location.pathname;
+    const subPage = window.location.pathname.split("/").pop();
     let id;
 
-    if (subPage == '/summary.html') id = 'summaryMenu';
-    else if (subPage == '/board.html') id = 'boardMenu';
-    else if (subPage == '/add-task.html') id = 'addTaskMenu';
-    else if (subPage == '/contacts.html') id = 'contactsMenu';
-    else if (subPage == '/legal-notice.html') id = 'legalNoticeMenu';
+    if (subPage == 'summary.html') id = 'summaryMenu';
+    else if (subPage == 'board.html') id = 'boardMenu';
+    else if (subPage == 'add-task.html') id = 'addTaskMenu';
+    else if (subPage == 'contacts.html') id = 'contactsMenu';
+    else if (subPage == 'legal-notice.html') id = 'legalNoticeMenu';
     else return; 
 
     toggleElements([id], 'link-active', true);

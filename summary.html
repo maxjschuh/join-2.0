@@ -21,62 +21,111 @@
 </head>
 
 <body onload="initSummary()">
+
     <div w3-include-html="./assets/templates/desktop_side_menu_template.html"></div>
+
     <div class="column-content">
+
         <div w3-include-html="./assets/templates/desktop_top_template.html"></div>
+
         <div id="summaryContainer" class="content-alignment summary-container">
+
             <div id="headerContainer" class="header-container">
+
                 <span class="mobile-header">Kanban Project Management Tool</span>
                 <h1>Summary</h1>
                 <Span>Everything in a nutshell!</Span>
                 <div class="blue-line"></div>
+
             </div>
 
             <main id="main">
+
                 <div id="mainLeftContainer" class="main-left-container">
+
                     <div class="tasks-top-row">
+
                         <a href="board.html">
-                            <div><b id="tasksInBoard"></b>Tasks in <br> Board</div>
-                        </a>
-                        <a href="board.html">
-                            <div><b id="tasksInProgress"></b>Tasks in <br> Progress</div>
-                        </a>
-                        <a href="board.html" style="margin-right: 0;">
-                            <div><b id="awaitingFeedback"></b>Awaiting <br> Feedback</div>
-                        </a>
-                    </div>
-                    <a href="board.html">
-                        <div class="tasks-middle-row">
-                            <div class="tasks-middle-row-left"><img src="./assets/img/urgent.png">
-                                <div><b id="urgent"></b>Urgent</div>
+
+                            <div>
+                                <b id="tasksInBoard"></b>Tasks in <br> Board
                             </div>
+                        </a>
+
+                        <a href="board.html">
+
+                            <div>
+                                <b id="tasksInProgress"></b>Tasks in <br> Progress
+                            </div>
+                        </a>
+
+                        <a href="board.html" style="margin-right: 0;">
+
+                            <div>
+                                <b id="awaitingFeedback"></b>Awaiting <br> Feedback
+                            </div>
+                        </a>
+
+                    </div>
+
+                    <a href="board.html">
+
+                        <div class="tasks-middle-row">
+
+                            <div class="tasks-middle-row-left">
+                                
+                                <img src="./assets/img/urgent.png" alt="top facing double arrow icon">
+
+                                <div>
+                                    <b id="urgent"></b>Urgent
+                                </div>
+
+                            </div>
+
                             <div class="tasks-middle-row-right">
-                                <b id="upcomingDeadline"></b> Upcoming
-                                Deadline</div>
+
+                                <b id="upcomingDeadline"></b> Upcoming Deadline
+                            </div>
+
                         </div>
                     </a>
+
                     <div class="tasks-bottom-row">
-                        <a onmouseover="setHoverEffect('todoPicture', true)" onmouseout="setHoverEffect('todoPicture', false)"
-                            href="board.html" class="todo-done">
+
+                        <a onmouseover="setHoverEffect('todoPicture', true)"
+                            onmouseout="setHoverEffect('todoPicture', false)" href="board.html" class="todo-done">
+
                             <div class="todo-done-inner-container">
-                                <img id="todoPicture" src="./assets/img/pen.png">
+
+                                <img id="todoPicture" src="./assets/img/pen.png" alt="pen icon">
+
                                 <div><b id="todo"></b>To-do</div>
                             </div>
                         </a>
-                        <a onmouseover="setHoverEffect('donePicture', true)" onmouseout="setHoverEffect('donePicture', false)"
-                            href="board.html" class="todo-done" style="margin-right: 0;">
+
+                        <a onmouseover="setHoverEffect('donePicture', true)"
+                            onmouseout="setHoverEffect('donePicture', false)" href="board.html" class="todo-done"
+                            style="margin-right: 0;">
+
                             <div class="todo-done-inner-container">
-                                <img id="donePicture" src="./assets/img/tick.png">
+
+                                <img id="donePicture" src="./assets/img/tick.png" alt="checkmark icon">
                                 <div><b id="done"></b>Done</div>
                             </div>
+
                         </a>
                     </div>
+
                 </div>
+
                 <div id="mainRightContainer" class="main-right-container">
                     <b id="greeting"></b>
                     <span id="nameOfUser"></span>
+
                 </div>
+
             </main>
+
         </div>
 
     </div>

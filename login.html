@@ -25,10 +25,10 @@
 <body onload="initLogin()">
 
     <div id="mobileStartScreen" class="startscreen-mobile">
-        <img src="./assets/img/join_small.png" alt="">
+        <img src="./assets/img/join_small.png" alt="join logo">
     </div>
 
-    <img id="joinPic" class="join-pic" src="./assets/img/Join_dark.png"
+    <img id="joinPic" class="join-pic" src="./assets/img/Join_dark.png" alt="join logo"
         onclick="showAndHideElements(['loginContainer', 'signUp'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']); resetInputs()">
 
     <div class="website">
@@ -42,29 +42,29 @@
 
             <div id="emailContainer" class="input-container">
                 <input required id="email" type="email" placeholder="E-mail">
-                <img src="./assets/img/mail.png" alt="">
+                <img src="./assets/img/mail.png" alt="icon mail">
             </div>
 
             <div id="passwordContainer" class="input-container">
 
                 <input oninput="switchPasswordPicture('password')" required id="password" type="password" placeholder="Password">
 
-                <img id="lock-password" src="./assets/img/lock.png" alt="">
+                <img id="lock-password" src="./assets/img/lock.png" alt="icon password">
 
                 <img onclick="togglePasswordVisibility('password')" id="hide-password" class="d-none"
-                    src="./assets/img/hide_password.png" alt="">
+                    src="./assets/img/hide_password.png" alt="icon password hidden">
                 <img onclick="togglePasswordVisibility('password')" id="show-password" class="d-none"
-                    src="./assets/img/show_password.png" alt="">
+                    src="./assets/img/show_password.png" alt="icon password visible">
             </div>
 
-            <div id="wrongPassword">False login credentials</div>
+            <div id="wrongPassword" class="d-none">False login credentials</div>
 
             <div class="remember-forgot-container">
 
                 <div class="remember-container">
 
                     <div onclick="toggleRememberMeTick()" class="remember-box">
-                        <img id="tick" class="d-none" src="./assets/img/create_subtask.png" alt="">
+                        <img id="tick" class="d-none" src="./assets/img/create_subtask.png" alt="tick box">
                     </div>
 
                     <div> Remember me </div>
@@ -89,40 +89,40 @@
             class="login-container d-none">
 
             <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer']); resetInputs()"
-                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="blue arrow to the left">
 
             <span>Sign up</span>
             <div class="blue-line"></div>
 
             <div id="usernameContainer" class="input-container">
                 <input required id="username" type="text" placeholder="First name" autocomplete="given-name">
-                <img src="./assets/img/user-line.png" alt="">
+                <img src="./assets/img/user-line.png" alt="icon username">
             </div>
 
             <div id="usernameContainer" class="input-container">
                 <input required id="username" type="text" placeholder="Last name" autocomplete="family-name">
-                <img src="./assets/img/user-line.png" alt="">
+                <img src="./assets/img/user-line.png" alt="icon username">
             </div>
 
-            <div id="usernameTaken">Username already exists</div>
+            <div id="usernameTaken" class="d-none">Username already exists</div>
 
             <div id="emailSignUpContainer" class="input-container">
                 <input required id="signUpEmail" type="email" placeholder="E-mail" autocomplete="email">
-                <img src="./assets/img/mail.png" alt="">
+                <img src="./assets/img/mail.png" alt="icon mail">
             </div>
 
-            <div id="emailTaken">E-mail already exists</div>
+            <div id="emailTaken" class="d-none">E-mail already exists</div>
 
             <div class="input-container">
                 <input required id="signUpPassword" type="password" placeholder="Password" minlength="8"
                     autocomplete="new-password" oninput="switchPasswordPicture('signUpPassword')">
 
-                <img id="lock-signUpPassword" src="./assets/img/lock.png" alt="">
+                <img id="lock-signUpPassword" src="./assets/img/lock.png" alt="icon password">
 
                 <img onclick="togglePasswordVisibility('signUpPassword')" id="hide-signUpPassword" class="d-none"
-                    src="./assets/img/hide_password.png" alt="">
+                    src="./assets/img/hide_password.png" alt="icon password hidden">
                 <img onclick="togglePasswordVisibility('signUpPassword')" id="show-signUpPassword" class="d-none"
-                    src="./assets/img/show_password.png" alt="">
+                    src="./assets/img/show_password.png" alt="icon password visible">
             </div>
 
             <button type="submit" id="signUpButton" class="button-dark margin-top-20px">Sign up</button>
@@ -133,7 +133,7 @@
             class="login-container d-none" autocomplete="email">
 
             <img onclick="showAndHideElements(['loginContainer'], ['forgotPwContainer']); resetInputs()"
-                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="blue arrow to the left">
 
             <span class="padding-left-right-40px">I forgot my password</span>
 
@@ -144,7 +144,7 @@
 
             <div id="forgotPwEmailContainer" class="input-container">
                 <input id="forgotPwEmail" type="email" placeholder="E-mail">
-                <img src="./assets/img/mail.png" alt="">
+                <img src="./assets/img/mail.png" alt="icon mail">
             </div>
 
             <button type="submit" id="sendMailButton" class="button-dark margin-top-20px width-180px">Send me the
@@ -156,7 +156,7 @@
             class="login-container d-none" autocomplete="new-password">
 
             <img onclick="showAndHideElements(['loginContainer'], ['resetPwContainer']); resetInputs()"
-                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="">
+                class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="blue arrow to the left">
 
             <span class="padding-left-right-40px">Reset your password</span>
 
@@ -166,12 +166,12 @@
             <div class="input-container">
                 <input required id="newPassword" type="password" placeholder="New Password" minlength="8" oninput="switchPasswordPicture('newPassword')">
 
-                <img id="lock-newPassword" src="./assets/img/lock.png" alt="">
+                <img id="lock-newPassword" src="./assets/img/lock.png" alt="icon password">
 
                 <img onclick="togglePasswordVisibility('newPassword')" id="hide-newPassword" class="d-none"
-                    src="./assets/img/hide_password.png" alt="">
+                    src="./assets/img/hide_password.png" alt="icon password hidden">
                 <img onclick="togglePasswordVisibility('newPassword')" id="show-newPassword" class="d-none"
-                    src="./assets/img/show_password.png" alt="">
+                    src="./assets/img/show_password.png" alt="icon password visible">
             </div>
 
             <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
@@ -187,7 +187,7 @@
     </div>
 
     <div id="emailSent" class="d-none">
-        <img src="./assets/img/SendCheck.png" alt="">
+        <img src="./assets/img/SendCheck.png" alt="icon mail sent">
         An e-mail has been sent to you!
     </div>
 

@@ -37,7 +37,7 @@ body {
 
 .join-pic {
     position: absolute;
-    animation: JoinPicAni 800ms linear 0ms 1 normal forwards;
+    animation: JoinPicAni 800ms ease-in-out 0ms 1 normal forwards;
     z-index: 10;
     height: 120px;
     left: 0px;
@@ -334,9 +334,10 @@ input:-webkit-autofill:active{
 #wrongPassword,
 #usernameTaken,
 #emailTaken {
-    color: white;
+    color: red;
     font-size: 12px;
     width: 100%;
+    max-width: 380px;
 }
 
 @media(max-width: 900px) {
@@ -373,7 +374,7 @@ input:-webkit-autofill:active{
         top: 3%;
         height: 80px;
         width: 66px;
-        animation: JoinPicAniMobile 800ms linear 0ms 1 normal forwards;
+        animation: JoinPicAniMobile 800ms ease-in-out 0ms 1 normal forwards;
         display: none;
     }
 

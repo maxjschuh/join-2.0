@@ -350,13 +350,13 @@ function logOut() {
 
 function checkForRunningSession() {
 
-    const page = window.location.pathname;
+    const page = window.location.pathname.split("/").pop();
 
-    if (currentEmail && page === "/login.html") window.location.replace("./summary.html");
+    if (currentEmail && page === "login.html") window.location.replace("./summary.html");
 
     if (currentEmail) return;
 
-    if (page === "/help.html" || page === "/legal-notice.html" || page === "/login.html") return;
+    if (page === "help.html" || page === "legal-notice.html" || page === "login.html") return;
 
     else window.location.replace("./login.html");
 }

@@ -80,24 +80,23 @@ function guestLogin() {
 
 /**
  * This function will check if the email or the password is correct
- * 
  * @returns The function will stop if logged in succesfully
  */
 function checkLogin() {
     const emailLogIn = document.getElementById('email').value;
     const passwordLogIn = document.getElementById('password').value;
 
-    users.forEach(user => {
+    for (let i = 0; i < users.length; i++) {
+        const user = users[i];
 
-        if (emailLogIn == user.email && passwordLogIn == user.password) {
-
+        if (emailLogIn === user.email && passwordLogIn === user.password) {
+    
             login(user.email, user.username);
             return;
-        }
+        }       
+    }
 
-    });
-
-    setInlineStyle(['wrongPassword'], 'color: red');
+    toggleElements(['wrongPassword'], 'd-none', false);
     setInlineStyle(['passwordContainer', 'emailContainer'], 'border: 1px solid red');
 }
 
