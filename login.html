@@ -94,24 +94,27 @@
             <span>Sign up</span>
             <div class="blue-line"></div>
 
-            <div id="usernameContainer" class="input-container">
-                <input required id="username" type="text" placeholder="First name" autocomplete="given-name">
+
+            <div id="firstnameContainer" class="input-container">
+                <input required id="firstname" type="text" placeholder="First name" autocomplete="given-name" maxlength="99">
                 <img src="./assets/img/user-line.png" alt="icon username">
             </div>
+            <div id="firstnameAlert" class="alert"></div>
 
-            <div id="usernameContainer" class="input-container">
-                <input required id="username" type="text" placeholder="Last name" autocomplete="family-name">
+
+            <div id="lastnameContainer" class="input-container">
+                <input required id="lastname" type="text" placeholder="Last name" autocomplete="family-name" maxlength="99">
                 <img src="./assets/img/user-line.png" alt="icon username">
             </div>
+            <div id="lastnameAlert" class="alert"></div>
 
-            <div id="usernameTaken" class="d-none">Username already exists</div>
 
             <div id="emailSignUpContainer" class="input-container">
-                <input required id="signUpEmail" type="email" placeholder="E-mail" autocomplete="email">
+                <input required id="signUpEmail" type="email" placeholder="E-mail" autocomplete="email" maxlength="99">
                 <img src="./assets/img/mail.png" alt="icon mail">
             </div>
+            <div id="signUpEmailAlert" class="alert"></div>
 
-            <div id="emailTaken" class="d-none">E-mail already exists</div>
 
             <div class="input-container">
                 <input required id="signUpPassword" type="password" placeholder="Password" minlength="8"
@@ -155,7 +158,7 @@
         <form onsubmit="submitNewPassword(); return false; disableButton('continueButton')" id="resetPwContainer"
             class="login-container d-none" autocomplete="new-password">
 
-            <img onclick="showAndHideElements(['loginContainer'], ['resetPwContainer']); resetInputs()"
+            <img onclick="showAndHideElements(['loginContainer'], ['resetPwContainer'])"
                 class="blue-arrow" src="./assets/img/blue-arrow-left.png" alt="blue arrow to the left">
 
             <span class="padding-left-right-40px">Reset your password</span>

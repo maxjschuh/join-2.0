@@ -27,8 +27,6 @@ function accountData() {
     const emailSignUp = document.getElementById('signUpEmail').value;
     const passwordSignUp = document.getElementById('signUpPassword').value;
 
-    toggleElements(['usernameTaken'], 'd-none', false);
-
     if (!checkIfUserExists(usernameSignUp, emailSignUp)) return;
 
     const account = {
@@ -78,13 +76,11 @@ function checkIfUserExists(usernameSignUp, emailSignUp) {
     for (let i = 0; i < users.length; i++) {
 
         if (usernameSignUp == users[i]['username']) {
-            toggleElements(['usernameTaken'], 'd-none', false);
             document.getElementById('usernameContainer').style = 'border: 1px solid red';
             return false;
         }
 
         if (emailSignUp == users[i]['email']) {
-            toggleElements(['emailTaken'], 'd-none', false);
             document.getElementById('emailSignUpContainer').style = 'border: 1px solid red';
             return false;
         }

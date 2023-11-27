@@ -19,7 +19,7 @@ function templateContactListEntry(userData, i) {
     return /*html*/`
         <div class="contact-list-box" id="userSmall-${i}" onclick="openContactDetails(${i})">
             <div>
-                <div style="background-color:${userData['color']}"  class="contact-initialen-small" id="listIcon"> ${userData['firstname'].charAt(0).toUpperCase()}${userData['lastname'].charAt(0).toUpperCase()} </div>
+                <div style="background-color:${userData['color']}"  class="contact-initials-small" id="listIcon"> ${userData['firstname'].charAt(0).toUpperCase()}${userData['lastname'].charAt(0).toUpperCase()} </div>
             </div>
             <div>
                 <div class="contact-list-name">${userData['firstname']} ${userData['lastname']}</div>
@@ -101,9 +101,11 @@ function templateContactOverlayEdit(i, editDetails) {
                 <div onclick="closeOverlayEdit()" class="close-form"><img src="./assets/img/contact_close_form.png" class="cursor-pointer"
                         alt=""></div>
                 <div class="contact-overlay-form-box">
-                    <div class="contact-initialen" style="background-color:${editDetails['color']}">
+
+                    <div class="contact-initials" style="background-color:${editDetails['color']}">
                         ${editDetails['firstname'].charAt(0).toUpperCase()}${editDetails['lastname'].charAt(0).toUpperCase()}
                     </div>
+
                     <form class="contact-form-container">
                         <input class="contact-overlay-name" required type="text" id="editName" style="color: rgb(0,0,0)"
                             value="${editDetails['firstname']} ${editDetails['lastname']}">

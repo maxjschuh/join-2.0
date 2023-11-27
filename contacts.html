@@ -36,9 +36,9 @@
             </div>
 
             <div class="contacts-section" id="contacts-section">
-                <!--Kontakt-Liste-->
+
                 <div id="contact-list" class="contact-list"></div>
-                <!--Detail-Ansicht-->
+
                 <div id="contacts-container" class="contacts-container">
                     <div id="contact-kanban" class="contact-kanban">Kanban Project Management Tool</div>
                     <div id="arrow-container" class="arrow-container ">
@@ -52,7 +52,7 @@
                         <div class="contacts-divider"> </div>
                         <div class="contacts-headline-small">Better with a team </div>
                     </div>
-                    <!--Detail-User-->
+
                     <div id="selectedContact" class="selected-contact"></div>
                 </div>
 
@@ -62,10 +62,10 @@
                 </div>
 
             </div>
-            <div class="overlay-section d-none" id="overlaySection" w3-include-html="./assets/templates/add_contact_template.html"></div>
 
+            <div class="overlay-section d-none" id="newContact" w3-include-html="./assets/templates/add_contact_template.html"></div>
 
-            <div class="overlay-section" id="editContact"></div>
+            <div class="overlay-section d-none" id="editContact" w3-include-html="./assets/templates/edit_contact_template.html"></div>
 
 
         </div>

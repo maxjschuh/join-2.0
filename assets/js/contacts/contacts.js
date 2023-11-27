@@ -1,7 +1,6 @@
 let firstLetters = [];
 let contacts;
 let users;
-let guestAccountEmail = 'guest@mail.com';
 const ALLOWED_CHARACTERS = /^[\w\s@.-]+$/; //Matches one or more word characters (alphanumeric + underscore), spaces, "@" symbol, "-", and ".".
 let contactFormValid = false;
 
@@ -57,8 +56,6 @@ function renderContactList() {
 function renderContactsWithFirstLetter(firstLetter, contactList) {
 
     contacts.forEach((contact, index) => {
-
-        if (contact.email === guestAccountEmail) return;
 
         const contactFirstLetter = contact.firstname.charAt(0).toLowerCase();
 
@@ -118,7 +115,7 @@ function changeMobileView(direction_of_operation) {
  */
 function openNewContactForm() {
 
-    toggleElements(['overlaySection'], 'd-none', false);
+    toggleElements(['newContact'], 'd-none', false);
 
     toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
 }
@@ -135,29 +132,10 @@ function validateInput(inputId) {
         contactFormValid = false;
         alert.innerHTML = 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]';
     }
-
 }
 
 
-function validateNewContactForm() {
-
-    const inputFields = [
-        { value: document.getElementById('newContactFirstName').value, alertId: 'firstNameAlert' },
-        { value: document.getElementById('newContactLastName').value, alertId: 'lastNameAlert' },
-        { value: document.getElementById('newContactEmail').value, alertId: 'emailAlert' },
-        { value: document.getElementById('newContactPhone').value, alertId: 'phoneAlert' }
-    ];
-
-    inputFields.forEach((inputField) => {
-
-        if (allowedCharacters.test(inputField.value)) return;
-
-        toggleElements([inputField.alertId], 'd-none', false);
-
-    });
-}
-
-function submitEditContactForm(currentEmail) {
+async function submitEditContactForm(i) {
 
     const inputIds = ['editFirstName', 'editLastName', 'editEmail', 'editPhone'];
     contactFormValid = true;
@@ -167,10 +145,31 @@ function submitEditContactForm(currentEmail) {
         validateInput(inputId);
     });
 
-    checkIfEmailAlreadyExists('newContactEmail', currentEmail);
+    checkIfEmailAlreadyExists('editEmail', contacts[i].email);
 
-    if (contactFormValid) saveEditedUser();
+    if (contactFormValid) await saveEditedUser(i);
 }
+
+
+/**
+ * This functions shows and saves the edited user information 
+ * @param {number} i - index of the database.contacts array
+ */
+async function saveEditedUser(i) {
+
+    const contactToEdit = contacts[i];
+    contactToEdit.firstname = document.getElementById('editFirstName').value
+    contactToEdit.lastname = document.getElementById('editLastName').value
+    contactToEdit.email = document.getElementById('editEmail').value;
+    contactToEdit.phone = document.getElementById('editPhone').value;
+
+    await setItem('database', database);
+
+    closeOverlayEdit();
+    openContactDetails(i);
+    loadContacts();
+}
+
 
 function submitNewContactForm() {
     const inputIds = ['newContactFirstName', 'newContactLastName', 'newContactEmail', 'newContactPhone'];
@@ -185,6 +184,7 @@ function submitNewContactForm() {
 
     if (contactFormValid) addContact();
 }
+
 
 function checkIfEmailAlreadyExists(inputId, currentEmail) {
 
@@ -203,9 +203,6 @@ function checkIfEmailAlreadyExists(inputId, currentEmail) {
         }
     }
 }
-
-
-
 
 
 /**
@@ -314,7 +311,7 @@ function closeContactOverlay() {
 
     setTimeout(() => {
 
-        toggleElements(['overlaySection'], 'd-none', true);
+        toggleElements(['newContact'], 'd-none', true);
     }, 300);
 }
 
@@ -324,32 +321,28 @@ function closeContactOverlay() {
  * @param {number} i - index of the database.contacts array 
  */
 function editContact(i) {
-    const editDetails = contacts[i];
-    document.getElementById('editContact').innerHTML = templateContactOverlayEdit(i, editDetails);
+
+
+    const contactToEdit = contacts[i];
+
+    toggleElements(['editContact'], 'd-none', false);
+
+    document.getElementById('editContactForm').onsubmit = `submitEditContactForm(${i})`;
+
+    document.getElementById('editFirstName').value = contactToEdit.firstname;
+    document.getElementById('editLastName').value = contactToEdit.lastname;
+    document.getElementById('editEmail').value = contactToEdit.email;
+    document.getElementById('editPhone').value = contactToEdit.phone;
+    document.getElementById('contact-initials').style = `background-color:${contactToEdit.color}`;
+
+    document.getElementById('contact-initials').innerHTML =
+        (contactToEdit.firstname.charAt(0) + contactToEdit.lastname.charAt(0)).toUpperCase();
+
+
     setTimeout(() => {
 
         toggleElements(['contactOverlayBoxEdit'], 'contact-overlay-box-animate', true);
     }, 20);
-}
-
-
-/**
- * This functions shows and saves the edited user information 
- * @param {number} i - index of the database.contacts array
- */
-async function saveEditedUser(i) {
-    const name = document.getElementById('editName').value;
-    const { firstName, lastName } = getFirstAndLastName(name);
-    contacts[i]['firstname'] = firstName;
-    contacts[i]['lastname'] = lastName;
-    contacts[i]['email'] = document.getElementById('editEmail').value;
-    contacts[i]['phone'] = document.getElementById('editPhone').value;
-
-    await setItem('database', database);
-
-    closeOverlayEdit();
-    openContactDetails(i);
-    loadContacts();
 }
 
 
@@ -360,7 +353,8 @@ function closeOverlayEdit() {
 
     toggleElements(['contactOverlayBoxEdit'], 'contact-overlay-box-animate', false);
     setTimeout(() => {
-        document.getElementById('editContact').innerHTML = '';
+
+        toggleElements(['editContact'], 'd-none', true);
     }, 350);
 }
 

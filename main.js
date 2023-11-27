@@ -8,173 +8,6 @@ let currentEmail;
 let currentUsername;
 let remember;
 
-
-let databaseJason = {
-    "contacts": [
-        {
-            "firstname": "Anton",
-            "lastname": "Mayer",
-            "email": "antom@mail.com",
-            "phone": "+491111111111",
-            "color": "rgb(135, 206, 250)"
-        },
-        {
-            "firstname": "Tanja",
-            "lastname": "Wolf",
-            "email": "wolf@mail.com",
-            "phone": "+492222222222",
-            "color": "rgb(144, 238, 144)"
-        },
-        {
-            "firstname": "Sofia",
-            "lastname": "Müller",
-            "email": "sofiam@mail.com",
-            "phone": "+493333333333",
-            "color": "rgb(255, 192, 203)"
-        },
-        {
-            "firstname": "Herbert",
-            "lastname": "Braun",
-            "email": "hbraun@mail.com",
-            "phone": "+494444444444",
-            "color": "rgb(255, 165, 0)"
-        },
-        {
-            "firstname": "David",
-            "lastname": "Eisenberg",
-            "email": "daveis@mail.com",
-            "phone": "+495555555555",
-            "color": "rgb(255, 0, 0)"
-        },
-        {
-            "firstname": "Benedikt",
-            "lastname": "Ziegler",
-            "email": "ziegel@mail.com",
-            "phone": "+496666666666",
-            "color": "rgb(0, 255, 0)"
-        },
-        {
-            "firstname": "Marcel",
-            "lastname": "Bauer",
-            "email": "mbauer@mail.com",
-            "phone": "+497777777777",
-            "color": "rgb(0, 0, 255)"
-        },
-        {
-            "firstname": "Guest",
-            "lastname": "Guest",
-            "email": "guest@mail.com",
-            "phone": "+498888888888",
-            "color": "rgb(141, 218, 80)"
-        },
-        {
-            "firstname": "Peter",
-            "lastname": "Hofer",
-            "email": "peter@mail.com",
-            "phone": "",
-            "color": "rgb(204, 108, 46)"
-        }
-    ],
-    "categories": [
-        {
-            "name": "Design",
-            "color": "rgb(239, 132, 41)"
-        },
-        {
-            "name": "Sales",
-            "color": "rgb(236, 126, 250)"
-        },
-        {
-            "name": "Backoffice",
-            "color": "rgb(100, 210, 193)"
-        },
-        {
-            "name": "Marketing",
-            "color": "rgb(18, 58, 248)"
-        },
-        {
-            "name": "Media",
-            "color": "rgb(247, 202, 57)"
-        }
-    ],
-    "tasks": [
-        {
-            "title": "Website redesign",
-            "description": "Modify the contents of the main website. Adjust the UI to the company's brand design. Check responsive",
-            "category": "Design",
-            "assigned_to": ["Anton Mayer", "Tanja Wolf", "Benedikt Ziegler"],
-            "due_date": "2023-12-23",
-            "prio": "low",
-            "subtasks": {
-                "name": ["Modify contents", "Create new icons", "Revise the homepage responsively"],
-                "status": ["false", "false", "false"]
-            },
-            "progress": "todo"
-        },
-        {
-            "title": "Call potencial clients",
-            "description": "Make the product presentation to prospective buyers",
-            "category": "Sales",
-            "assigned_to": ["David Eisenberg", "Tanja Wolf", "Sofia Müller"],
-            "due_date": "2024-01-28",
-            "prio": "high",
-            "subtasks": {
-                "name": [],
-                "status": []
-            },
-
-            "progress": "todo"
-        },
-        {
-            "title": "Accounting invoices",
-            "description": "Write open invoices for customer",
-            "category": "Backoffice",
-            "assigned_to": ["Herbert Braun"],
-            "due_date": "2024-02-13",
-            "prio": "medium",
-            "subtasks": {
-                "name": [],
-                "status": []
-            },
-            "progress": "todo"
-        },
-        {
-            "title": "Social media strategy",
-            "description": "Develop an ad campaign for brand positioning",
-            "category": "Marketing",
-            "assigned_to": ["Sofia Müller", "Marcel Bauer"],
-            "due_date": "2023-03-02",
-            "prio": "low",
-            "subtasks": {
-                "name": ["Design an ad", "Calculate the costs", "Created accounts for all common social media platforms"],
-                "status": ["false", "false", "false"]
-            },
-            "progress": "todo"
-        },
-        {
-            "title": "Video cut",
-            "description": "Edit the new company video",
-            "category": "Media",
-            "assigned_to": ["Tanja Wolf"],
-            "due_date": "2023-04-02",
-            "prio": "medium",
-            "subtasks": {
-                "name": [],
-                "status": []
-            },
-            "progress": "todo"
-        }
-    ],
-    "users": [
-        {
-            "username": "Guest",
-            "email": "guest@mail.com",
-            "password": "12345678"
-        }
-    ]
-}
-
-
 let databaseJSON = {
     "contacts": [
         {
@@ -228,7 +61,7 @@ let databaseJSON = {
         },
         {
             "firstname": "Guest",
-            "lastname": "Guest",
+            "lastname": "User",
             "email": "guest@mail.com",
             "phone": "+498888888888",
             "color": "rgb(141, 218, 80)"
@@ -364,7 +197,7 @@ let databaseJSON = {
     "users": [
         {
             "firstname": "Guest",
-            "lastname": "Guest",
+            "lastname": "User",
             "email": "guest@mail.com",
             "password": "12345678"
         }

@@ -110,6 +110,7 @@ function updatePassword(newPassword) {
     });
 }
 
+
 function containsForbiddenCharacters(input) {
 
     const regex = /(´|`|'"\\|[\s])/;
