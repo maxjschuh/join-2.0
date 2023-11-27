@@ -192,16 +192,33 @@
     background-color: rgb(246, 247, 248);
 }
 
+.contact-list-box:active {
+    background-color: rgb(44, 54, 70);
+}
+
+.contact-list-box:active .contact-list-name {
+    color: white;
+}
+
 .contact-list-name {
     font-size: 20px;
     font-weight: 400;
     margin-bottom: 5px;
 }
 
-.contact-list-email {
+.contact-phone-email-field {
     color: rgb(0, 124, 238);
     font-size: 16px;
     font-weight: 400;
+    text-decoration: none;
+}
+
+.contact-phone-email-field:hover {
+    text-decoration: underline;
+}
+
+.contact-phone-email-field:active {
+    color: rgba(9, 25, 49, 1);
 }
 
 .contact-card-container {
@@ -264,6 +281,10 @@
     cursor: pointer;
 }
 
+.contact-edit:active {
+    color: rgba(9, 25, 49, 1);
+}
+
 .contact-edit-pen {
     margin-bottom: -3px;
 }
@@ -276,6 +297,10 @@
 #contact-trash:hover {
     color: rgb(41, 171, 226);
     cursor: pointer;
+}
+
+#contact-trash:active {
+    color: rgba(9, 25, 49, 1);
 }
 
 .d-none {
@@ -658,6 +683,10 @@
     visibility: hidden;
 }
 
+.contact-left-arrow:hover {
+    cursor: pointer;
+}
+
 .contact-kanban {
     margin-top: 20px;
     margin-left: 48px;
@@ -691,14 +720,6 @@
 .alert {
     font-size: 12px;
     color: red;
-    display: flex;
-    align-items: end;
-    height: 22px;
-}
-
-.noAlert {
-    font-size: 12px;
-    color: white;
     display: flex;
     align-items: end;
     height: 22px;

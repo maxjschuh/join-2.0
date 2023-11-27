@@ -1,9 +1,10 @@
 <div class="contact-overlay-container">
-    <div class="contact-overlay-box">
+    <div class="contact-overlay-box" id="contactOverlayBoxAdd">
         <div class="contact-overlay-container-section">
             <div class="contact-overlay-section">
-                <div onclick="closeContactOverlay()" class="close-form-mobile">
-                    <img src="./assets/img/contact_close_mobile.png" alt="">
+                <div class="close-form-mobile">
+                    <img onclick="closeContactOverlay()" src="./assets/img/contact_close_mobile.png"
+                        class="cursor-pointer" alt="">
                 </div>
                 <div class="overlay-text-container">
                     <img class="contact-overlay-logo" src="./assets/img/join_small.png" alt="">
@@ -13,29 +14,55 @@
                 </div>
             </div>
             <div class="contact-overlay-form-section">
-                <div onclick="closeContactOverlay()" class="close-form"><img src="./assets/img/contact_close_form.png"
-                        alt=""></div>
+
+                <div class="close-form">
+                    <img onclick="closeContactOverlay()" src="./assets/img/contact_close_form.png"
+                        class="cursor-pointer" alt="">
+                </div>
+
                 <div class="contact-overlay-form-box">
                     <div class="contact-overlay-icon-box"><img class="contact-overlay-icon"
-                            src="./assets/img/contact_user_white.png" alt=""></div>
-                    <form class="contact-form-container">
-                        <input id="newContactName" required type="text" placeholder="Name" style="color: rgb(0,0,0)"
-                            class="contact-overlay-name">
+                            src="./assets/img/contact_user_white.png" alt="">
+                    </div>
+
+
+                    <form id="newContactForm" class="contact-form-container"
+                        onsubmit="submitNewContactForm(); return false;">
+
+                        <input id="newContactFirstName" required type="text" placeholder="First name"
+                            style="color: rgb(0,0,0)" class="contact-overlay-name" maxlength="99"
+                            oninput="validateInput('newContactFirstName')">
+
+                        <div id="newContactFirstNameAlert" class="alert"></div>
+
+                        <input id="newContactLastName" required type="text" placeholder="Last name"
+                            style="color: rgb(0,0,0)" class="contact-overlay-name" maxlength="99"
+                            oninput="validateInput('newContactLastName')">
+
+                        <div id="newContactLastNameAlert" class="alert"></div>
+
                         <input id="newContactEmail" required type="email" placeholder="Email" style="color: rgb(0,0,0)"
-                            class="contact-overlay-email">
-                        <input id="newContactPhone" required type="tel" placeholder="Phone" style="color: rgb(0,0,0)"
-                            class="contact-overlay-phone">
+                            class="contact-overlay-email" maxlength="99" oninput="validateInput('newContactEmail')">
+
+                        <div id="newContactEmailAlert" class="alert"></div>
+
+                        <input id="newContactPhone" type="tel" placeholder="Phone" style="color: rgb(0,0,0)"
+                            class="contact-overlay-phone" maxlength="99" oninput="validateInput('newContactPhone')">
+
+                        <div id="newContactPhoneAlert" class="alert"></div>
+
                     </form>
                 </div>
                 <div class="contact-overlay-buttons">
+
                     <button class="contact-cancel-button" onclick="closeContactOverlay()">
                         <div>Cancel</div>
-                        <img src="./assets/img/contact_form_cancel.png" alt="">
+                        <img class="cancel-icon" src="./assets/img/contact_form_cancel.png" alt="">
                     </button>
-                    <button onclick="event.preventDefault(); if (validateForm()) { addContact(); }"
-                        class="contact-create-button">
+
+                    <button type="submit" form="newContactForm" class="contact-create-button" id="create-contact">
                         <div>Create contact</div>
-                        <img src="./assets/img/contact_form_check.png" alt="">
+                        <img src="./assets/img/contact_form_check.png" alt="submit form icon">
                     </button>
                 </div>
             </div>

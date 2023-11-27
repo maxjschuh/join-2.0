@@ -1,4 +1,9 @@
 let firstLetters = [];
+let contacts;
+let users;
+let guestAccountEmail = 'guest@mail.com';
+const ALLOWED_CHARACTERS = /^[\w\s@.-]+$/; //Matches one or more word characters (alphanumeric + underscore), spaces, "@" symbol, "-", and ".".
+let contactFormValid = false;
 
 /**
  * This onload-function starts the most important functions.
@@ -7,6 +12,7 @@ async function initContact() {
     await init();
     contacts = database.contacts;
     users = database.users;
+    firstLetters = []
     loadContacts();
 }
 
@@ -23,43 +29,41 @@ function loadContacts() {
         if (!firstLetters.includes(firstLetter)) firstLetters.push(firstLetter);
     }
     firstLetters.sort();
-    const contactList = document.getElementById('contact-list');
-    contactList.innerHTML = '';
-    renderContactList(firstLetters);
+    renderContactList();
 }
 
 
 /**
  * This function renders the capital letter as alphabetical category of the contact list
- * @param {string} firstLetters - The first letter of contact['firstname'].
  */
-function renderContactList(firstLetters) {
+function renderContactList() {
 
+    emptyInnerHTML(['contact-list']);
     const contactList = document.getElementById('contact-list');
 
     firstLetters.forEach(firstLetter => {
 
-        contactList.innerHTML += templateContactFirstLetters(firstLetter);
-        renderFirstLetter(firstLetter);
-
+        contactList.innerHTML += templateContactListFirstLetterSeparator(firstLetter);
+        renderContactsWithFirstLetter(firstLetter, contactList);
     });
 }
 
 
 /**
- * Uses the first letter, then creates a small user entry in the contact list
- * @param {string} firstLetter - The first letter of contact['firstname'].
+ * Renders the contact entries in the contact list for a specific first letter that is passed as parameter.
+ * @param {string} firstLetter of the contact's firstname which should be rendered
+ * @param {object} contactList the html element, where the contacts should be rendered
  */
-function renderFirstLetter(firstLetter) {
-    for (let i = 0; i < contacts.length; i++) {
-        const userData = contacts[i];
-        const contactFirstLetter = userData.firstname.charAt(0).toLowerCase();
+function renderContactsWithFirstLetter(firstLetter, contactList) {
 
-        if (contactFirstLetter === firstLetter) {
-            let contactList = document.getElementById('contact-list');
-            contactList.innerHTML += templateContactList(userData, i);
-        }
-    }
+    contacts.forEach((contact, index) => {
+
+        if (contact.email === guestAccountEmail) return;
+
+        const contactFirstLetter = contact.firstname.charAt(0).toLowerCase();
+
+        if (contactFirstLetter === firstLetter) contactList.innerHTML += templateContactListEntry(contact, index);
+    });
 }
 
 
@@ -113,49 +117,113 @@ function changeMobileView(direction_of_operation) {
  * This function opens the add new contact overlay form.
  */
 function openNewContactForm() {
-    let newContact = document.getElementById('overlaySection');
-    newContact.innerHTML = templateAddContactOverlay();
 
-    setTimeout(() => {
+    toggleElements(['overlaySection'], 'd-none', false);
 
-        toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
-    }, 10);
+    toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
 }
 
 
-/**
- * This function checks if all input fields are filled in.
- * @returns {boolean} false if the form is invalid, true if the form is valid
- */
-function validateForm() {
+function validateInput(inputId) {
 
-    let form_complete = true;
+    const inputValue = document.getElementById(inputId).value;
+    const alert = document.getElementById(inputId + 'Alert');
+
+    if (ALLOWED_CHARACTERS.test(inputValue) || !inputValue) {
+        alert.innerHTML = '';
+    } else {
+        contactFormValid = false;
+        alert.innerHTML = 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]';
+    }
+
+}
+
+
+function validateNewContactForm() {
 
     const inputFields = [
-        { value: document.getElementById("newContactName").value, alertId: 'nameAlert' },
-        { value: document.getElementById("newContactEmail").value, alertId: 'emailAlert' },
-        { value: document.getElementById("newContactPhone").value, alertId: 'phoneAlert' }];
+        { value: document.getElementById('newContactFirstName').value, alertId: 'firstNameAlert' },
+        { value: document.getElementById('newContactLastName').value, alertId: 'lastNameAlert' },
+        { value: document.getElementById('newContactEmail').value, alertId: 'emailAlert' },
+        { value: document.getElementById('newContactPhone').value, alertId: 'phoneAlert' }
+    ];
 
     inputFields.forEach((inputField) => {
 
-        if (inputField.value) return;
+        if (allowedCharacters.test(inputField.value)) return;
 
-        showAlert(inputField.alertId);
-        form_complete = false;
+        toggleElements([inputField.alertId], 'd-none', false);
+
+    });
+}
+
+function submitEditContactForm(currentEmail) {
+
+    const inputIds = ['editFirstName', 'editLastName', 'editEmail', 'editPhone'];
+    contactFormValid = true;
+
+    inputIds.forEach(inputId => {
+
+        validateInput(inputId);
     });
 
-    return form_complete;
+    checkIfEmailAlreadyExists('newContactEmail', currentEmail);
+
+    if (contactFormValid) saveEditedUser();
+}
+
+function submitNewContactForm() {
+    const inputIds = ['newContactFirstName', 'newContactLastName', 'newContactEmail', 'newContactPhone'];
+    contactFormValid = true;
+
+    inputIds.forEach(inputId => {
+
+        validateInput(inputId);
+    });
+
+    checkIfEmailAlreadyExists('newContactEmail');
+
+    if (contactFormValid) addContact();
+}
+
+function checkIfEmailAlreadyExists(inputId, currentEmail) {
+
+    const newContactEmail = document.getElementById(inputId).value;
+    const alert = document.getElementById(inputId + 'Alert');
+
+    if (currentEmail === newContactEmail) return;
+
+    for (let i = 0; i < contacts.length; i++) {
+        const contact = contacts[i];
+
+        if (contact.email === newContactEmail) {
+            contactFormValid = false;
+            alert.innerHTML = 'E-mail already in use!';
+            return;
+        }
+    }
 }
 
 
-/**
- * Shows an alert for the input field that is passed as parameter.
- * @param {string} id of the empty input field
- */
-function showAlert(id) {
 
-    toggleElements([id], 'noAlert', false);
-    toggleElements([id], 'alert', true);
+
+
+/**
+ * This function adds a new contact to contacts object and saves it in the remote storage.
+ */
+async function addContact() {
+
+    const { firstName, lastName, email, phone } = getContactData();
+    addContactToContacts(firstName, lastName, email, phone, generateRandomColor());
+
+    await setItem('database', database);
+    resetValue(['newContactFirstName', 'newContactLastName', 'newContactEmail', 'newContactPhone']);
+
+    disableButton();
+    userCreatedSuccess();
+    closeContactOverlay();
+
+    // if (window.location.pathname === '/join/contacts.html') loadContacts();
 }
 
 
@@ -164,76 +232,32 @@ function showAlert(id) {
  * @returns the name, email address and phone number from the input fields
  */
 function getContactData() {
-    const name = document.getElementById('newContactName').value;
+    const firstName = document.getElementById('newContactFirstName').value;
+    const lastName = document.getElementById('newContactLastName').value;
     const email = document.getElementById('newContactEmail').value;
     const phone = document.getElementById('newContactPhone').value;
 
-    return { name, email, phone };
-}
-
-
-/**
- * This function adds a new contact to contacts object and saves it in the remote storage.
- */
-async function addContact() {
-    const { name, email, phone } = getContactData();
-    const { firstName, lastName } = getFirstAndLastName(name);
-    addContactToContacts(firstName, lastName, email, phone, generateRandomColor());
-
-    await setItem('database', database);
-    resetForm(name, email, phone);
-    disableButton();
-    userCreatedSuccess();
-    closeContactOverlay();
-
-    if (window.location.pathname == '/contacts.html') loadContacts();
+    return { firstName, lastName, email, phone };
 }
 
 
 /**
  * This function adds a new contact with it's object information to the array contacts
- * @param {string} firstName 
- * @param {string} lastName 
+ * @param {string} firstname 
+ * @param {string} lastname 
  * @param {string} email 
- * @param {number} phone 
- * @param {string} initialColor 
+ * @param {string} phone 
+ * @param {string} color 
  */
-function addContactToContacts(firstName, lastName, email, phone, initialColor) {
-    contacts.push({
-        "firstname": `${firstName}`,
-        "lastname": `${lastName}`,
-        "email": `${email}`,
-        "phone": `${phone}`,
-        "color": `${initialColor}`
-    });
-}
-
-
-/**
- * This function splits the name from the input field and extracts first and last name
- * @param {string} fullName from the name input field
- * @returns firstName, lastName 
- */
-function getFirstAndLastName(fullName) {
-    const fullNameArray = fullName.split(' ');
-    const firstName = fullNameArray[0].charAt(0).toUpperCase() + fullNameArray[0].slice(1);
-    let lastName = '';
-
-    if (fullNameArray.length > 1) lastName = fullNameArray[1].charAt(0).toUpperCase() + fullNameArray[1].slice(1);
-    return { firstName, lastName };
-}
-
-
-/**
- * This function empties the input fields of the add contact form.
- * @param {object} name 
- * @param {object} email 
- * @param {object} phone 
- */
-function resetForm(name, email, phone) {
-    name.value = '';
-    email.value = '';
-    phone.value = '';
+function addContactToContacts(firstname, lastname, email, phone, color) {
+    const contact = {
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        phone: phone,
+        color: color
+    }
+    contacts.push(contact);
 }
 
 
@@ -271,7 +295,7 @@ function userCreatedSuccess() {
  */
 async function deleteContact(i) {
     const toDelete = contacts[i];
-    deleteContatctsFromTask(toDelete);
+    deleteContactsFromTask(toDelete);
     contacts.splice(i, 1);
     await setItem('database', database);
 
@@ -287,9 +311,10 @@ async function deleteContact(i) {
 function closeContactOverlay() {
 
     toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', false);
+
     setTimeout(() => {
 
-        emptyInnerHTML(['overlaySection']);
+        toggleElements(['overlaySection'], 'd-none', true);
     }, 300);
 }
 
@@ -355,7 +380,7 @@ function updateContactSelection() {
  * This function deletes a user contact from a task and from the database
  * @param {string} contactToDelete - the contact to be deleted
  */
-function deleteContatctsFromTask(contactToDelete) {
+function deleteContactsFromTask(contactToDelete) {
     const toDelete = contactToDelete.firstname + ' ' + contactToDelete.lastname;
     database.tasks.forEach(task => {
         const assignedIndex = task.assigned_to.indexOf(toDelete);

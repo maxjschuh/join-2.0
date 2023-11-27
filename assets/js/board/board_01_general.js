@@ -266,9 +266,9 @@ function htmlTemplateUpTo3Assignees(task) {
 
     for (let i = 0; i < task.assigned_to.length; i++) {
 
-        const assignee = task.assigned_to[i];
+        const assigneeEmail = task.assigned_to[i];
 
-        html += htmlTemplateAssigneeIcon(assignee);
+        html += htmlTemplateAssigneeIcon(assigneeEmail);
     }
     return html;
 }

@@ -159,6 +159,31 @@ function htmlTemplateAssigneeIcon(assignee) {
 }
 
 
+
+function rewriteDatabase() {
+
+    database.tasks.forEach((task, index) => {
+
+        for (let j = 0; j < task.assigned_to.length; j++) {
+            let assignee = task.assigned_to[j];
+
+            const firstName = assignee.substring(0, assignee.indexOf(' '));
+            const secondName = assignee.substring(assignee.indexOf(' ') + 1);
+
+            for (let i = 0; i < database.contacts.length; i++) {
+                const contact = database.contacts[i];
+
+                if (firstName === contact.firstname &&
+                    secondName === contact.lastname) {
+
+                    database.tasks[index].assigned_to.splice(j, 1, contact.email);
+                }
+            }
+        }
+    });
+}
+
+
 /**
  * Returns the html template for all drop containers in a specific column.
  * @param {string} columnId html id of the column in which the containers should be rendered

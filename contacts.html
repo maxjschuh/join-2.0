@@ -31,7 +31,7 @@
             <div class="mobile-contact-button-container" id="mobile-contact-button-container">
                 <div class="mobile-user-contact-button" id="addUser" onclick="openNewContactForm()">
                     New contact
-                    <img src="./assets/img/contact_user.png" alt="">
+                    <img src="./assets/img/contact_user.png" alt="contact icon">
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                     <div id="contact-kanban" class="contact-kanban">Kanban Project Management Tool</div>
                     <div id="arrow-container" class="arrow-container ">
                         <img id="contact-left-arrow" onclick="changeMobileView(false)" class="contact-left-arrow "
-                            src="./assets/img/contact_arrow_blue.png" alt="">
+                            src="./assets/img/contact_arrow_blue.png" alt="blue arrow to the left">
                     </div>
                     <div class="contacts-header" id="headline">
                         <div class="contact-details-header">
@@ -58,11 +58,13 @@
 
                 <div class="user-contact-button button-hover" id="user-contact-button" onclick="openNewContactForm()">
                     New contact
-                    <img src="./assets/img/contact_user.png" alt="">
+                    <img src="./assets/img/contact_user.png" alt="contact icon">
                 </div>
 
             </div>
-            <div class="overlay-section" id="overlaySection"></div>
+            <div class="overlay-section d-none" id="overlaySection" w3-include-html="./assets/templates/add_contact_template.html"></div>
+
+
             <div class="overlay-section" id="editContact"></div>
 
 

@@ -1,0 +1,72 @@
+<div class="contact-overlay-container">
+
+    <div class="contact-overlay-box" id="contactOverlayBoxEdit">
+        <div class="contact-overlay-container-section">
+
+            <div class="contact-overlay-section">
+
+                <div onclick="closeOverlayEdit()" class="close-form-mobile">
+                    <img src="./assets/img/contact_close_mobile.png" class="cursor-pointer" alt="">
+                </div>
+
+                <div class="overlay-text-container">
+                    <img class="contact-overlay-logo" src="./assets/img/join_small.png" alt="">
+                    <div class="contact-overlay-headline">Edit contact</div>
+                    <div class="contact-overlay-divider"></div>
+                </div>
+
+            </div>
+
+            <div class="contact-overlay-form-section">
+
+                <div class="close-form">
+                    <img onclick="closeOverlayEdit()" src="./assets/img/contact_close_form.png" class="cursor-pointer" alt="">
+                </div>
+
+                <div class="contact-overlay-form-box">
+
+                    <div class="contact-initialen">
+                    </div>
+
+                    <form id="editContactForm" class="contact-form-container" onsubmit="submitEditContactForm(); return false;">
+
+                        <input id="editFirstName" class="contact-overlay-name" required type="text"
+                            style="color: rgb(0,0,0)" oninput="validateInput('editFirstName')" maxlength="99">
+                        <div id="editFirstNameAlert" class="alert"></div>
+
+
+                        <input id="editLastName" class="contact-overlay-name" required type="text"
+                            style="color: rgb(0,0,0)" oninput="validateInput('editLastName')" maxlength="99">
+                        <div id="editLastNameAlert" class="alert"></div>
+
+
+
+                        <input id="editEmail" class="contact-overlay-email" required type="email"
+                            style="color: rgb(0,0,0)" oninput="validateInput('editEmail')" maxlength="99">
+                        <div id="editEmailAlert" class="alert"></div>
+
+
+                        <input id="editPhone" class="contact-overlay-phone" type="tel"
+                            style="color: rgb(0,0,0)" oninput="validateInput('editPhone')" maxlength="99">
+                        <div id="editPhoneAlert" class="alert"></div>
+
+
+                    </form>
+
+                </div>
+
+                <div class="contact-overlay-buttons">
+
+                    <button class="contact-delete-button" onclick="deleteContact()">
+                        <div>Delete</div>
+                    </button>
+
+                    <button form="editContactForm" type="submit" class="contact-save-button">
+                        <div>Save</div>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
