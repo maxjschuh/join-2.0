@@ -9,12 +9,11 @@
     <title>Join | Board</title>
 
 
-    <script src=".main.js"></script>
+    <script src="./main.js"></script>
     <script src="./assets/js/include.js"></script>
-    <script src="./assets/js/add-task.js"></script>
-    <script src="./assets/js/add-task-create.js"></script>
-    <script src="./assets/js/add-task-additional.js"></script>
-
+    <script src="./assets/js/add-task/add-task-01-general.js"></script>
+    <script src="./assets/js/add-task/add-task-02-create.js"></script>
+    <script src="./assets/js/add-task/add-task-03-additional.js"></script>
 
     <script src="./assets/js/board/board_01_general.js"></script>
     <script src="./assets/js/board/board_02_drag_and_drop.js"></script>
@@ -39,7 +38,8 @@
 <body onload="boardInit()">
 
     <div class="task-display-none-desktop create-button-top">
-        <button onclick="collectAllInfos()" id="mobileCreateTask" class="create-task-top space-evenly board-cursor-pointer board-display-none">
+        <button onclick="collectAllInfos()" id="mobileCreateTask"
+            class="create-task-top space-evenly board-cursor-pointer board-display-none">
             Create
             <img src="./assets/img/create_task.png" alt="">
         </button>
@@ -49,7 +49,8 @@
         style="position: absolute; z-index: 999999;"></div>
 
     <div class="column-content">
-        <div w3-include-html="./assets/templates/desktop_top_template.html" style="position: absolute; z-index: 999999;">
+        <div w3-include-html="./assets/templates/desktop_top_template.html"
+            style="position: absolute; z-index: 999999;">
         </div>
 
 
@@ -263,7 +264,8 @@
                     </div>
                 </div>
 
-                <div id="board-add-task" class="board-display-none" w3-include-html="./assets/templates/add_task_template.html">
+                <div id="board-add-task" class="board-display-none"
+                    w3-include-html="./assets/templates/add_task_template.html">
                 </div>
 
             </div>

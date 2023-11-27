@@ -253,11 +253,22 @@ function includeUser() {
     }
 }
 
+// function showInitialsOnTopBar() {
+
+//     const index = currentUsername.indexOf(' ');
+
+
+//     if (index !== -1) {
+
+
+//     }
+// }
 
 /**
  * This function renders the initials in the circle of the topbar.
  */
 function showInitialsOnTopBar() {
+
     loggedInUserName = `${searchContactInfo(false, 'firstname', currentEmail, 'email', 'contacts')} ${searchContactInfo(false, 'lastname', currentEmail, 'email', 'contacts')}`;
     initialLetters = loggedInUserName
         .split(' ')
