@@ -1,8 +1,6 @@
 let firstLetters = [];
 let contacts;
 let users;
-const ALLOWED_CHARACTERS = /^[\w\s@.-]+$/; //Matches one or more word characters (alphanumeric + underscore), spaces, "@" symbol, "-", and ".".
-let contactFormValid = false;
 
 /**
  * This onload-function starts the most important functions.
@@ -117,28 +115,31 @@ function openNewContactForm() {
 
     toggleElements(['newContact'], 'd-none', false);
 
-    toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
+    setTimeout(() => {
+        
+        toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
+    }, 10);    
 }
 
 
-function validateInput(inputId) {
+/**
+ * This function closes the add new contact form.
+ */
+function closeContactOverlay() {
 
-    const inputValue = document.getElementById(inputId).value;
-    const alert = document.getElementById(inputId + 'Alert');
+    toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', false);
 
-    if (ALLOWED_CHARACTERS.test(inputValue) || !inputValue) {
-        alert.innerHTML = '';
-    } else {
-        contactFormValid = false;
-        alert.innerHTML = 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]';
-    }
+    setTimeout(() => {
+
+        toggleElements(['newContact'], 'd-none', true);
+    }, 500);
 }
 
 
 async function submitEditContactForm(i) {
 
     const inputIds = ['editFirstName', 'editLastName', 'editEmail', 'editPhone'];
-    contactFormValid = true;
+    formValid = true;
 
     inputIds.forEach(inputId => {
 
@@ -147,7 +148,7 @@ async function submitEditContactForm(i) {
 
     checkIfEmailAlreadyExists('editEmail', contacts[i].email);
 
-    if (contactFormValid) await saveEditedUser(i);
+    if (formValid) await saveEditedUser(i);
 }
 
 
@@ -173,7 +174,7 @@ async function saveEditedUser(i) {
 
 function submitNewContactForm() {
     const inputIds = ['newContactFirstName', 'newContactLastName', 'newContactEmail', 'newContactPhone'];
-    contactFormValid = true;
+    formValid = true;
 
     inputIds.forEach(inputId => {
 
@@ -182,8 +183,12 @@ function submitNewContactForm() {
 
     checkIfEmailAlreadyExists('newContactEmail');
 
-    if (contactFormValid) addContact();
+    if (formValid) addContact();
 }
+
+
+
+
 
 
 function checkIfEmailAlreadyExists(inputId, currentEmail) {
@@ -197,7 +202,7 @@ function checkIfEmailAlreadyExists(inputId, currentEmail) {
         const contact = contacts[i];
 
         if (contact.email === newContactEmail) {
-            contactFormValid = false;
+            formValid = false;
             alert.innerHTML = 'E-mail already in use!';
             return;
         }
@@ -220,7 +225,7 @@ async function addContact() {
     userCreatedSuccess();
     closeContactOverlay();
 
-    // if (window.location.pathname === '/join/contacts.html') loadContacts();
+    if (window.location.pathname === '/join/contacts.html') loadContacts();
 }
 
 
@@ -302,18 +307,7 @@ async function deleteContact(i) {
 }
 
 
-/**
- * This function closes the add new contact form.
- */
-function closeContactOverlay() {
 
-    toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', false);
-
-    setTimeout(() => {
-
-        toggleElements(['newContact'], 'd-none', true);
-    }, 300);
-}
 
 
 /**
@@ -322,18 +316,24 @@ function closeContactOverlay() {
  */
 function editContact(i) {
 
-
     const contactToEdit = contacts[i];
 
     toggleElements(['editContact'], 'd-none', false);
 
-    document.getElementById('editContactForm').onsubmit = `submitEditContactForm(${i})`;
+    document.getElementById('editContactForm').onsubmit = () => {
+        submitEditContactForm(i);
+        return false;
+    }
+    document.getElementById('contact-delete-button').onclick = () => {
+        deleteContact(i);
+    };
 
     document.getElementById('editFirstName').value = contactToEdit.firstname;
     document.getElementById('editLastName').value = contactToEdit.lastname;
     document.getElementById('editEmail').value = contactToEdit.email;
     document.getElementById('editPhone').value = contactToEdit.phone;
     document.getElementById('contact-initials').style = `background-color:${contactToEdit.color}`;
+
 
     document.getElementById('contact-initials').innerHTML =
         (contactToEdit.firstname.charAt(0) + contactToEdit.lastname.charAt(0)).toUpperCase();

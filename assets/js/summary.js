@@ -43,7 +43,7 @@ function getData() {
  * This function will include all the info from the backend
  */
 function switchHtml() {
-    document.getElementById('nameOfUser').innerHTML = currentUsername;
+    document.getElementById('nameOfUser').innerHTML = `${loggedInUser.firstname} ${loggedInUser.lastname}`;
     document.getElementById('tasksInProgress').innerHTML = getInfo('progress', 'in-progress');
     document.getElementById('awaitingFeedback').innerHTML = getInfo('progress', 'awaiting-feedback');
     document.getElementById('todo').innerHTML = getInfo('progress', 'todo')

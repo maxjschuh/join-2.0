@@ -68,7 +68,7 @@ function renderloggedInUserinContactList() {
 function searchContactwithEmail() {
     for (let i = 0; i < database.contacts.length; i++) {
         let contact = database.contacts[i];
-        if (currentEmail == contact.email) return contacts.indexOf(contact);
+        if (loggedInUser.email == contact.email) return contacts.indexOf(contact);
     }
 }
 
@@ -100,7 +100,7 @@ function renderContacts() {
     contactContainer = document.getElementById('loadedContacts');
     contactContainer.innerHTML = '';
     for (let i = 0; i < contacts.length;) {
-        if (contacts[i].email == currentEmail) i++;
+        if (contacts[i].email == loggedInUser.email) i++;
         else {
             contactContainer.innerHTML += /*html*/ `
             <div class="dd-placeholder gray-hover" onclick="selectedForTask(contacts[${i}], 'contacts[${i}]')">

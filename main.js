@@ -4,9 +4,15 @@ const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 
 let database = {};
 let data = [];
-let currentEmail;
-let currentUsername;
+let loggedInUser = { 
+    email: undefined, 
+    firstname: undefined, 
+    remember: undefined, 
+    password: undefined 
+};
+
 let remember;
+let formValid = false;
 
 let databaseJSON = {
     "contacts": [
@@ -202,6 +208,58 @@ let databaseJSON = {
             "password": "12345678"
         }
     ]
+};
+
+
+const INPUT_ALERTS = {
+    "firstname": {
+        regex: /[\w\s.-]/,
+        alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
+    },
+    "lastname": {
+        regex: /^[a-zA-Z0-9\-\.]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "signUpEmail": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "signUpPassword": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "newContactFirstName": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "newContactLastName": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "newContactEmail": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "newContactPhone": {
+        regex: /^[0-9+\/ -]*$/,
+        alertMessage: 'Allowed characters: 0-9, - , + , / , [space]'
+    },
+    "editFirstName": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "editLastName": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "editEmail": {
+        regex: /^[\w\s@.-]+$/,
+        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+    },
+    "editPhone": {
+        regex: /^[0-9+\/ -]*$/,
+        alertMessage: 'Allowed characters: 0-9, - , + , / , [space]'
+    },
 }
 
 
@@ -274,13 +332,10 @@ function getItemLocalStorage(key) {
  * This function will get the email of the logged in user from the link of the page.
  */
 function includeUser() {
+
     const localStorageData = getItemLocalStorage('loggedInUser');
 
-    if (localStorageData) {
-        currentEmail = localStorageData.email;
-        currentUsername = localStorageData.username;
-        remember = localStorageData.remember;
-    }
+    if (localStorageData) loggedInUser = localStorageData;
 }
 
 
@@ -289,15 +344,11 @@ function includeUser() {
  */
 function showInitialsOnTopBar() {
 
-    loggedInUserName = `${searchContactInfo(false, 'firstname', currentEmail, 'email', 'contacts')} ${searchContactInfo(false, 'lastname', currentEmail, 'email', 'contacts')}`;
-    initialLetters = loggedInUserName
-        .split(' ')
-        .map(word => word.charAt(0))
-        .join('');
+    initialLetters = (loggedInUser.firstname.charAt(0) + loggedInUser.lastname.charAt(0)).toUpperCase();
 
     const topbarCircle = document.getElementById('loggedInUserInitials');
-    topbarCircle.innerHTML = `${initialLetters}`;
-    topbarCircle.style.color = `${searchContactInfo(false, 'color', currentEmail, 'email', 'contacts')}`;
+    topbarCircle.innerHTML = initialLetters;
+    topbarCircle.style.color = `${searchContactInfo(false, 'color', loggedInUser.email, 'email', 'contacts')}`;
 }
 
 
@@ -372,9 +423,9 @@ function checkForRunningSession() {
 
     const page = window.location.pathname.split("/").pop();
 
-    if (currentEmail && page === "login.html") window.location.replace("./summary.html");
+    if (loggedInUser.email && page === "login.html") window.location.replace("./summary.html");
 
-    if (currentEmail) return;
+    if (loggedInUser.email) return;
 
     if (page === "help.html" || page === "legal-notice.html" || page === "login.html") return;
 
@@ -462,3 +513,22 @@ function showErrorMessage(error) {
     alert('The Join Server is not responding. Please try again later.');
     if (error) console.log('For Developers: ', error);
 }
+
+
+function validateInput(inputId) {
+
+    const inputValue = document.getElementById(inputId).value;
+    const alert = document.getElementById(inputId + 'Alert');
+    const pattern = INPUT_ALERTS[inputId].regex;
+    const alertMessage = INPUT_ALERTS[inputId].alertMessage;
+
+    if (pattern.test(inputValue) || !inputValue) alert.innerHTML = '';
+    
+    else {
+        formValid = false;
+        alert.innerHTML = alertMessage;
+    }
+}
+
+
+

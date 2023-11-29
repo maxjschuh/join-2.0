@@ -28,7 +28,7 @@
                     <div id="contact-initials">
                     </div>
 
-                    <form id="editContactForm" class="contact-form-container" onsubmit="submitEditContactForm(); return false;">
+                    <form id="editContactForm" class="contact-form-container">
 
                         <input id="editFirstName" class="contact-overlay-name" required type="text"
                             style="color: rgb(0,0,0)" oninput="validateInput('editFirstName')" maxlength="99">
@@ -57,7 +57,7 @@
 
                 <div class="contact-overlay-buttons">
 
-                    <button class="contact-delete-button" onclick="deleteContact()">
+                    <button id="contact-delete-button">
                         <div>Delete</div>
                     </button>
 

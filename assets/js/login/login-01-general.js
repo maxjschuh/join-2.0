@@ -1,6 +1,5 @@
 let rememberMeTickSet = false;
 let changePasswordEmail;
-let currentPassword;
 let rememberMe = false;
 let users;
 
@@ -13,29 +12,9 @@ async function initLogin() {
     checkForRunningSession();
     await getItem('database');
     users = database.users;
-    getDataLocalStorage();
+    fillInData();
     checkForChangePassword();
     addEventListeners();
-}
-
-
-
-
-
-/**
- * This function is used to get the data from the local storage
- */
-function getDataLocalStorage() {
-    const localStorageData = getItemLocalStorage('loggedInUser');
-
-    if (localStorageData) {
-        currentEmail = localStorageData.email;
-        currentPassword = localStorageData.password;
-        currentRememberMe = localStorageData.remember;
-
-    } else return;
-
-    if (currentRememberMe) fillInData();
 }
 
 
@@ -55,26 +34,15 @@ function checkForChangePassword() {
 
 /**
  * This function will log in the user
- * @param {string} email This is the email from the user which wants to login
- * @param {string} username This is the username of the user which wants to login
+ * @param {number} userIndex index of the user to login in the database.users array
  */
-function login(email, username) {
-    const password = document.getElementById('password').value;
+function login(userIndex) {
+    const user = database.users[userIndex];
 
-    const localStorageData = { email: email, username: username, remember: rememberMe, password: password };
+    const localStorageData = { email: user.email, firstname: user.firstname, remember: rememberMe, password: user.password };
     setItemLocalStorage('loggedInUser', localStorageData);
 
-    window.location.href = './summary.html';
-}
-
-
-/**
- * This function will login the user as a guest
- */
-function guestLogin() {
-    const email = 'guest@mail.com';
-    const username = 'Guest';
-    login(email, username);
+    // window.location.href = './summary.html';
 }
 
 
@@ -91,7 +59,7 @@ function checkLogin() {
 
         if (emailLogIn === user.email && passwordLogIn === user.password) {
     
-            login(user.email, user.username);
+            login(i);
             return;
         }       
     }
@@ -128,15 +96,20 @@ function toggleRememberMeTick() {
  * This function is used to fill in the login data if the remember me tick is set
  */
 function fillInData() {
-    document.getElementById('email').value = currentEmail;
-    document.getElementById('password').value = currentPassword;
-    toggleRememberMeTick();
+
+    if (loggedInUser.remember) {
+
+        document.getElementById('email').value = loggedInUser.email;
+        document.getElementById('password').value = loggedInUser.password;
+        toggleRememberMeTick();
+    }
+
 }
 
 
 function resetInputs() {
 
-    resetValue(["email", "password", "username", "signUpEmail", "signUpPassword", "forgotPwEmail", "newPassword"]);
+    resetValue(["firstname", "lastname", "email", "password", "signUpEmail", "signUpPassword", "forgotPwEmail", "newPassword"]);
 
     ['password', 'signUpPassword', 'newPassword'].forEach(id => {
         document.getElementById(id).type = "password";
@@ -168,7 +141,7 @@ function handleResize() {
 
 function addEventListeners() {
 
-    document.addEventListener("focus", activeInputfield, true); // gets the inputfield which is in focus
-    document.addEventListener("blur", activeInputfield, true); // get the inputfield which looses the focus
-    window.addEventListener('resize', handleResize); // checks if the screen is resizing
+    // document.addEventListener("focus", activeInputfield, true); // gets the inputfield which is in focus
+    // document.addEventListener("blur", activeInputfield, true); // get the inputfield which looses the focus
+    // window.addEventListener('resize', handleResize); // checks if the screen is resizing
 }
