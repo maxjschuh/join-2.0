@@ -39,10 +39,10 @@ function checkForChangePassword() {
 function login(userIndex) {
     const user = database.users[userIndex];
 
-    const localStorageData = { email: user.email, firstname: user.firstname, remember: rememberMe, password: user.password };
+    const localStorageData = { email: user.email, firstname: user.firstname, lastname: user.lastname, remember: rememberMe, password: user.password };
     setItemLocalStorage('loggedInUser', localStorageData);
 
-    // window.location.href = './summary.html';
+    window.location.href = './summary.html';
 }
 
 
@@ -51,6 +51,7 @@ function login(userIndex) {
  * @returns The function will stop if logged in succesfully
  */
 function checkLogin() {
+
     const emailLogIn = document.getElementById('email').value;
     const passwordLogIn = document.getElementById('password').value;
 
@@ -58,7 +59,6 @@ function checkLogin() {
         const user = users[i];
 
         if (emailLogIn === user.email && passwordLogIn === user.password) {
-    
             login(i);
             return;
         }       

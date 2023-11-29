@@ -146,17 +146,28 @@ function boardDetailViewAssignees(task) {
     const container = document.getElementById('board-detail-view-assignees');
     container.innerHTML = 'Assigned to:';
 
-    task.assigned_to.forEach(assignee => {
+    task.assigned_to.forEach(emailOfAssignee => {
 
+        const contact = findAssigneeInContacts(emailOfAssignee);
         container.innerHTML += /*html*/ `
-        
         <div>
-            ${htmlTemplateAssigneeIcon(assignee)}
-            ${assignee}
-        </div> `;
+            ${htmlTemplateAssigneeIcon(contact)}
+            ${contact.firstname} ${contact.lastname}
+        </div>
+        `;
     });
 }
 
+
+function findAssigneeInContacts(emailOfAssignee) {
+
+    for (let i = 0; i < database.contacts.length; i++) {
+        const contact = database.contacts[i];
+
+        if (contact.email === emailOfAssignee) return contact;
+    }
+
+}
 
 /**
  * Deletes a task from the board by splicing it from the database. Then the board is re-rendered and the database is fetched to the backend.

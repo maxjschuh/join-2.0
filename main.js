@@ -4,11 +4,11 @@ const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 
 let database = {};
 let data = [];
-let loggedInUser = { 
-    email: undefined, 
-    firstname: undefined, 
-    remember: undefined, 
-    password: undefined 
+let loggedInUser = {
+    email: undefined,
+    firstname: undefined,
+    remember: undefined,
+    password: undefined
 };
 
 let remember;
@@ -217,8 +217,8 @@ const INPUT_ALERTS = {
         alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "lastname": {
-        regex: /^[a-zA-Z0-9\-\.]+$/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+        regex: /[\w\s.-]/,
+        alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "signUpEmail": {
         regex: /^[\w\s@.-]+$/,
@@ -229,12 +229,12 @@ const INPUT_ALERTS = {
         alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
     },
     "newContactFirstName": {
-        regex: /^[\w\s@.-]+$/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+        regex: /[\w\s.-]/,
+        alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "newContactLastName": {
-        regex: /^[\w\s@.-]+$/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+        regex: /[\w\s.-]/,
+        alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "newContactEmail": {
         regex: /^[\w\s@.-]+$/,
@@ -245,12 +245,12 @@ const INPUT_ALERTS = {
         alertMessage: 'Allowed characters: 0-9, - , + , / , [space]'
     },
     "editFirstName": {
-        regex: /^[\w\s@.-]+$/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+        regex: /[\w\s.-]/,
+        alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "editLastName": {
-        regex: /^[\w\s@.-]+$/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+        regex: /[\w\s.-]/,
+        alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "editEmail": {
         regex: /^[\w\s@.-]+$/,
@@ -348,7 +348,15 @@ function showInitialsOnTopBar() {
 
     const topbarCircle = document.getElementById('loggedInUserInitials');
     topbarCircle.innerHTML = initialLetters;
-    topbarCircle.style.color = `${searchContactInfo(false, 'color', loggedInUser.email, 'email', 'contacts')}`;
+
+    for (let i = 0; i < database.contacts.length; i++) {
+        const contact = database.contacts[i];
+
+        if (contact.email === loggedInUser.email) {
+            topbarCircle.style.color = contact.color;
+            return;
+        }
+    }
 }
 
 
@@ -523,7 +531,7 @@ function validateInput(inputId) {
     const alertMessage = INPUT_ALERTS[inputId].alertMessage;
 
     if (pattern.test(inputValue) || !inputValue) alert.innerHTML = '';
-    
+
     else {
         formValid = false;
         alert.innerHTML = alertMessage;

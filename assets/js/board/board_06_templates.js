@@ -145,17 +145,17 @@ function boardTemplateAssigneePicker() {
 
 /**
  * HTML Template for the assignee bubble icon in the task card footer.
- * @param {string} assignee assignee with firstname and lastname
+ * @param {object} assignee assignee with firstname, lastname and color for which the icon should be rendered
  * @returns {string} HTML Template for the assignee bubble icon in the task card footer.
  */
 function htmlTemplateAssigneeIcon(assignee) {
 
-    const firstInitial = assignee.substring(0, assignee.indexOf(' ')).charAt(0);
-    const secondInitial = assignee.substring(assignee.indexOf(' ') + 1).charAt(0);
+    const firstInitial = assignee.firstname.charAt(0);
+    const secondInitial = assignee.lastname.charAt(0);
     const initials = firstInitial + secondInitial;
 
     return /*html*/ `
-    <div style="background-color:${getAssigneeColor(assignee)}">${initials}</div> `;
+    <div style="background-color:${assignee.color}">${initials}</div> `;
 }
 
 

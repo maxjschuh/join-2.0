@@ -264,12 +264,12 @@ function htmlTemplateAllAssignees(task) {
 function htmlTemplateUpTo3Assignees(task) {
     let html = '';
 
-    for (let i = 0; i < task.assigned_to.length; i++) {
+    task.assigned_to.forEach(emailOfAssignee => {
 
-        const assigneeEmail = task.assigned_to[i];
+        const contact = findAssigneeInContacts(emailOfAssignee);
 
-        html += htmlTemplateAssigneeIcon(assigneeEmail);
-    }
+        html += htmlTemplateAssigneeIcon(contact);
+    });
     return html;
 }
 
@@ -284,9 +284,10 @@ function htmlTemplateMoreThan3Assignees(task) {
 
     for (let i = 0; i < 2; i++) {
 
-        const assignee = task.assigned_to[i];
+        const emailOfAssignee = task.assigned_to[i];
+        const contact = findAssigneeInContacts(emailOfAssignee);
 
-        html += htmlTemplateAssigneeIcon(assignee);
+        html += htmlTemplateAssigneeIcon(contact);
     }
 
     html += /*html*/ `

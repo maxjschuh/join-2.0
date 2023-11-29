@@ -78,7 +78,7 @@
 
             <div class="login-buttons">
 
-                <button type="submit" id="logInButton" class="button-dark">Login</button>
+                <button form="loginContainer" type="submit" id="logInButton" class="button-dark">Login</button>
 
                 <button id="guestLogInButton" onclick="login(0); disableButton('guestLogInButton')"
                     class="button-light">Guest Login</button>
@@ -134,6 +134,8 @@
                 <img onclick="togglePasswordVisibility('signUpPassword')" id="show-signUpPassword" class="d-none"
                     src="./assets/img/show_password.png" alt="icon password visible">
             </div>
+            <div id="signUpPasswordAlert" class="alert"></div>
+
 
             <button type="submit" id="signUpButton" class="button-dark margin-top-20px">Sign up</button>
         </form>
