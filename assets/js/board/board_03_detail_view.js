@@ -6,7 +6,7 @@ function boardShowTaskDetails(i) {
 
     boardRenderDetailView(i);
     document.getElementById('board-detail-view').parentNode.classList.remove('board-display-none');
-    document.getElementById('board-detail-view').classList.remove('board-display-none');
+    toggleElements(['board-detail-view'], 'board-display-none', false);
     boardCurrentTaskInDetailView = i;
 
     document.getElementById('board-kanban').classList.add('board-display-none-700px');
@@ -18,8 +18,8 @@ function boardShowTaskDetails(i) {
  */
 function boardHideTaskDetails() {
     document.getElementById('board-detail-view').parentNode.classList.add('board-display-none');
-    document.getElementById('board-detail-view').classList.add('board-display-none');
-    document.getElementById('board-kanban').classList.remove('board-display-none-700px');
+    toggleElements(['board-detail-view'], 'board-display-none', true);
+    toggleElements(['board-kanban'], 'board-display-none-700px', false);
     renderAllTaskCards();
     boardCreateAllEventListeners();
 }
@@ -33,9 +33,10 @@ function boardRenderDetailView(i) {
     const task = database.tasks[i];
 
     boardDetailViewCategory(task);
-    boardDetailViewTitle(task);
-    boardDetailViewDescription(task);
-    boardDetailViewDueDate(task);
+    setInnerHTML(['board-detail-view-title'], task.title);
+    setInnerHTML(['board-detail-view-description'], task.description);
+    setInnerHTML(['board-detail-view-due-date'], `Due date: <div>${task.due_date}</div>`);
+    
     boardDetailViewPriorityTag(task);
     boardDetailViewAssignees(task);
     boardRenderSubtasks(task.subtasks, 'board-detail-view-subtasks');
@@ -52,37 +53,6 @@ function boardDetailViewCategory(task) {
 
     container.innerHTML = /*html*/ `${task.category}`;
     container.style.backgroundColor = `${getCategoryColor(task.category)}`;
-}
-
-
-/**
- * Renders the title in the detail view.
- * @param {object} task the task whose information should be rendered
- */
-function boardDetailViewTitle(task) {
-    let container = document.getElementById('board-detail-view-title');
-    container.innerHTML = `${task.title}`;
-}
-
-
-/**
- * Renders the description in the detail view.
- * @param {object} task the task whose information should be rendered
- */
-function boardDetailViewDescription(task) {
-    let container = document.getElementById('board-detail-view-description');
-    container.innerHTML = `${task.description}`;
-}
-
-
-/**
- * Renders the due date in the detail view.
- * @param {object} task the task whose information should be rendered
- */
-function boardDetailViewDueDate(task) {
-    let container = document.getElementById('board-detail-view-due-date');
-    container.innerHTML = /*html*/ `
-    Due date: <div>${task.due_date}</div>`;
 }
 
 

@@ -500,6 +500,13 @@ function emptyInnerHTML(ids) {
     });
 }
 
+function setInnerHTML(ids, content) {
+
+    ids.forEach(id => {
+        document.getElementById(id).innerHTML = content;
+    });
+}
+
 
 /**
  * Shows or hides the elements whose ids are passed as parameter by adding or removing the class "d-none".
