@@ -57,10 +57,10 @@ function datePicker() {
  */
 function pullDownMenu(clicked, notClicked, visible, notVisible) {
     const openMenu = document.getElementById(clicked).classList;
-    if (openMenu == 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
+    if (openMenu === 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
     else closeDropDownMenu(clicked, visible, notVisible);
 
-    if (clicked == 'assignedTo') {
+    if (clicked === 'assignedTo') {
         switchContactIcons();
         renderInitials();
         initialsRendered = false;
@@ -86,9 +86,8 @@ function openDropDownMenu(clicked, notClicked, visible, notVisible) {
  */
 function closeDropDownMenu(clicked, visible, notVisible) {
 
-    document.getElementById(clicked).classList.remove('dropdown-category-open');
-    toggleElements([visible, notVisible], 'd-none', true);
-    document.getElementById('initialsContainer').classList.remove('d-none');
+    toggleElements([clicked], 'dropdown-category-open', false);
+    showAndHideElements(['initialsContainer'], [visible, notVisible]);
 }
 
 
@@ -174,13 +173,13 @@ function removeAddClearIcons(addSubtask, createSubtask, subtaskInput) {
  * This function adds and/or removes css classes to create a drop down menu.
  */
 function switchContactIcons() {
+    
     if (!taskContactList.length || initialsRendered) {
-        document.getElementById('clearAddButtons').classList.add('d-none');
-        document.getElementById('ddArrow').classList.remove('d-none');
+        showAndHideElements(['ddArrow'], ['clearAddButtons']);
         setTimeout(setAttribute, 200)
+
     } else {
-        document.getElementById('clearAddButtons').classList.remove('d-none');
-        document.getElementById('ddArrow').classList.add('d-none');
+        showAndHideElements(['clearAddButtons'], ['ddArrow']);
         document.getElementById('contactsToAssingContainer').removeAttribute("onclick");
     }
 }

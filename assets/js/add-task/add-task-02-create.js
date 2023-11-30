@@ -41,7 +41,7 @@ function collectUnnecessaryInfos() {
 function disableAddTaskButton() {
     document.getElementById('mobileCreateTask').removeAttribute("onclick");
     document.getElementById('desktopCreateTask').removeAttribute("onclick");
-    document.getElementById('desktopCreateTask').classList.remove("create-hover");
+    toggleElements(['desktopCreateTask'], 'create-hover', false);
 }
 
 
@@ -51,7 +51,7 @@ function disableAddTaskButton() {
 function activateAddTaskButton() {
     document.getElementById('mobileCreateTask').setAttribute("onclick", `collectAllInfos()`);
     document.getElementById('desktopCreateTask').setAttribute("onclick", `collectAllInfos()`);
-    document.getElementById('desktopCreateTask').classList.add("create-hover");
+    toggleElements(['desktopCreateTask'], 'create-hover', true);
 }
 
 
@@ -78,7 +78,7 @@ function getName() {
 function getValue(valueId, reportID) {
     const description = document.getElementById(valueId).value;
     if (!description || containsBrackets(description)) {
-        document.getElementById(reportID).classList.remove('d-none');
+        showAndHideElements([reportID]);
         required = true;
     } else return description;
 }
@@ -91,8 +91,8 @@ function getValue(valueId, reportID) {
  */
 function getCategory() {
     if (!selectedCategory) {
-        document.getElementById('categoryReport').classList.remove('d-none');
-        document.getElementById('categoryReport').innerHTML = `This field is required`;
+        showAndHideElements(['categoryReport']);
+        setInnerHTML(['categoryReport'], 'This field is required');
         required = true;
     } else return selectedCategory;
 }
@@ -110,7 +110,7 @@ function getDate() {
     if (chosenDate && date_regex.test(chosenDate)) return chosenDate;
 
     else {
-        document.getElementById('dateReport').classList.remove('d-none');
+        showAndHideElements(['dateReport']);
         required = true;
     }
 }
@@ -124,7 +124,7 @@ function getDate() {
 function getPrio() {
     if (prio) return prio;
     else {
-        document.getElementById('prioReport').classList.remove('d-none');
+        showAndHideElements(['prioReport']);
         required = true;
     }
 }
@@ -155,11 +155,14 @@ function pushStatus() {
  * Starts the upload on the remote server and redirects the user to the summary page.
  */
 async function saveDatabase() {
-    document.getElementById('addedToBoard').classList.add('added-to-board-position-animate');
+    toggleElements(['addedToBoard'], 'added-to-board-position-animate', true);
+
     database.tasks.push(task);
+
     await setItem('database', database);
+
     setTimeout(() => {
-        window.location.replace('board.html');
+        window.location.replace('./board.html');
     }, 1500);
 }
 
@@ -172,7 +175,7 @@ function openCreateCategory() {
     toggleElements(['newCategoryContainer', 'color-picker'], 'd-none', false);
     pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
     getRandomColor();
-    document.getElementById('category').classList.add('d-none');
+    showAndHideElements(null, (['category']));
 }
 
 
@@ -184,7 +187,6 @@ function closeCreateCategory() {
     toggleElements(['category', 'categoryPlaceholder'], 'd-none', false);
     toggleElements(['newCategoryContainer', 'color-picker', 'categoryReport'], 'd-none', true);
     document.getElementById('categoryInput').value = '';
-    // pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
     removeSelectedColor();
 }
 
@@ -223,7 +225,7 @@ function selectedColor(color, id) {
     colorForNewCategory = `${color}`;
     colorForNewCategoryID = id;
     removeSelectedColor();
-    document.getElementById(id).classList.add('task-selected-category-color');
+    toggleElements([id], 'task-selected-category-color', true);
 }
 
 
@@ -231,33 +233,34 @@ function selectedColor(color, id) {
  * This function removes the CSS class 'task-selected-category-color'.
  */
 function removeSelectedColor() {
+
     for (let i = 0; i < 6; i++) {
-        document.getElementById('colorPickCircle' + i).classList.remove('task-selected-category-color');
+
+        toggleElements(['colorPickCircle' + i], 'task-selected-category-color', false);
     }
 }
 
 
 /**
- * This function checks if an input field is empty and if a color has been selected.
- * If both exist, a function is started.
+ * Checks if the category input field has a value and a category color has been selected. If so createCategory() is called for creating a new category.
+ * @returns if a new category can be created so that the alert is not shown
  */
 function addCategory() {
     categoryInputFilled = document.getElementById('categoryInput');
     newCategory = categoryInputFilled.value;
 
-    if (!newCategory) {
-        document.getElementById('categoryReport').classList.remove('d-none');
-        document.getElementById('categoryReport').innerHTML = `Please enter a new category name`;
+    if (!newCategory) setInnerHTML(['categoryReport'], 'Please enter a new category name');
 
-    } else if (newCategory.length > 20) {
-        document.getElementById('categoryReport').classList.remove('d-none');
-        document.getElementById('categoryReport').innerHTML = `Maximum 20 characters allowed`;
+    else if (newCategory.length > 20) setInnerHTML(['categoryReport'], 'Maximum 20 characters allowed');
 
-    } else if (!colorForNewCategory) {
-        document.getElementById('categoryReport').classList.remove('d-none');
-        document.getElementById('categoryReport').innerHTML = `Please choose a color`;
+    else if (!colorForNewCategory) setInnerHTML(['categoryReport'], 'Please choose a color');
 
-    } else createCategory(categoryInputFilled);
+    else {
+        createCategory(categoryInputFilled);
+        return;
+    }
+
+    showAndHideElements(['categoryReport']);
 }
 
 

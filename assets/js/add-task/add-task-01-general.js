@@ -6,7 +6,6 @@ let selectedCategory;
 let prio;
 let subtasks = [];
 let subtaskStatus = [];
-let contacts = [];
 let categories = [];
 let category = [];
 let tasks = [];
@@ -36,8 +35,8 @@ let initialsRendered = false;
 async function initTask() {
     await init();
     tasks = database.tasks;
-    contacts = database.contacts;
     categories = database.categories;
+    contacts = database.contacts;
     renderCategories();
     renderContacts();
     datePicker();
@@ -66,8 +65,10 @@ function renderloggedInUserinContactList() {
  * @returns - Index number
  */
 function searchContactwithEmail() {
+
     for (let i = 0; i < database.contacts.length; i++) {
-        let contact = database.contacts[i];
+
+        const contact = database.contacts[i];
         if (loggedInUser.email == contact.email) return contacts.indexOf(contact);
     }
 }
@@ -79,10 +80,14 @@ function searchContactwithEmail() {
 function renderCategories() {
     categoryContainer = document.getElementById('loadedCategories');
     categoryContainer.innerHTML = '';
+
     for (let i = 0; i < categories.length; i++) {
-        let category = categories[i].name;
-        let categoryColor = categories[i].color;
-        categoryContainer.innerHTML += `
+
+        const category = categories[i].name;
+        const categoryColor = categories[i].color;
+
+        categoryContainer.innerHTML += /*html*/ `
+
         <div class="dd-placeholder gray-hover" onclick="selectCategory('${category}', '${categoryColor}')">
             <div class="center">
                 <div class="padding-17-right">${category}</div>
@@ -99,19 +104,21 @@ function renderCategories() {
 function renderContacts() {
     contactContainer = document.getElementById('loadedContacts');
     contactContainer.innerHTML = '';
-    for (let i = 0; i < contacts.length;) {
-        if (contacts[i].email == loggedInUser.email) i++;
-        else {
-            contactContainer.innerHTML += /*html*/ `
+
+    contacts.forEach((contact, i) => {
+
+        if (contact.email === loggedInUser.email) return;
+
+        contactContainer.innerHTML += /*html*/ `
+
             <div class="dd-placeholder gray-hover" onclick="selectedForTask(contacts[${i}], 'contacts[${i}]')">
-                <div>${contacts[i].firstname} ${contacts[i].lastname}</div>
+                <div>${contact.firstname} ${contact.lastname}</div>
                 <div class="task-select-box center">
                     <div id="contacts[${i}]"></div>
                 </div>
-            </div>`;
-            i++;
-        }
-    }
+            </div>
+        `;
+    });
 }
 
 
@@ -121,14 +128,19 @@ function renderContacts() {
  * @param {string} categoryColor - Category color in rgb.
  */
 function selectCategory(category, categoryColor) {
-    document.getElementById('chosenCategory').innerHTML = `
+
+    document.getElementById('chosenCategory').innerHTML = /*html*/ `
             <div class="center">
                 <div class="padding-17-right">${category}</div>
                 <div class="task-category-color" style="background-color: ${categoryColor};"></div>
-            </div>`
+            </div>
+    `;
+
     selectedCategory = category;
-    let classStatus = document.getElementById('category').classList
-    if (classStatus.contains('dropdown-category-open')) pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
+    const classStatus = document.getElementById('category').classList
+    if (classStatus.contains('dropdown-category-open')) {
+        pullDownMenu('category', 'assignedTo', 'moreCategories', 'moreContacts');
+    }
 }
 
 
@@ -262,15 +274,15 @@ function priority(clicked, img) {
     resetPrioButton();
     element = document.getElementById(clicked);
     prioImg = document.getElementById(img);
-    if (clicked == 'prioHigh') {
+    if (clicked === 'prioHigh') {
         setStyleforPrioButton(element, prioImg);
         element.style.backgroundColor = 'rgb(236, 85, 32)';
         prio = 'high';
-    } if (clicked == 'prioMedium') {
+    } if (clicked === 'prioMedium') {
         setStyleforPrioButton(element, prioImg);
         element.style.backgroundColor = 'rgb(243, 173, 50)';
         prio = 'medium';
-    } if (clicked == 'prioLow') {
+    } if (clicked === 'prioLow') {
         setStyleforPrioButton(element, prioImg);
         element.style.backgroundColor = 'rgb(147, 222, 70)';
         prio = 'low';
@@ -308,18 +320,20 @@ function resetPrioButton() {
 function addSubtask() {
     const subtaskInput = document.getElementById('subtaskInput').value;
     if (containsBrackets(subtaskInput)) {
-        document.getElementById('subTaskReport').classList.remove('d-none');
         document.getElementById('subTaskReport').innerHTML = 'The following characters are not allowed { } [ ] "';
+
     } else if (!subtaskInput) {
-        document.getElementById('subTaskReport').classList.remove('d-none');
         document.getElementById('subTaskReport').innerHTML = 'Empty subtasks are not allowed';
+
     } else {
-        document.getElementById('subTaskReport').classList.add('d-none');
+        toggleElements(['subTaskReport'], 'd-none', true);
         subtasks.push(subtaskInput);
         subtaskStatus.push('false');
         renderSubtasks();
         switchSubtaskIcons();
+        return;
     }
+    toggleElements(['subTaskReport'], 'd-none', false);
 }
 
 
@@ -338,7 +352,7 @@ function removeSubtask(i) {
  * This function renders the subtasks.
  */
 function renderSubtasks() {
-    let subtaskContainer = document.getElementById('addedSubtasks');
+    const subtaskContainer = document.getElementById('addedSubtasks');
     subtaskContainer.innerHTML = '';
     for (let i = 0; i < subtasks.length; i++) {
         subtaskContainer.innerHTML += /*html*/ `<div class="sub-task">
@@ -357,7 +371,7 @@ function renderSubtasks() {
  * @returns {string} - CSS class or ''.
  */
 function getClass(i) {
-    if (subtaskStatus[i] == 'true') return setClass = '';
+    if (subtaskStatus[i] === 'true') return setClass = '';
     else return setClass = 'd-none';
 }
 
@@ -370,11 +384,11 @@ function getClass(i) {
  * @param {number} i - Index of the subtask.
  */
 function setStatus(divID, i) {
-    if (subtaskStatus[i] == 'false') {
-        document.getElementById(divID).classList.remove('d-none');
+    if (subtaskStatus[i] === 'false') {
+        toggleElements([divID], 'd-none', false);
         subtaskStatus.splice(i, 1, 'true');
     } else {
-        document.getElementById(divID).classList.add('d-none')
+        toggleElements([divID], 'd-none', true);
         subtaskStatus.splice(i, 1, 'false');
     }
 }

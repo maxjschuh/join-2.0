@@ -22,7 +22,7 @@ function boardValidateSearchInput() {
     if (window.innerWidth > 700) inputField = document.getElementById('board-search-input-desktop');
     else inputField = document.getElementById('board-search-input-mobile');
 
-    const userInput = inputField.value.trim();
+    const userInput = inputField.value.trim().toLowerCase();
 
     if (userInput.length) {
         boardActiveSearch = true;
@@ -59,50 +59,44 @@ function boardSearch(userInput) {
  */
 function boardSearchTask(task, userInput, databaseIndex) {
 
-    if (boardFieldIncludes(task.title, userInput) ||
-        boardFieldIncludes(task.description, userInput) ||
-        boardFieldIncludes(task.category, userInput)) {
+    if (boardFieldIncludes(userInput, task.title) ||
+        boardFieldIncludes(userInput, task.description) ||
+        boardFieldIncludes(userInput, task.category) ||
+        boardTaskAssigneesIncludes(userInput, task.assigned_to)) {
 
         boardSaveSearchResults(task);
         searchResultsDatabaseIndexes.push(databaseIndex);
-
-    } else boardSearchTaskAssignees(task, userInput, databaseIndex);
-}
-
-
-/**
- * Checks if the input string is found in the assignees of the task that is passed as parameter.
- * @param {object} task task that is checked for fitting the search input
- * @param {string} userInput validated search input string typed by the user
- * @param {number} databaseIndex the index of the examined task in the database array
- * @returns as soon as a assignee of the task matches the search input, to decrease function run-time
- */
-function boardSearchTaskAssignees(task, userInput, databaseIndex) {
-
-    for (let i = 0; i < task.assigned_to.length; i++) {
-        const assignee = task.assigned_to[i];
-
-        if (boardFieldIncludes(assignee, userInput)) {
-
-            boardSaveSearchResults(task);
-            searchResultsDatabaseIndexes.push(databaseIndex);
-            return;
-        }
     }
 }
 
 
 /**
- * Checks if a specific input string matches the user search input. The test ignores capitalisation.
- * @param {string} field value of a specific field in the task data 
- * @param {*} userInput validated search input string typed by the user
- * @returns true, when the field includes the user input
+ * Checks if the input string is found in the assignees of the task that is passed as parameter.
+ * @param {string} userInput validated lowercase search input string typed by the user
+ * @param {Array} assignees of the task to be searched
+ * @returns {boolean} true if there is a match, false if not
  */
-function boardFieldIncludes(field, userInput) {
-    const fieldLowerCase = field.toLowerCase();
-    const userInputLowerCase = userInput.toLowerCase();
+function boardTaskAssigneesIncludes(userInput, assignees) {
 
-    if (fieldLowerCase.includes(userInputLowerCase)) return true;
+    for (let i = 0; i < assignees.length; i++) {
+        const assignee = assignees[i].toLowerCase();
+
+        if (assignee.includes(userInput)) return true;
+    }
+}
+
+
+/**
+ * Checks if a specific input string matches the user search input.
+ * @param {string} userInput validated lowercase search input string typed by the user
+ * @param {string} propertyToSearch property of the task object that should be searched for a match with the user input
+ * @returns {boolean} true if there is a match, false if not
+ */
+function boardFieldIncludes(userInput, propertyToSearch) {
+
+    const propertyToSearchLowercase = propertyToSearch.toLowerCase();
+
+    if (propertyToSearchLowercase.includes(userInput)) return true;
 }
 
 

@@ -298,41 +298,6 @@ function htmlTemplateMoreThan3Assignees(task) {
 
 
 /**
- * Searches and returns the personal rgb color code of the assignee from the contact database.
- * @param {string} assignee assignee with firstname and lastname
- * @returns the personal rgb color code of the assignee 
- */
-function getAssigneeColor(assignee) {
-
-    const assigneeTrimmed = assignee.trim();
-    const firstname = assigneeTrimmed.substring(0, assigneeTrimmed.indexOf(' '));
-    const lastname = assigneeTrimmed.substring(assigneeTrimmed.indexOf(' ') + 1);
-
-    database.contacts.forEach(contact => {
-
-        if (contactMatchesAssignee(contact, firstname, lastname, assignee)) return contact.color;
-    });
-}
-
-
-/**
- * Checks if the passed assignee name matches the name of the passed contact.
- * @param {object} contact that should be checked for a match
- * @param {string} firstname of the assignee
- * @param {string} lastname of the assignee
- * @param {string} assignee full name of the assigne; is checked in case the assignee only has a firstname
- * @returns {boolean} true when the contact matches the assignee
- */
-function contactMatchesAssignee(contact, firstname, lastname, assignee) {
-
-    if ((firstname == contact.firstname && lastname == contact.lastname) || (assignee == contact.firstname)) {
-
-        return true;
-    }
-}
-
-
-/**
  * Shortens the description to a size that can be displayed in relation to the current screen with.
  * @param {string} description unshortened description of a task
  * @returns shortened description

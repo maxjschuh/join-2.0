@@ -9,7 +9,7 @@ function boardShowAddtaskOverlay(progress) {
     subtaskStatus = [];
 
     boardIncludeAssignePickerOnAddTask();
-    document.getElementById('board-add-task-subtasks').innerHTML = boardAddTaskTemplateSubtasks();
+    setInnerHTML(['board-add-task-subtasks'], boardAddTaskTemplateSubtasks());
 
     renderCategories();
     renderContacts();

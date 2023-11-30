@@ -7,11 +7,10 @@ let data = [];
 let loggedInUser = {
     email: undefined,
     firstname: undefined,
-    remember: undefined,
+    rememberMe: false,
     password: undefined
 };
 
-let remember;
 let formValid = false;
 
 let databaseJSON = {
@@ -268,7 +267,7 @@ const INPUT_ALERTS = {
  */
 async function init() {
     includeUser();
-    checkForRunningSession();
+    redirectFromPrivatePages();
     await includeHTML();
     await getItem('database');
     sideMenuColor();
@@ -344,6 +343,8 @@ function includeUser() {
  */
 function showInitialsOnTopBar() {
 
+    if (!loggedInUser.email) return;
+
     initialLetters = (loggedInUser.firstname.charAt(0) + loggedInUser.lastname.charAt(0)).toUpperCase();
 
     const topbarCircle = document.getElementById('loggedInUserInitials');
@@ -356,29 +357,6 @@ function showInitialsOnTopBar() {
             topbarCircle.style.color = contact.color;
             return;
         }
-    }
-}
-
-
-/**
- * This function is for searching information based on different keywords.
- * @param {boolean} index - You are looking for the index of an object = true. For everything else false
- * @param {string} yoursearchResult - The information you are looking for. (color, contact, firstname, lastname, email,...). If the index is searched, just enter a placeholder here.
- * @param {string} keyword - The keyword you use to search for the information. (an e-mail address, a first name, a surname, ...)
- * @param {string} searchFilter - The searchFilter is related to the keyword. if you search with an email address of a contact, the search filter must be email.
- * @param {string} searchPath - The place where to search. There are only 4 possibilities. (categories, contacts, tasks, users)
- * @returns {*} - The information you're looking for.
- */
-function searchContactInfo(index, yoursearchResult, keyword, searchFilter, searchPath) {
-
-    for (let i = 0; i < database[searchPath].length; i++) {
-        currentSearch = database[searchPath][i];
-
-        const condition = keyword == database[searchPath][i][searchFilter];
-
-        if (condition && index) return database[searchPath].indexOf(currentSearch);
-
-        else if (condition) currentSearch[yoursearchResult];
     }
 }
 
@@ -410,8 +388,8 @@ function userMenuEventListener() {
 /**
  * This function checks whether a string contains { } [ ].
  * @param {string} input - Text from an input field.
- * @returns {boolean} true or false.
-             */
+ * @returns {boolean} true if the string contains brackets
+ */
 function containsBrackets(input) {
     return /[{}[\]"]/.test(input);
 }
@@ -421,23 +399,33 @@ function containsBrackets(input) {
  * This function logs the user out.
  */
 function logOut() {
-    if (!remember) localStorage.clear();
-    window.location.replace('login.html')
+    if (!loggedInUser.rememberMe) localStorage.clear();
+    window.location.replace('./login.html')
+}
+
+
+/**
+ * Tests if the user tries to acces a page for which a login is necessary. If so, it redirects the browser to the login page.
+ * @returns if the user accesses a public page
+ */
+function redirectFromPrivatePages() {
+
+    const publicPages = ["help.html", "legal-notice.html", "login.html"];
+    const currentPage = window.location.pathname.split("/").pop();
+    const previousPage = document.referrer;
+    const host = window.location.hostname;
+
+    if (publicPages.includes(currentPage)) return;
+
+    if (loggedInUser.email && previousPage.includes(host)) return;
+
+    window.location.replace("./login.html");
 }
 
 
 
-function checkForRunningSession() {
+function checkForLogin() {
 
-    const page = window.location.pathname.split("/").pop();
-
-    if (loggedInUser.email && page === "login.html") window.location.replace("./summary.html");
-
-    if (loggedInUser.email) return;
-
-    if (page === "help.html" || page === "legal-notice.html" || page === "login.html") return;
-
-    else window.location.replace("./login.html");
 }
 
 

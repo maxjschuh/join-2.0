@@ -32,8 +32,6 @@ function boardCreateEventListenerMouse(boardDragElement, i) {
             
             handleDropping(i);
         }
-        
-
 
         document.onmousemove = function (e) {
             e.preventDefault();

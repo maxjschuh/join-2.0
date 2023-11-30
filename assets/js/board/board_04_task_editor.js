@@ -46,12 +46,9 @@ function taskEditorInitAssigneePicker(assignees) {
  */
 function taskEditorSetAssigneeAsSelected(assignee) {
 
-    const firstname = assignee.substring(0, assignee.indexOf(' '));
-    const lastname = assignee.substring(assignee.indexOf(' ') + 1);
-
     database.contacts.forEach((contact, i) => {
 
-        if (firstname !== contact.firstname || lastname !== contact.lastname) return;
+        if (assignee !== contact.email) return;
 
         const id = `contacts[${i}]`;
         selectedForTask(contact, id);

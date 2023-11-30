@@ -1,6 +1,4 @@
-let rememberMeTickSet = false;
 let changePasswordEmail;
-let rememberMe = false;
 let users;
 
 
@@ -9,7 +7,7 @@ let users;
  */
 async function initLogin() {
     includeUser();
-    checkForRunningSession();
+    redirectFromPrivatePages();
     await getItem('database');
     users = database.users;
     fillInData();
@@ -37,10 +35,18 @@ function checkForChangePassword() {
  * @param {number} userIndex index of the user to login in the database.users array
  */
 function login(userIndex) {
-    const user = database.users[userIndex];
 
-    const localStorageData = { email: user.email, firstname: user.firstname, lastname: user.lastname, remember: rememberMe, password: user.password };
-    setItemLocalStorage('loggedInUser', localStorageData);
+    if (userIndex) {
+        
+        const user = database.users[userIndex];
+
+        loggedInUser.email = user.email;
+        loggedInUser.firstname = user.firstname;
+        loggedInUser.lastname = user.lastname;
+        loggedInUser.password = user.password;
+
+        setItemLocalStorage('loggedInUser', loggedInUser);
+    }
 
     window.location.href = './summary.html';
 }
@@ -85,10 +91,8 @@ function setItemLocalStorage(key, value) {
  */
 function toggleRememberMeTick() {
 
-    rememberMeTickSet = !rememberMeTickSet;
-    rememberMe = rememberMeTickSet;
-
-    toggleElements(['tick'], 'd-none', rememberMeTickSet);
+    toggleElements(['tick'], 'd-none', loggedInUser.rememberMe);
+    loggedInUser.rememberMe = !loggedInUser.rememberMe;
 }
 
 
@@ -97,13 +101,12 @@ function toggleRememberMeTick() {
  */
 function fillInData() {
 
-    if (loggedInUser.remember) {
+    if (loggedInUser.rememberMe) {
 
         document.getElementById('email').value = loggedInUser.email;
         document.getElementById('password').value = loggedInUser.password;
-        toggleRememberMeTick();
+        toggleElements(['tick'], 'd-none', false);
     }
-
 }
 
 
@@ -141,7 +144,7 @@ function handleResize() {
 
 function addEventListeners() {
 
-    // document.addEventListener("focus", activeInputfield, true); // gets the inputfield which is in focus
-    // document.addEventListener("blur", activeInputfield, true); // get the inputfield which looses the focus
-    // window.addEventListener('resize', handleResize); // checks if the screen is resizing
+    document.addEventListener("focus", activeInputfield, true); // gets the inputfield which is in focus
+    document.addEventListener("blur", activeInputfield, true); // get the inputfield which looses the focus
+    window.addEventListener('resize', handleResize); // checks if the screen is resizing
 }

@@ -9,7 +9,7 @@ function boardShowTaskDetails(i) {
     toggleElements(['board-detail-view'], 'board-display-none', false);
     boardCurrentTaskInDetailView = i;
 
-    document.getElementById('board-kanban').classList.add('board-display-none-700px');
+    toggleElements(['board-kanban'], 'board-display-none-700px', true);
 }
 
 
@@ -32,7 +32,8 @@ function boardHideTaskDetails() {
 function boardRenderDetailView(i) {
     const task = database.tasks[i];
 
-    boardDetailViewCategory(task);
+    setInnerHTML(['board-detail-view-category-tag'], task.category);
+    setInlineStyle(['board-detail-view-category-tag'], `background-color:${getCategoryColor(task.category)}`);
     setInnerHTML(['board-detail-view-title'], task.title);
     setInnerHTML(['board-detail-view-description'], task.description);
     setInnerHTML(['board-detail-view-due-date'], `Due date: <div>${task.due_date}</div>`);
@@ -40,19 +41,6 @@ function boardRenderDetailView(i) {
     boardDetailViewPriorityTag(task);
     boardDetailViewAssignees(task);
     boardRenderSubtasks(task.subtasks, 'board-detail-view-subtasks');
-}
-
-
-/**
- * Renders the category in the detail view.
- * @param {object} task the task whose information should be rendered
- */
-function boardDetailViewCategory(task) {
-
-    let container = document.getElementById('board-detail-view-category-tag');
-
-    container.innerHTML = /*html*/ `${task.category}`;
-    container.style.backgroundColor = `${getCategoryColor(task.category)}`;
 }
 
 
