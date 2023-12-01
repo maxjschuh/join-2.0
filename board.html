@@ -41,7 +41,7 @@
         <button onclick="collectAllInfos()" id="mobileCreateTask"
             class="create-task-top space-evenly board-cursor-pointer board-display-none">
             Create
-            <img src="./assets/img/create_task.png" alt="">
+            <img src="./assets/img/create_task.png" alt="plus icon">
         </button>
     </div>
 
@@ -68,15 +68,15 @@
                         <input id="board-search-input-desktop" oninput="boardValidateSearchInput()" type="text"
                             placeholder="Find Task">
 
-                        <img src="./assets/img/board/lens_with_separator.svg" alt="">
+                        <img src="./assets/img/board/lens_with_separator.svg" alt="magnifying glass icon">
                     </div>
 
                     <button id="board-header-right-column-add-task" onclick="boardShowAddtaskOverlay('todo')"
                         class="board-cursor-pointer">Add task <img src="./assets/img/board/plus_button_white.svg"
-                            alt=""></button>
+                            alt="plus icon"></button>
 
                     <div id="board-header-add-task-responsive" onclick="boardShowAddtaskOverlay('todo')">
-                        <img src="./assets/img/board/plus_button_white.svg" alt="">
+                        <img src="./assets/img/board/plus_button_white.svg" alt="plus icon">
                     </div>
 
                 </div>
@@ -86,7 +86,7 @@
                 <input id="board-search-input-mobile" oninput="boardValidateSearchInput()" type="text"
                     placeholder="Find Task">
 
-                <img src="./assets/img/board/lens_with_separator.svg" alt="">
+                <img src="./assets/img/board/lens_with_separator.svg" alt="magnifying glass icon">
             </div>
 
             <div id="board-kanban">
@@ -96,7 +96,7 @@
                     <div class="board-kanban-column-header">
                         To do<img onclick="boardShowAddtaskOverlay('todo')"
                             src="./assets/img/board/plus_button_black_rounded_square.svg" class="board-cursor-pointer"
-                            alt="">
+                            alt="plus icon">
                     </div>
 
                     <div id="board-kanban-column-todo" class="board-kanban-column-task-area">
@@ -110,7 +110,7 @@
                     <div class="board-kanban-column-header">
                         In progress<img onclick="boardShowAddtaskOverlay('in-progress')"
                             src="./assets/img/board/plus_button_black_rounded_square.svg" class="board-cursor-pointer"
-                            alt="">
+                            alt="plus icon">
                     </div>
 
                     <div id="board-kanban-column-in-progress" class="board-kanban-column-task-area">
@@ -125,7 +125,7 @@
                     <div class="board-kanban-column-header">
                         Awaiting Feedback<img onclick="boardShowAddtaskOverlay('awaiting-feedback')"
                             src="./assets/img/board/plus_button_black_rounded_square.svg" class="board-cursor-pointer"
-                            alt="">
+                            alt="plus icon">
                     </div>
 
                     <div id="board-kanban-column-awaiting-feedback" class="board-kanban-column-task-area">
@@ -141,7 +141,7 @@
                     <div class="board-kanban-column-header">
                         Done<img onclick="boardShowAddtaskOverlay('done')"
                             src="./assets/img/board/plus_button_black_rounded_square.svg" class="board-cursor-pointer"
-                            alt="">
+                            alt="plus icon">
                     </div>
 
                     <div id="board-kanban-column-done" class="board-kanban-column-task-area">
@@ -163,7 +163,7 @@
                         src="./assets/img/board/close.svg" alt="close-icon">
 
                     <img class="board-close-arrow board-cursor-pointer" onclick="boardHideTaskDetails()"
-                        src="./assets/img/board/arrow-left-line.svg" alt="">
+                        src="./assets/img/board/arrow-left-line.svg" alt="arrow to the left icon">
 
                     <div id="board-detail-view-category-tag" class="board-department-tag"></div>
 
@@ -192,12 +192,12 @@
                     </div>
 
                     <div id="board-detail-view-delete-button" onclick="boardDeleteTask()" class="board-cursor-pointer">
-                        <img src="./assets/img/board/delete_task.svg" alt="">
+                        <img src="./assets/img/board/delete_task.svg" alt="recycle bin icon">
                     </div>
 
                     <div id="board-detail-view-edit-button" onclick="boardShowTaskEditor()"
                         class="board-cursor-pointer">
-                        <img src="./assets/img/board/edit_task.svg" alt="">
+                        <img src="./assets/img/board/edit_task.svg" alt="pen icon">
                     </div>
 
                 </div>
@@ -208,7 +208,7 @@
                         onclick="boardHideTaskEditor()" alt="close-icon">
 
                     <img class="board-close-arrow board-cursor-pointer" onclick="boardHideTaskEditor()"
-                        src="./assets/img/board/arrow-left-line.svg" alt="">
+                        src="./assets/img/board/arrow-left-line.svg" alt="arrow to the left icon">
 
 
                     <div class="task-editor-section">
@@ -232,17 +232,17 @@
                             <button id="task-editor-prio-button-high"
                                 onclick="taskEditorRenderPrioButtons('high')">Urgent
                                 <img id="task-editor-prio-icon-high" src="./assets/img/board/prio_high_white.svg"
-                                    alt="">
+                                    alt="priority high icon">
                             </button>
 
                             <button id="task-editor-prio-button-medium"
                                 onclick="taskEditorRenderPrioButtons('medium')">Medium
                                 <img id="task-editor-prio-icon-medium" src="./assets/img/board/prio_medium_white.svg"
-                                    alt="">
+                                    alt="priority medium icon">
                             </button>
 
                             <button id="task-editor-prio-button-low" onclick="taskEditorRenderPrioButtons('low')">Low
-                                <img id="task-editor-prio-icon-low" src="./assets/img/prio_low_white.svg" alt="">
+                                <img id="task-editor-prio-icon-low" src="./assets/img/prio_low_white.svg" alt="priority low icon">
                             </button>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                     <div id="task-editor-footer" class="task-editor-section">
                         <button id="board-task-editor-confirm-changes" onclick="boardConfirmEditorChanges()"
                             class="board-cursor-pointer">
-                            Ok<img src="./assets/img/board/checkmark.svg" alt="">
+                            Ok<img src="./assets/img/board/checkmark.svg" alt="checkmark icon">
                         </button>
                     </div>
                 </div>

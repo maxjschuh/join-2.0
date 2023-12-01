@@ -63,10 +63,10 @@ function templateContactDetails(i) {
         </div>
         
         <div class="contact-info-buttons" id="contact-info-buttons">
-            <img class="trash-icon d-none" id="trash-icon" src="./assets/img/contact_delete_button.png" alt=""
+            <img class="trash-icon d-none" id="trash-icon" src="./assets/img/contact_delete_button.png" alt="x icon"
                 onclick="changeMobileView(false), deleteContact(${i})">
             <img class="edit-contact-icon d-none" id="edit-contact-icon" onclick="editContact(${i})"
-                src="./assets/img/contact_edit_small.png" alt="">
+                src="./assets/img/contact_edit_small.png" alt="pen icon">
         </div>
         </div> 
     `;
@@ -86,10 +86,10 @@ function templateDetailButtons(i) {
 
     else return /*html*/ `
         <div class="contact-edit" id="contact-edit" onclick="editContact(${i})">
-            <div><img src="./assets/img/contact_edit_new.png" alt="" class="contact-edit-pen">Edit</div>
+            <div><img src="./assets/img/contact_edit_new.png" alt="new contact icon" class="contact-edit-pen">Edit</div>
         </div>
         <div class="contact-edit" id="contact-trash" onclick="deleteContact(${i})">
-            <img class="delete-icon" id="delete-icon" src="./assets/img/contacts_trash.png" alt="">Delete
+            <img class="delete-icon" id="delete-icon" src="./assets/img/contacts_trash.png" alt="recycle bin icon">Delete
         </div>
     `;
 }

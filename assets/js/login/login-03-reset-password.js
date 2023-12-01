@@ -2,11 +2,9 @@
  * Checks if the email exists. If the Email exist it will start other functions to send the mail to reset the password.
  */
 async function requestPasswordReset() {
-    const forgotPwEmail = document.getElementById('forgotPwEmail').value;
+    const forgotPwEmail = document.getElementById('forgotPwEmail').value.trim();
     const username = getUsername(forgotPwEmail);
-    let response = {
-        ok: true
-    };
+    let response = { ok: true };
 
     if (username) response = await sendEmail(forgotPwEmail, username);
 
@@ -30,7 +28,7 @@ function getUsername(forgotPwEmail) {
     for (let i = 0; i < users.length; i++) {
         const user = users[i];
 
-        if (user.email == forgotPwEmail) return user.username;
+        if (user.email == forgotPwEmail) return user.firstname + user.lastname;
     }
     return false;
 }
@@ -72,29 +70,26 @@ function getForgotPwLink(forgotPwEmail) {
 }
 
 
-
-
 /**
  * This function will start the functions to reset the password.
  */
 function submitNewPassword() {
+
     const newPassword = document.getElementById('newPassword').value;
+    formValid = true;
 
+    validateInput('newPassword');
 
-    if (containsForbiddenCharacters(newPassword)) {
+    if (!formValid) return;
 
+    updatePassword(newPassword);
+    toggleElements(['resetPassword'], 'd-none');
 
-    } else {
-
-        updatePassword(newPassword);
+    setTimeout(() => {
         toggleElements(['resetPassword'], 'd-none');
+    }, 1000);
 
-        setTimeout(() => {
-            toggleElements(['resetPassword'], 'd-none');
-        }, 1000);
-
-        showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']);
-    }
+    showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer', 'resetPwContainer', 'forgotPwContainer']);
 }
 
 
@@ -110,19 +105,12 @@ function updatePassword(newPassword) {
 }
 
 
-function containsForbiddenCharacters(input) {
-
-    const regex = /(´|`|'"\\|[\s])/;
-
-    return input.match(regex);
-}
-
-
-function replaceForbiddenCharacters(string) {
-
-}
-
-
+/**
+ * HTML Template for the email with the link to reset the password.
+ * @param {string} username first- and lastname of the user 
+ * @param {string} forgotPwEmail email address of the user
+ * @returns {string} html template
+ */
 function passwordResetMail(username, forgotPwEmail) {
 
     const link = getForgotPwLink(forgotPwEmail)
@@ -169,6 +157,10 @@ function passwordResetMail(username, forgotPwEmail) {
                     border-top: 1px solid #ddd;
                     text-align: center;
                     color: #777;
+                }
+
+                .footer img {
+                    height: 80px;
                 }
             </style>
         </head>

@@ -318,7 +318,7 @@ function resetPrioButton() {
  * Renders the subtask and changes the icons.
  */
 function addSubtask() {
-    const subtaskInput = document.getElementById('subtaskInput').value;
+    const subtaskInput = document.getElementById('subtaskInput').value.trim();
     if (containsBrackets(subtaskInput)) {
         document.getElementById('subTaskReport').innerHTML = 'The following characters are not allowed { } [ ] "';
 

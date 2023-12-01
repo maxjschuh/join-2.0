@@ -83,7 +83,7 @@ async function boardConfirmEditorChanges() {
 
     const taskEditorTitle = replaceForbiddenCharacters(document.getElementById('task-editor-title').value);
     const taskEditorDescription = replaceForbiddenCharacters(document.getElementById('task-editor-description').value);
-    const taskEditorDueDate = document.getElementById('task-editor-date').value;
+    const taskEditorDueDate = document.getElementById('task-editor-date').value.trim();
 
     database.tasks[boardCurrentTaskInDetailView].prio = taskEditorSelectedPrio;
     database.tasks[boardCurrentTaskInDetailView].title = taskEditorTitle;

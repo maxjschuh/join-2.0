@@ -86,10 +86,7 @@
         </form>
 
 
-        <!-- <form onsubmit="submitSignUp(); return false; disableButton('signUpButton')" id="signUpContainer"
-            class="login-container d-none"> -->
-
-        <form onsubmit="submitSignUp(); return false;" id="signUpContainer"
+        <form onsubmit="submitSignUp(); return false; disableButton('signUpButton')" id="signUpContainer"
             class="login-container d-none">
 
             <img onclick="showAndHideElements(['signUp', 'loginContainer'], ['signUpContainer']); resetInputs()"
@@ -125,7 +122,7 @@
 
             <div class="input-container">
                 <input required id="signUpPassword" type="password" placeholder="Password" minlength="8"
-                    autocomplete="new-password" oninput="switchPasswordPicture('signUpPassword')">
+                    autocomplete="new-password" oninput="switchPasswordPicture('signUpPassword'); validateInput('signUpPassword')">
 
                 <img id="lock-signUpPassword" src="./assets/img/lock.png" alt="icon password">
 
@@ -186,8 +183,10 @@
                 <img onclick="togglePasswordVisibility('newPassword')" id="show-newPassword" class="d-none"
                     src="./assets/img/show_password.png" alt="icon password visible">
             </div>
+            <div id="newPasswordAlert" class="alert"></div>
 
-            <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
+
+            <button id="continueButton" type="submit" class="button-dark margin-top-20px width-180px">Continue</button>
         </form>
 
         <div class="d-none" id="signUp">Not a Join user?

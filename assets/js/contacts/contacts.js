@@ -163,10 +163,10 @@ async function submitEditContactForm(i) {
 async function saveEditedUser(i) {
 
     const contactToEdit = contacts[i];
-    contactToEdit.firstname = document.getElementById('editFirstName').value
-    contactToEdit.lastname = document.getElementById('editLastName').value
-    contactToEdit.email = document.getElementById('editEmail').value;
-    contactToEdit.phone = document.getElementById('editPhone').value;
+    contactToEdit.firstname = document.getElementById('editFirstName').value.trim();
+    contactToEdit.lastname = document.getElementById('editLastName').value.trim();
+    contactToEdit.email = document.getElementById('editEmail').value.trim();
+    contactToEdit.phone = document.getElementById('editPhone').value.trim();
 
     await setItem('database', database);
 
@@ -202,7 +202,7 @@ function submitNewContactForm() {
  */
 function checkIfEmailAlreadyExists(inputId, currentEmail) {
 
-    const newContactEmail = document.getElementById(inputId).value;
+    const newContactEmail = document.getElementById(inputId).value.trim();
     const alert = document.getElementById(inputId + 'Alert');
 
     if (currentEmail === newContactEmail) return;
@@ -243,10 +243,10 @@ async function addContact() {
  * @returns {object} the name, email address and phone number from the input fields
  */
 function getContactData() {
-    const firstName = document.getElementById('newContactFirstName').value;
-    const lastName = document.getElementById('newContactLastName').value;
-    const email = document.getElementById('newContactEmail').value;
-    const phone = document.getElementById('newContactPhone').value;
+    const firstName = document.getElementById('newContactFirstName').value.trim();
+    const lastName = document.getElementById('newContactLastName').value.trim();
+    const email = document.getElementById('newContactEmail').value.trim();
+    const phone = document.getElementById('newContactPhone').value.trim();
 
     return { firstName, lastName, email, phone };
 }

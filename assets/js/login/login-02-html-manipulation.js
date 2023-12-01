@@ -80,14 +80,14 @@ function waitForAnimation() {
 
     let timeout;
 
-    if (screenSmallerThan900Px()) {
+    if (screenSmallerThan900Px()) { 
 
-        showAndHideElements(['mobileStartScreen'], ['loginContainer']);
+        showAndHideElements(['mobileStartScreen'], ['loginContainer', 'signUp']);
 
         setTimeout(() => {
             toggleElements(['mobileStartScreen'], 'd-none', true);
             setInlineStyle(['joinPic'], 'display: block');
-        }, 300);
+        }, 300); 
 
         timeout = 1300;
 
@@ -95,7 +95,7 @@ function waitForAnimation() {
 
     setTimeout(() => {
 
-        toggleElements(['loginContainer', 'signUp'], 'd-none', false);
+        showAndHideElements(['loginContainer', 'signUp'], null);
     }, timeout);
 }
 
@@ -110,6 +110,6 @@ function playAnimation(id) {
 
     setTimeout(() => {
 
-        toggleElements([id], 'd-none', true); // Lets the EmailSent-Container vanish after 3 seconds
+        toggleElements([id], 'd-none', true);
     }, 1000);
 }

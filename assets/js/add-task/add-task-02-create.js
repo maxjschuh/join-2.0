@@ -75,7 +75,7 @@ function getEmails() {
  * @returns {string} value from input field.
  */
 function getValue(valueId, reportID) {
-    const description = document.getElementById(valueId).value;
+    const description = document.getElementById(valueId).value.trim();
     if (!description || containsBrackets(description)) {
         showAndHideElements([reportID]);
         required = true;
@@ -104,7 +104,7 @@ function getCategory() {
  */
 function getDate() {
     const date_regex = /^(?:19|20)\d{2}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|[1-2][0-9]|3[0-1])$/;
-    const chosenDate = document.getElementById('date').value;
+    const chosenDate = document.getElementById('date').value.trim();
 
     if (chosenDate && date_regex.test(chosenDate)) return chosenDate;
 
@@ -246,7 +246,7 @@ function removeSelectedColor() {
  */
 function addCategory() {
     categoryInputFilled = document.getElementById('categoryInput');
-    newCategory = categoryInputFilled.value;
+    newCategory = categoryInputFilled.value.trim();
 
     if (!newCategory) setInnerHTML(['categoryReport'], 'Please enter a new category name');
 

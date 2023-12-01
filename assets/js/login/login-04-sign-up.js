@@ -1,3 +1,6 @@
+/**
+ * Handles a request for signing up.
+ */
 function submitSignUp() {
 
     const inputIds = ['firstname', 'lastname', 'signUpEmail', 'signUpPassword'];
@@ -12,7 +15,6 @@ function submitSignUp() {
 
     if (formValid) signUpUser();
 }
-
 
 
 /**
@@ -31,12 +33,14 @@ function signUpUser() {
 }
 
 
-
+/**
+ * Collects data from the input fields on the sign up page for creating a private user account and public user contact. Pushes this data to the database object.
+ */
 function retrieveSignUpData() {
 
-    const firstname = document.getElementById('firstname').value;
-    const lastname = document.getElementById('lastname').value;
-    const email = document.getElementById('signUpEmail').value;
+    const firstname = document.getElementById('firstname').value.trim();
+    const lastname = document.getElementById('lastname').value.trim();
+    const email = document.getElementById('signUpEmail').value.trim();
     const password = document.getElementById('signUpPassword').value;
 
     const contact = {

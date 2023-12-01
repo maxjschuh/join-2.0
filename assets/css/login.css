@@ -320,6 +320,7 @@ body {
     display: flex;
     align-items: end;
     height: 22px;
+    width: 280px;
 }
 
 @keyframes emailSentAni {

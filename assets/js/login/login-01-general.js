@@ -55,8 +55,8 @@ function login(userIndex) {
  */
 function checkLogin() {
 
-    const emailLogIn = document.getElementById('email').value;
-    const passwordLogIn = document.getElementById('password').value;
+    const emailLogIn = document.getElementById('email').value.trim();
+    const passwordLogIn = document.getElementById('password').value.trim();
 
     for (let i = 0; i < users.length; i++) {
         const user = users[i];
