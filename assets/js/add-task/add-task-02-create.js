@@ -8,7 +8,7 @@ function collectAllInfos() {
     task.title = getValue('tileInput', 'titleReport');
     task.description = getValue('descriptionInput', 'descriptionReport');
     task.category = getCategory();
-    task.assigned_to = getName();
+    task.assigned_to = getEmails();
     task.due_date = getDate();
     task.prio = getPrio();
     collectUnnecessaryInfos();
@@ -56,15 +56,14 @@ function activateAddTaskButton() {
 
 
 /**
- * This function pushes all the names of the selected contacts in an array.
+ * This function pushes all the emails of the selected contacts in an array.
  */
-function getName() {
-    taskContactList.forEach((ContactName) => {
-        if (ContactName.lastname == '') fullName = ContactName.firstname;
-        else fullName = ContactName.firstname + ' ' + ContactName.lastname;
-        collectedContact.push(fullName);
+function getEmails() {
+    taskContactList.forEach((contact) => {
+
+        collectedContacts.push(contact.email);
     });
-    return collectedContact;
+    return collectedContacts;
 }
 
 

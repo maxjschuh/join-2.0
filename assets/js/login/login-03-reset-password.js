@@ -11,7 +11,7 @@ async function requestPasswordReset() {
     if (username) response = await sendEmail(forgotPwEmail, username);
 
     if (!response.ok) {
-        showErrorMessage(response);
+        showErrorMessage();
         return;
     }
 
@@ -23,7 +23,7 @@ async function requestPasswordReset() {
 /**
  * This function is used to get the username through the email
  * @param {string} forgotPwEmail This is the email from where we get the username
- * @returns The username will be returned, if the email does not exists it will return "false"
+ * @returns {*} The username will be returned, if the email does not exists it will return "false"
  */
 function getUsername(forgotPwEmail) {
 
@@ -36,12 +36,11 @@ function getUsername(forgotPwEmail) {
 }
 
 
-
 /**
  * Makes a fetch request to the php script for sending the password reset link to the user's e-mail adress.
  * @param {string} forgotPwEmail The e-mail to where the link will be sent, which is the e-mail of the user who wants his / her password to be resetted
  * @param {string} username of the user who requested the password reset
- * @returns 
+ * @returns {object} response from the server
  */
 async function sendEmail(forgotPwEmail, username) {
 

@@ -188,7 +188,7 @@ function checkDragOverlapping(boardDragElement, taskNumber) {
  * @param {object} boardDragElement the html task card that is currently dragged
  * @param {number} i the index of the column in the columnIds array, which contains the four html ids of the board columns
  * @param {number} taskNumber the index of the dragged task in the database or searchResults array
- * @returns true = the dragged task overlaps somewhere with the checked column, false = there is no overlap with the checked column
+ * @returns {boolean} true = the dragged task overlaps somewhere with the checked column, false = there is no overlap with the checked column
  */
 function isDraggedElementOverBoardColumn(columnId, boardDragElement, i, taskNumber) {
 
@@ -245,7 +245,7 @@ function checkDraggingOverDropContainer(columnId, centerX, centerY, index, taskN
  * @param {number} centerX x-coordinate of the center of the dragged task
  * @param {number} centerY y-coordinate of the center of the dragged task
  * @param {object} containerRect bounding client coordinates of the drop column or drop container
- * @returns true when there is overlap
+ * @returns {boolean} true when there is overlap
  */
 function coordinatesOverlap(centerX, centerY, containerRect) {
 

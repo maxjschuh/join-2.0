@@ -136,6 +136,10 @@ function closeContactOverlay() {
 }
 
 
+/**
+ * Onclick function that submits the changes that have been made in the edit contact form. The input values are validated. If they are ok, the edited contacted data is saved, otherwise alerts are shown.
+ * @param {number} i index of the contact that has been edited in the database.contacts
+ */
 async function submitEditContactForm(i) {
 
     const inputIds = ['editFirstName', 'editLastName', 'editEmail', 'editPhone'];
@@ -172,6 +176,9 @@ async function saveEditedUser(i) {
 }
 
 
+/**
+ * Onclick function that submits the inputs that have been made in the new contact form. The input values are validated. If they are ok, a new contact with the inputted data is created, otherwise alerts are shown.
+ */
 function submitNewContactForm() {
     const inputIds = ['newContactFirstName', 'newContactLastName', 'newContactEmail', 'newContactPhone'];
     formValid = true;
@@ -187,10 +194,12 @@ function submitNewContactForm() {
 }
 
 
-
-
-
-
+/**
+ * Checks if a email that the user has entered in the edit- or new-contact form is already in use by a contact.
+ * @param {string} inputId id of the input element where the email to check has been entered
+ * @param {string} currentEmail of the contact that is being edited
+ * @returns if the email of a existing contact has not been changed by the user
+ */
 function checkIfEmailAlreadyExists(inputId, currentEmail) {
 
     const newContactEmail = document.getElementById(inputId).value;
@@ -231,7 +240,7 @@ async function addContact() {
 
 /**
  * This function gets the data from the add contact input fields
- * @returns the name, email address and phone number from the input fields
+ * @returns {object} the name, email address and phone number from the input fields
  */
 function getContactData() {
     const firstName = document.getElementById('newContactFirstName').value;
@@ -307,9 +316,6 @@ async function deleteContact(i) {
 }
 
 
-
-
-
 /**
  * This function opens the edit contact form
  * @param {number} i - index of the database.contacts array 
@@ -323,10 +329,8 @@ function editContact(i) {
     document.getElementById('editContactForm').onsubmit = () => {
         submitEditContactForm(i);
         return false;
-    }
-    document.getElementById('contact-delete-button').onclick = () => {
-        deleteContact(i);
     };
+    document.getElementById('contact-delete-button').onclick = () => { deleteContact(i); };
 
     document.getElementById('editFirstName').value = contactToEdit.firstname;
     document.getElementById('editLastName').value = contactToEdit.lastname;
@@ -334,13 +338,10 @@ function editContact(i) {
     document.getElementById('editPhone').value = contactToEdit.phone;
     document.getElementById('contact-initials').style = `background-color:${contactToEdit.color}`;
 
-
     document.getElementById('contact-initials').innerHTML =
         (contactToEdit.firstname.charAt(0) + contactToEdit.lastname.charAt(0)).toUpperCase();
 
-
     setTimeout(() => {
-
         toggleElements(['contactOverlayBoxEdit'], 'contact-overlay-box-animate', true);
     }, 20);
 }

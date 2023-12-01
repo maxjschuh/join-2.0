@@ -35,7 +35,7 @@ function templateContactListEntry(userData, i) {
  * @returns {string} the HTML code of the selected user details
  */
 function templateContactDetails(i) {
-    let userDetails = contacts[i];
+    const userDetails = contacts[i];
     return /*html*/`
         <div class="contact-card">
             <div class="contact-card-container">
@@ -44,12 +44,8 @@ function templateContactDetails(i) {
                 <div>
                     <div class="contact-member">${userDetails['firstname']} ${userDetails['lastname']}</div>
                     <div class="editorial">
-                        <div class="contact-edit" id="contact-edit" onclick="editContact(${i})">
-                            <div><img src="./assets/img/contact_edit_new.png" alt="" class="contact-edit-pen">Edit</div>
-                        </div>
-                        <div class="contact-edit" id="contact-trash" onclick="deleteContact(${i})">
-                            <img class="delete-icon" id="delete-icon" src="./assets/img/contacts_trash.png" alt="">Delete
-                        </div>
+
+                        ${templateDetailButtons(i)}
                     </div>
                 </div>
             </div>
@@ -73,5 +69,27 @@ function templateContactDetails(i) {
                 src="./assets/img/contact_edit_small.png" alt="">
         </div>
         </div> 
+    `;
+}
+
+
+/**
+ * Template for the edit- and delete-buttons in the contacts detail view.
+ * @param {number} i index of the contact to render in the database.contacts
+ * @returns {string} empty string, if the guest user contact is rendered, to prevent its deletion; else html template for edit- and delete-buttons.
+ */
+function templateDetailButtons(i) {
+
+    const indexOfGuestUserContact = 0;
+
+    if (i === indexOfGuestUserContact) return '';
+
+    else return /*html*/ `
+        <div class="contact-edit" id="contact-edit" onclick="editContact(${i})">
+            <div><img src="./assets/img/contact_edit_new.png" alt="" class="contact-edit-pen">Edit</div>
+        </div>
+        <div class="contact-edit" id="contact-trash" onclick="deleteContact(${i})">
+            <img class="delete-icon" id="delete-icon" src="./assets/img/contacts_trash.png" alt="">Delete
+        </div>
     `;
 }

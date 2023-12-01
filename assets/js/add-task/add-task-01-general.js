@@ -1,4 +1,4 @@
-let collectedContact = [];
+let collectedContacts = [];
 let taskContactList = [];
 let contactPosition;
 let initials = [];
@@ -217,7 +217,7 @@ function getFirstLetters(contact) {
 function clearContacts() {
     const classStatus = document.getElementById('assignedTo').classList;
     if (classStatus.contains('dropdown-category-open')) pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
-    collectedContact = [];
+    collectedContacts = [];
     taskContactList = [];
     initials = [];
     switchContactIcons();

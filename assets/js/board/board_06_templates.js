@@ -119,7 +119,7 @@ function boardTemplateAssigneePicker() {
 
             <div class="dropdown-category-closed" id="assignedTo">
 
-                <div onclick="pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories')" class="dd-placeholder" id="contactsToAssingContainer">
+                <div onclick="pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories')" class="dd-placeholder" id="contactsToAssignContainer">
                     <div>Contacts to assign</div>
                     <img id="ddArrow" src="./assets/img/drop_down.png">
 

@@ -57,7 +57,7 @@ function datePicker() {
  */
 function pullDownMenu(clicked, notClicked, visible, notVisible) {
     const openMenu = document.getElementById(clicked).classList;
-    if (openMenu === 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
+    if (openMenu == 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
     else closeDropDownMenu(clicked, visible, notVisible);
 
     if (clicked === 'assignedTo') {
@@ -180,7 +180,7 @@ function switchContactIcons() {
 
     } else {
         showAndHideElements(['clearAddButtons'], ['ddArrow']);
-        document.getElementById('contactsToAssingContainer').removeAttribute("onclick");
+        document.getElementById('contactsToAssignContainer').removeAttribute("onclick");
     }
 }
 
@@ -189,7 +189,7 @@ function switchContactIcons() {
  * This function adds an onclick.
  */
 function setAttribute() {
-    document.getElementById('contactsToAssingContainer').setAttribute("onclick",
+    document.getElementById('contactsToAssignContainer').setAttribute("onclick",
         "pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories')");
 }
 

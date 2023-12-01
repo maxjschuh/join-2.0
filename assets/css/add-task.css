@@ -95,7 +95,7 @@
 }
 
 /* container left */
-.task-main-inforamtion {
+.task-main-information {
     border-right: 1px solid rgb(209, 209, 209);
     padding-right: 30px;
     width: 50%;
@@ -491,7 +491,7 @@
         display: block;
     }
 
-    .task-main-inforamtion {
+    .task-main-information {
         border: 0;
         padding-right: 0;
         width: 100%;

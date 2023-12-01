@@ -65,13 +65,18 @@ Board Header
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 6px 6px 6px 12px;
+    padding: 2px;
+    padding-right: 8px;
     border: 1px solid rgb(168, 168, 168);
     border-radius: 10px;
     background-color: #ffffff;
     font-weight: 400;
     font-size: 16px;
     width: 222px;
+}
+
+#board-search-input-desktop {
+    padding: 6px 0 6px 8px;
 }
 
 .board-search-bar input:focus-visible {
@@ -689,6 +694,12 @@ Board - add task overlay
     position: static;
 }
 
+.board-prio-button {
+    font-size: 14px !important;
+    gap: 4px !important;
+    padding: 24px !important;
+}
+
 /*-------------------------------------------------
 Responsive Design
 -------------------------------------------------*/
@@ -715,6 +726,15 @@ Responsive Design
 
     #board-add-task {
         width: calc(100% - 60px);
+    }
+
+    .task-prio-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .board-prio-button {
+        width: 100px;
     }
 }
 
@@ -844,6 +864,15 @@ Responsive Design
 
     #board-responsive-search-bar {
         width: fit-content;
+    }
+
+    .task-prio-container {
+        flex-direction: row;
+        gap: 0;
+    }
+
+    .board-prio-button {
+        width: 32%;
     }
 }
 

@@ -1,5 +1,5 @@
 function submitSignUp() {
-    debugger
+
     const inputIds = ['firstname', 'lastname', 'signUpEmail', 'signUpPassword'];
     formValid = true;
 
@@ -27,7 +27,7 @@ function signUpUser() {
 
     setTimeout(() => {
         login(database.users.length - 1);
-    }, 2000);
+    }, 1800);
 }
 
 

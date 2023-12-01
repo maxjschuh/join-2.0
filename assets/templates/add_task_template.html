@@ -11,7 +11,7 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
         <span>Add Task</span>
     </div>
     <div class="task-input-section">
-        <div class="task-main-inforamtion">
+        <div class="task-main-information">
             <div class="padding-36-bottom">
                 <div class="display-flex">
                     <div class="padding-10-bottom padding-17-right">Title</div>
@@ -73,8 +73,6 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
 
             <div id="board-add-task-assignee-picker">
             </div>
-
-
     
         </div>
 
@@ -93,18 +91,18 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
                     <div id="prioReport" class="report d-none">This field is required</div>
                 </div>
                 <div class="task-prio-container">
-                    <button class="task-prio-button center pointer space-evenly"
+                    <button class="task-prio-button center pointer space-evenly board-prio-button"
                         onclick="priority('prioHigh', 'prioHighImg')" id="prioHigh">
                         <div>Urgent</div>
                         <img id="prioHighImg" src="./assets/img/prio_high.svg">
                     </button>
-                    <button class="task-prio-button center  space-evenly"
+                    <button class="task-prio-button center pointer space-evenly board-prio-button"
                         onclick="priority('prioMedium', 'prioMediumImg')"
                         id="prioMedium">
                         <div>Medium</div>
                         <img id="prioMediumImg" src="./assets/img/prio_medium.svg">
                     </button>
-                    <button class="task-prio-button center pointer space-evenly"
+                    <button class="task-prio-button center pointer space-evenly board-prio-button"
                         onclick="priority('prioLow', 'prioLowImg')" id="prioLow">
                         <div>Low</div>
                         <img id="prioLowImg" src="./assets/img/prio_low.svg">
@@ -132,7 +130,7 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
 </div>
 <div id="addedToBoard" class="added-to-board-position">
     <div class="added-to-board">
-        Task addet to board
+        Task added to board
         <img class="added-to-board-img" src="./assets\img\board.png">
     </div>
 </div>

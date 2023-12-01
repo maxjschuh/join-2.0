@@ -36,17 +36,14 @@ function checkForChangePassword() {
  */
 function login(userIndex) {
 
-    if (userIndex) {
-        
-        const user = database.users[userIndex];
+    const user = database.users[userIndex];
 
-        loggedInUser.email = user.email;
-        loggedInUser.firstname = user.firstname;
-        loggedInUser.lastname = user.lastname;
-        loggedInUser.password = user.password;
+    loggedInUser.email = user.email;
+    loggedInUser.firstname = user.firstname;
+    loggedInUser.lastname = user.lastname;
+    loggedInUser.password = user.password;
 
-        setItemLocalStorage('loggedInUser', loggedInUser);
-    }
+    setItemLocalStorage('loggedInUser', loggedInUser);
 
     window.location.href = './summary.html';
 }
@@ -67,7 +64,7 @@ function checkLogin() {
         if (emailLogIn === user.email && passwordLogIn === user.password) {
             login(i);
             return;
-        }       
+        }
     }
 
     toggleElements(['wrongPassword'], 'd-none', false);
@@ -76,8 +73,7 @@ function checkLogin() {
 
 
 /**
- * This function will save the value in the local storage for the log in
- * 
+ * This function will save the value in the local storage for the log in.
  * @param {string} key This is the key for the local storage
  * @param {string} value This is the value for the local storage
  */
@@ -110,6 +106,9 @@ function fillInData() {
 }
 
 
+/**
+ * Resets all input elements on the login.html to their default (empty) state.
+ */
 function resetInputs() {
 
     resetValue(["firstname", "lastname", "email", "password", "signUpEmail", "signUpPassword", "forgotPwEmail", "newPassword"]);
@@ -123,13 +122,11 @@ function resetInputs() {
 
 /**
  * This function is used to check the width of the screen
- * 
- * @returns it returns true when the screen is smaller than 900px
+ * @returns {boolean} it returns true when the screen is smaller than 900px
  */
 function screenSmallerThan900Px() {
     return window.innerWidth <= 900;
 }
-
 
 
 /**
@@ -141,7 +138,9 @@ function handleResize() {
 }
 
 
-
+/**
+ * Adds event listeners for changing the focus of the input elements.
+ */
 function addEventListeners() {
 
     document.addEventListener("focus", activeInputfield, true); // gets the inputfield which is in focus

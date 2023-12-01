@@ -117,6 +117,11 @@ function boardDetailViewAssignees(task) {
 }
 
 
+/**
+ * Returns the corresponding contact object to the email that is passed as parameter.
+ * @param {string} emailOfAssignee email for which the contact should be found
+ * @returns {object} contact data of assignee
+ */
 function findAssigneeInContacts(emailOfAssignee) {
 
     for (let i = 0; i < database.contacts.length; i++) {

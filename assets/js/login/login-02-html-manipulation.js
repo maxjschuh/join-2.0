@@ -80,23 +80,23 @@ function waitForAnimation() {
 
     let timeout;
 
-    if (screenSmallerThan900Px()) { // Der Code für den Fall, dass die Bildschirmbreite kleiner oder gleich 900px ist
+    if (screenSmallerThan900Px()) {
 
         showAndHideElements(['mobileStartScreen'], ['loginContainer']);
 
         setTimeout(() => {
             toggleElements(['mobileStartScreen'], 'd-none', true);
             setInlineStyle(['joinPic'], 'display: block');
-        }, 0); //300
+        }, 300);
 
         timeout = 1300;
 
-    } else timeout = 1000; // Der Code für den Fall, dass die Bildschirmbreite größer als 900px ist
+    } else timeout = 1000;
 
     setTimeout(() => {
 
         toggleElements(['loginContainer', 'signUp'], 'd-none', false);
-    }, 0);
+    }, timeout);
 }
 
 

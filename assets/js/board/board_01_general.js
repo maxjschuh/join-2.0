@@ -203,7 +203,7 @@ function columnSetOffsetY() {
  * Calculates the bottom coordinate of the inputted column. This is done by adding the height of the column based on its number of tasks and the height of previous columns.
  * @param {number} offsetY height of previous columns
  * @param {number} i the index of the column in the columnIds array, which contains the four html ids of the board columns
- * @returns top position for the next column
+ * @returns {number} top position for the next column
  */
 function boardComputeOffsetY(offsetY, i) {
 
@@ -216,7 +216,7 @@ function boardComputeOffsetY(offsetY, i) {
 /**
  * Returns the correct priority text for display as they differ from the ones used in the database.
  * @param {object} task the task whose information should be rendered
- * @returns priority text for display
+ * @returns {string} priority text for display
  */
 function getTaskPrioBoard(task) {
 
@@ -231,7 +231,7 @@ function getTaskPrioBoard(task) {
 /**
  * Finds the category of the task in the database and returns its color rgb code.
  * @param {string} taskCategory category of the task that should be rendered
- * @returns rgb color code of the category
+ * @returns {string} rgb color code of the category
  */
 function getCategoryColor(taskCategory) {
 
@@ -246,7 +246,7 @@ function getCategoryColor(taskCategory) {
 /**
  * Inspects how many assignees the inputted task has and returns the according template (showing all assignees or only the first two).
  * @param {object} task the task whose information should be rendered
- * @returns the html template for the assignees in the task card footer
+ * @returns {string} the html template for the assignees in the task card footer
  */
 function htmlTemplateAllAssignees(task) {
 
@@ -259,7 +259,7 @@ function htmlTemplateAllAssignees(task) {
 /**
  * Creates and returns the html template for up to three assignees in the task card footer.
  * @param {object} task the task whose information should be rendered
- * @returns html template for up to three assignees
+ * @returns {string} html template for up to three assignees
  */
 function htmlTemplateUpTo3Assignees(task) {
     let html = '';
@@ -277,7 +277,7 @@ function htmlTemplateUpTo3Assignees(task) {
 /**
  * Creates and returns the html template for more than three assignees in the task card footer.
  * @param {object} task the task whose information should be rendered
- * @returns html template for more than three assignees 
+ * @returns {string} html template for more than three assignees 
  */
 function htmlTemplateMoreThan3Assignees(task) {
     let html = '';
@@ -300,7 +300,7 @@ function htmlTemplateMoreThan3Assignees(task) {
 /**
  * Shortens the description to a size that can be displayed in relation to the current screen with.
  * @param {string} description unshortened description of a task
- * @returns shortened description
+ * @returns {string} shortened description
  */
 function boardGetShortenedDescription(description) {
 
@@ -320,7 +320,7 @@ function boardGetShortenedDescription(description) {
 /**
  * Returns display:none when there a no subtask in the current task.
  * @param {object} task the task whose information should be rendered
- * @returns display:none as inline style
+ * @returns {string} display:none as inline style
  */
 function boardCheckForSubtasks(task) {
 
