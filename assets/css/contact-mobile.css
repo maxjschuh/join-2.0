@@ -114,8 +114,7 @@
 
     .contact-overlay-form-section {
         width: 100vw;
-        min-height: 55%;
-        height: 50vh;
+        min-height: 55vh;
         border-top-right-radius: 0px;
         border-bottom-right-radius: 0px;
         border-bottom-left-radius: 0px;
@@ -416,5 +415,12 @@
 
     .contact-overlay-buttons {
         margin-top: 15px;
+    }
+}
+
+@media only screen and (max-height: 700px) {
+
+    .contact-overlay-buttons {
+        margin: 0;
     }
 }

@@ -338,7 +338,5 @@ function validateInput(inputId) {
         formValid = false;
         alert.innerHTML = alertMessage;
 
-    } else {
-        alert.innerHTML = '';
-    }
+    } else alert.innerHTML = '';
 }

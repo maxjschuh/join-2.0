@@ -116,9 +116,9 @@ function openNewContactForm() {
     toggleElements(['newContact'], 'd-none', false);
 
     setTimeout(() => {
-        
+
         toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', true);
-    }, 10);    
+    }, 10);
 }
 
 
@@ -126,6 +126,17 @@ function openNewContactForm() {
  * This function closes the add new contact form.
  */
 function closeContactOverlay() {
+
+    resetValue([
+        'newContactFirstName',
+        'newContactLastName',
+        'newContactEmail',
+        'newContactPhone',
+        'newContactFirstNameAlert',
+        'newContactLastNameAlert',
+        'newContactEmailAlert',
+        'newContactPhoneAlert'
+    ]);
 
     toggleElements(['contactOverlayBoxAdd'], 'contact-overlay-box-animate', false);
 

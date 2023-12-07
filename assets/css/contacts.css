@@ -321,6 +321,7 @@
 
 .contact-overlay-container {
     background-color: rgba(239, 243, 245, 0.20);
+    z-index: 99;
     display: flex;
     justify-content: center;
     position: fixed;
