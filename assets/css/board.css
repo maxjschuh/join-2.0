@@ -635,6 +635,10 @@ Board - edit task overlay
     align-items: flex-end;
 }
 
+.board-selectbox-subtask {
+    width: 14px;
+}
+
 /*-------------------------------------------------
 drag and drop functionality
 -------------------------------------------------*/

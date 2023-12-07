@@ -45,7 +45,7 @@ function boardAddTaskTemplateSubtasks() {
         <div class="padding-36-bottom">
         <div class="display-flex">
             <div class="padding-10-bottom padding-17-right">Subtasks</div>
-            <div id="subTaskReport" class="report d-none">The following characters are not allowed { } [
+            <div id="subTaskReport" class="report d-none">The following characters are not allowed: { } [
                 ] "</div>
         </div>
         <div class="task-white-box task-subtask-container" id="subtask">
@@ -80,7 +80,7 @@ function boardTaskEditorTemplateSubtasks() {
         <div class="padding-36-bottom">
         <div class="display-flex">
             <div class="padding-10-bottom padding-17-right">Subtasks</div>
-            <div id="subTaskReport" class="report d-none">The following characters are not allowed { } [
+            <div id="subTaskReport" class="report d-none">The following characters are not allowed: { } [
                 ] "</div>
         </div>
         <div class="task-white-box task-subtask-container" id="subtask">

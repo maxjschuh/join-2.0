@@ -292,8 +292,15 @@
 .sub-task {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
     font-size: 16px;
     padding-bottom: 5px;
+}
+
+.sub-task div {
+    display: flex;
+    align-items: center;
 }
 
 .selectbox-subtask {
@@ -305,9 +312,13 @@
 }
 
 .subtaskDone {
-    padding-left: 2px;
-    padding-bottom: 6px;
+    padding: 2px;
     height: 7px;
+}
+
+.remove-subtask {
+    width: 21.65px;
+    height: 21.65px;
 }
 
 /* buttons */

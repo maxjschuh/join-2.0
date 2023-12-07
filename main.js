@@ -20,8 +20,8 @@ const INPUT_ALERTS = {
         alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "signUpEmail": {
-        regex: /[^a-zA-Z0-9\-_@. ]/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , . , @ , [space]'
+        regex: /[$"'`´\s\\]/,
+        alertMessage: 'Contains forbidden characters'
     },
     "signUpPassword": {
         regex: /[$"'`´\s\\]/,
@@ -36,8 +36,8 @@ const INPUT_ALERTS = {
         alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "newContactEmail": {
-        regex: /^[\w\s@.-]+$/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , @, [space]'
+        regex: /[$"'`´\s\\]/,
+        alertMessage: 'Contains forbidden characters'
     },
     "newContactPhone": {
         regex: /[^0-9\-\+\/\s]/,
@@ -52,8 +52,8 @@ const INPUT_ALERTS = {
         alertMessage: 'Allowed characters: a-z, A-Z, - , . ,[space]'
     },
     "editEmail": {
-        regex: /[^a-zA-Z0-9\-_@. ]/,
-        alertMessage: 'Allowed characters: a-z, A-Z, 0-9, - , _ , . , @ , [space]'
+        regex: /[$"'`´\s\\]/,
+        alertMessage: 'Contains forbidden characters'
     },
     "editPhone": {
         regex: /[^0-9\-\+\/\s]/,

@@ -59,31 +59,9 @@ function boardDetailViewPriorityTag(task) {
 
 
 /**
- * Renders the already existing subtasks in the detail view.
- * @param {object} task the task whose information should be rendered
- */
-function boardDetailViewSubtasks(task) {
-
-    if (!task.subtasks.name) return;
-
-    const container = document.getElementById('board-detail-view-subtasks');
-
-    let html = /*html*/ `Subtasks: <ul>`;
-
-    task.subtasks.name.forEach(subtaskName => {
-
-        html += /*html*/ `<li>${subtaskName}</li>`;
-    });
-
-    html += /*html*/ `</ul>`;
-    container.innerHTML = html;
-}
-
-
-/**
  * Returns the colour associated with the priority of the task.
  * @param {string} taskPrio the priority of the task as string: 'low', 'medium' or 'high'
- * @returns rgba color code for the priority
+ * @returns {string} rgba color code for the priority
  */
 function boardGetPrioColor(taskPrio) {
 

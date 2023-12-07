@@ -40,7 +40,7 @@
         </div>
         <div class="add-task-container content-alignment">
 
-            <div class="overlay-section d-none" id="newContact" w3-include-html="./assets/templates/add_contact_template.html"></div>
+            <div class="contact-overlay-container d-none" id="newContact" w3-include-html="./assets/templates/add_contact_template.html"></div>
 
             <div class="task-display-none-desktop padding-36-bottom">
                 Kanban Project Management Tool
@@ -177,7 +177,7 @@
                     <div class="padding-36-bottom">
                         <div class="display-flex">
                             <div class="padding-10-bottom padding-17-right">Subtasks</div>
-                            <div id="subTaskReport" class="report d-none">The following characters are not allowed { } [
+                            <div id="subTaskReport" class="report d-none">The following characters are not allowed: { } [
                                 ] "</div>
                         </div>
                         <div class="task-white-box task-subtask-container" id="subtask">
@@ -211,7 +211,6 @@
                     <img src="./assets/img/create_task.png">
                 </button>
             </div>
-            <div class="overlay-section" id="newContact"></div>
         </div>
         <div id="addedToBoard" class="added-to-board-position">
             <div class="added-to-board">

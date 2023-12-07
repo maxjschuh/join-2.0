@@ -31,3 +31,28 @@ body {
         padding-bottom: 95px !important;
     }
 }
+
+
+/* ----------------------------------
+custom scrollbar
+---------------------------------- */
+
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F6F7F8;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2C3646;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #29ABE2;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #091931;
+}

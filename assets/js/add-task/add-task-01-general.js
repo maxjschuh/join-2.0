@@ -320,7 +320,7 @@ function resetPrioButton() {
 function addSubtask() {
     const subtaskInput = document.getElementById('subtaskInput').value.trim();
     if (containsBrackets(subtaskInput)) {
-        document.getElementById('subTaskReport').innerHTML = 'The following characters are not allowed { } [ ] "';
+        document.getElementById('subTaskReport').innerHTML = 'The following characters are not allowed: { } [ ] "';
 
     } else if (!subtaskInput) {
         document.getElementById('subTaskReport').innerHTML = 'Empty subtasks are not allowed';
@@ -354,13 +354,20 @@ function removeSubtask(i) {
 function renderSubtasks() {
     const subtaskContainer = document.getElementById('addedSubtasks');
     subtaskContainer.innerHTML = '';
+
     for (let i = 0; i < subtasks.length; i++) {
-        subtaskContainer.innerHTML += /*html*/ `<div class="sub-task">
-            <div onclick="setStatus('selectboxSubtask${i}', ${i})" class="selectbox-subtask pointer">
-            <img class="subtaskDone ${getClass(i)}" id="selectboxSubtask${i}" src="./assets/img/create_subtask.png">
+
+        subtaskContainer.innerHTML += /*html*/ `
+            <div class="sub-task">
+                <div>
+                    <div onclick="setStatus('selectboxSubtask${i}', ${i})" class="selectbox-subtask pointer">
+                        <img class="subtaskDone ${getClass(i)}" id="selectboxSubtask${i}" src="./assets/img/create_subtask.png">
+                    </div>
+                    <div>${subtasks[i]}</div>
+                </div>
+                <img class="pointer remove-subtask" src="./assets/img/board/close.svg" onclick="removeSubtask(${i}), ${i}" alt="delete-icon">
             </div>
-            <div class="pointer" onclick="removeSubtask(${i}), ${i}">${subtasks[i]}</div>
-            </div>`;
+        `;
     }
 }
 
