@@ -90,21 +90,41 @@ function openContactDetails(i) {
 
 
 /**
+ * Resets the contact buttons in the contact list to their default state (unselected):
+ */
+function resetListButtons() {
+
+    let ids = [];
+
+    for (let i = 0; i < database.contacts.length; i++) {
+        const id = `userSmall-${i}`;
+        ids.push(id);
+    }
+
+    toggleElements(ids, 'change-background-color', false);
+}
+
+
+/**
  * Shows or hides the mobile view.
  * @param {boolean} direction_of_operation true for showing, false for hiding
  */
 function changeMobileView(direction_of_operation) {
 
+    if (!direction_of_operation) resetListButtons();
+
     document.getElementById('contact-left-arrow').classList.toggle('visibility', direction_of_operation);
+    toggleElements(['contacts-container'], 'd-flex', true);
 
-    let ids = ['contacts-container', 'contact-kanban', 'headline', 'selectedContact'];
-    toggleElements(ids, 'show-contact-selection-overlay', direction_of_operation);
+    try {
 
-    ids = ['contact-list', 'contact-edit', 'contact-trash', 'mobile-contact-button-container']
-    toggleElements(ids, 'd-none', direction_of_operation);
+        ids = ['mobile-contact-button-container', 'contact-list', 'contact-edit', 'contact-trash']
+        toggleElements(ids, 'd-none', direction_of_operation);
 
-    ids = ['edit-contact-icon', 'trash-icon', 'contact-kanban']
-    toggleElements(ids, 'd-none', !direction_of_operation);
+        ids = ['edit-contact-icon', 'trash-icon', 'contact-kanban']
+        toggleElements(ids, 'd-none', !direction_of_operation);
+
+    } catch { }
 }
 
 
