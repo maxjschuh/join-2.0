@@ -407,9 +407,10 @@ function updateContactSelection() {
  * @param {string} contactToDelete - the contact to be deleted
  */
 function deleteContactsFromTask(contactToDelete) {
-    const toDelete = contactToDelete.firstname + ' ' + contactToDelete.lastname;
+
     database.tasks.forEach(task => {
-        const assignedIndex = task.assigned_to.indexOf(toDelete);
+
+        const assignedIndex = task.assigned_to.indexOf(contactToDelete.email);
         if (assignedIndex !== -1) task.assigned_to.splice(assignedIndex, 1);
     });
 }
