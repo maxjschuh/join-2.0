@@ -1,2 +1,2 @@
 RewriteEngine On
-RewriteRule ^$ /join/summary.html [R=301,L]
+RewriteRule ^$ /login.html [R=301,L]
