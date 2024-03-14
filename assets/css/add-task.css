@@ -520,14 +520,18 @@
         padding-left: 0px;
         width: 100%;
     }
+}
 
-    @media(max-width: 360px) {
-        .task-prio-button {
-            font-size: 12px;
-        }
+@media(max-width: 360px) {
+    .task-prio-button {
+        font-size: 12px;
+    }
 
-        .task-prio-button img {
-            width: 14px;
-        }
+    .task-prio-button img {
+        width: 14px;
+    }
+
+    #clearAddButtons {
+        width: 45px;
     }
 }

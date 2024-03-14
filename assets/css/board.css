@@ -905,3 +905,13 @@ Responsive Design
         gap: 16px;
     }
 }
+
+@media (min-width: 700px) {
+
+    .add-task-container {
+        padding-left: 30px;
+        padding-right: 30px;
+        width: unset;
+        max-width: unset;   
+    }
+}
