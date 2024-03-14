@@ -265,7 +265,7 @@ async function addContact() {
     userCreatedSuccess();
     closeContactOverlay();
 
-    if (window.location.pathname === '/join/contacts.html') loadContacts();
+    if (window.location.pathname === '/contacts.html') loadContacts();
 }
 
 
