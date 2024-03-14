@@ -22,16 +22,16 @@ function collectUnnecessaryInfos() {
 
     setTimeout(() => {
 
-        if (required) {
+        if (requiredFieldsEmpty ) {
             activateAddTaskButton();
-            required = '';
+            requiredFieldsEmpty = false;
 
         } else {
             pushSubtask();
             pushStatus();
             saveDatabase();
         }
-    }, 300);
+    }, 100);
 }
 
 
@@ -59,6 +59,9 @@ function activateAddTaskButton() {
  * This function pushes all the emails of the selected contacts in an array.
  */
 function getEmails() {
+
+    collectedContacts = [];
+
     taskContactList.forEach((contact) => {
 
         collectedContacts.push(contact.email);
@@ -78,7 +81,7 @@ function getValue(valueId, reportID) {
     const description = document.getElementById(valueId).value.trim();
     if (!description || containsBrackets(description)) {
         showAndHideElements([reportID]);
-        required = true;
+        requiredFieldsEmpty = true;
     } else return description;
 }
 
@@ -92,7 +95,7 @@ function getCategory() {
     if (!selectedCategory) {
         showAndHideElements(['categoryReport']);
         setInnerHTML(['categoryReport'], 'This field is required');
-        required = true;
+        requiredFieldsEmpty = true;
     } else return selectedCategory;
 }
 
@@ -110,7 +113,7 @@ function getDate() {
 
     else {
         showAndHideElements(['dateReport']);
-        required = true;
+        requiredFieldsEmpty = true;
     }
 }
 
@@ -124,7 +127,7 @@ function getPrio() {
     if (prio) return prio;
     else {
         showAndHideElements(['prioReport']);
-        required = true;
+        requiredFieldsEmpty = true;
     }
 }
 
@@ -162,7 +165,7 @@ async function saveDatabase() {
 
     setTimeout(() => {
         window.location.replace('./board.html');
-    }, 1500);
+    }, 1000);
 }
 
 

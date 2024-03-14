@@ -25,7 +25,7 @@ let task = {
 let newCategory;
 let colorForNewCategory;
 let colorForNewCategoryID;
-let required = '';
+let requiredFieldsEmpty = false;
 let initialsRendered = false;
 
 
