@@ -7,7 +7,7 @@ let prio;
 let subtasks = [];
 let subtaskStatus = [];
 let categories = [];
-let category = [];
+let category = '';
 let tasks = [];
 let task = {
     "title": "",

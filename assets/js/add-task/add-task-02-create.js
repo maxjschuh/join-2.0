@@ -5,6 +5,7 @@
  */
 function collectAllInfos() {
     disableAddTaskButton();
+    resetReportsToDefault();
     task.title = getValue('tileInput', 'titleReport');
     task.description = getValue('descriptionInput', 'descriptionReport');
     task.category = getCategory();
@@ -22,7 +23,7 @@ function collectUnnecessaryInfos() {
 
     setTimeout(() => {
 
-        if (requiredFieldsEmpty ) {
+        if (requiredFieldsEmpty) {
             activateAddTaskButton();
             requiredFieldsEmpty = false;
 
@@ -296,4 +297,19 @@ function saveNewCategory() {
 function pushCategoryInCategories() {
     categories.push(category);
     renderCategories();
+}
+
+
+/**
+ * Resets all "this field is required" reports to their default state (display: none).
+ */
+function resetReportsToDefault() {
+
+    showAndHideElements(undefined, [
+        'titleReport',
+        'descriptionReport',
+        'categoryReport',
+        'dateReport',
+        'prioReport'
+    ]);
 }
