@@ -316,6 +316,7 @@
     align-items: center;
     transform: translateX(600%);
     transition: transform 0.5s ease-in-out;
+    z-index: 2;
 }
 
 .contact-overlay-box-animate {
@@ -327,6 +328,7 @@
     z-index: 99;
     display: flex;
     justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     right: 0;

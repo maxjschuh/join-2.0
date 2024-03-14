@@ -360,3 +360,10 @@ function determineSubtasksProgress(task) {
 
     return subtasksProgress;
 }
+
+function boardHideAllOverlays() {
+
+    boardHideTaskDetails();
+    boardHideAddtaskOverlay();
+    boardHideTaskEditor();
+}

@@ -73,6 +73,10 @@
         align-items: flex-start;
     }
 
+    .overlay-void {
+        display: none;
+    }
+
     .contact-overlay-logo {
         display: none;
     }

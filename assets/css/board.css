@@ -151,7 +151,7 @@ Kanban Board - Header
     height: 50px;
 }
 
-.board-kanban-column-header img:hover { 
+.board-kanban-column-header img:hover {
     filter: invert(70%) sepia(47%) saturate(4366%) hue-rotate(165deg) brightness(93%) contrast(90%);
 }
 
@@ -331,7 +331,6 @@ Task detail view
     overflow-y: auto;
 }
 
-
 #board-detail-view {
     display: flex;
     flex-direction: column;
@@ -343,6 +342,7 @@ Task detail view
     border-radius: 30px;
     position: relative;
     margin-bottom: 100px;
+    z-index: 2;
 }
 
 .board-close-icon {
@@ -534,6 +534,7 @@ Board - edit task overlay
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 180px;
+    z-index: 2;
 }
 
 .task-editor-section {
@@ -692,6 +693,7 @@ Board - add task overlay
     align-items: center;
     justify-content: center;
     margin-bottom: 180px;
+    z-index: 2;
 }
 
 .content-alignment {

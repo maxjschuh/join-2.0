@@ -157,6 +157,8 @@
 
             <div class="board-overlay board-display-none">
 
+                <div class="overlay-void" onclick="boardHideAllOverlays()"></div>
+
                 <div id="board-detail-view" class="board-display-none">
 
                     <img class="board-close-icon board-cursor-pointer" onclick="boardHideTaskDetails()"
@@ -242,7 +244,8 @@
                             </button>
 
                             <button id="task-editor-prio-button-low" onclick="taskEditorRenderPrioButtons('low')">Low
-                                <img id="task-editor-prio-icon-low" src="./assets/img/prio_low_white.svg" alt="priority low icon">
+                                <img id="task-editor-prio-icon-low" src="./assets/img/prio_low_white.svg"
+                                    alt="priority low icon">
                             </button>
                         </div>
                     </div>
