@@ -38,7 +38,8 @@ function datePicker() {
             const month = String(dateObject.getMonth() + 1).padStart(2, '0');
             const day = String(dateObject.getDate()).padStart(2, '0');
             const isoDate = `${year}-${month}-${day}`;
-            input.value = isoDate;
+            dateForNewTask = isoDate;
+            input.value = `${day}-${month}-${year}`;
         }
     });
 }

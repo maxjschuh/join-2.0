@@ -108,14 +108,15 @@ function getCategory() {
  */
 function getDate() {
     const date_regex = /^(?:19|20)\d{2}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|[1-2][0-9]|3[0-1])$/;
-    const chosenDate = document.getElementById('date').value.trim();
 
-    if (chosenDate && date_regex.test(chosenDate)) return chosenDate;
+    if (dateForNewTask && date_regex.test(dateForNewTask)) return dateForNewTask;
 
     else {
         showAndHideElements(['dateReport']);
         requiredFieldsEmpty = true;
     }
+
+    console.log(dateForNewTask)
 }
 
 
@@ -312,4 +313,15 @@ function resetReportsToDefault() {
         'dateReport',
         'prioReport'
     ]);
+}
+
+/**
+ * For other functions, the date needs to be saved in the database in the format yyyy/mm/dd. This function provides the date in the format yyyy/mm/dd in the variable dateForNewTask.
+ */
+function provideDateInDatabaseFormat() {
+
+    const dateInput = document.getElementById('date');
+
+    const [day, month, year] = dateInput.value.trim().split("-");
+    dateForNewTask = `${year}-${month}-${day}`;
 }

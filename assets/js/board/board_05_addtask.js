@@ -34,6 +34,10 @@ function boardHideAddtaskOverlay() {
     toggleElements(['board-add-task', 'mobileCreateTask'], 'board-display-none', true);
 
     emptyInnerHTML(['board-add-task-assignee-picker', 'board-add-task-subtasks']);
+    selectedCategory = undefined;
+    newCategory = undefined;
+    colorForNewCategory = undefined;
+    colorForNewCategoryID = undefined;
 }
 
 

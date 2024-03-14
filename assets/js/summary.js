@@ -95,7 +95,7 @@ function getUpcomingDeadline() {
  * This function is used to get the next upcoming task.
  * 
  * @param {Array} dateArray This Array contains the due dates of the tasks
- * @returns it returns the upcoming Task
+ * @returns {string} the due date of the task with upcoming deadline
  */
 function findUpcomingDate(dateArray) {
     // Check if the array is empty or zero

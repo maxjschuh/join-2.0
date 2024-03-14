@@ -36,7 +36,7 @@ function boardRenderDetailView(i) {
     setInlineStyle(['board-detail-view-category-tag'], `background-color:${getCategoryColor(task.category)}`);
     setInnerHTML(['board-detail-view-title'], task.title);
     setInnerHTML(['board-detail-view-description'], task.description);
-    setInnerHTML(['board-detail-view-due-date'], `Due date: <div>${task.due_date}</div>`);
+    setInnerHTML(['board-detail-view-due-date'], `Due date: <div>${provideDateInInterfaceFormat(task.due_date)}</div>`);
     
     boardDetailViewPriorityTag(task);
     boardDetailViewAssignees(task);
@@ -138,4 +138,14 @@ async function boardRemoveSubtask(i, containerId) {
     renderAllTaskCards();
     boardCreateAllEventListeners();
     await setItem('database', database);
+}
+
+
+/**
+ * For display in the UI the date should be rendered in the format dd/mm/yyy.
+ */
+function provideDateInInterfaceFormat(yyyy_mm_dd) {
+
+    const [year, month, day] = yyyy_mm_dd.split("-");
+    return `${day}-${month}-${year}`;
 }

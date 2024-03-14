@@ -29,6 +29,7 @@ async function boardInit() {
     contacts = database.contacts;
     categories = database.categories;
     datePicker();
+    datePickerTaskEditor();
 }
 
 

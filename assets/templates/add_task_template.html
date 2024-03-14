@@ -82,7 +82,7 @@ src="./assets/img/board/arrow-left-line.svg" alt="arrow to the left icon">
                     <div class="padding-10-bottom padding-17-right">Due date</div>
                     <div id="dateReport" class="report d-none">This field is required</div>
                 </div>
-                <input type="text" placeholder="yyyy/mm/dd" id="date" class="task-white-box no-outline">
+                <input type="text" placeholder="dd-mm-yyyy" id="date" class="task-white-box no-outline" oninput="updateDateForNewTask()">
             </div>
 
             <div class="padding-36-bottom">

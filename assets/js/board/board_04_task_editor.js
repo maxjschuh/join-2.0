@@ -173,7 +173,7 @@ function taskEditorRenderData() {
 
     document.getElementById('task-editor-title').value = task.title;
     document.getElementById('task-editor-description').value = task.description;
-    document.getElementById('task-editor-date').value = task.due_date;
+    document.getElementById('task-editor-date').value = provideDateInInterfaceFormat(task.due_date);
 }
 
 
@@ -313,4 +313,26 @@ function boardTaskEditorSubtaskEnter() {
         });
 
     }, 150);
+}
+
+
+/**
+ * This function shows a datepicker.
+ * Source: https://github.com/qodesmith/datepicker
+ */
+function datePickerTaskEditor() {
+
+    const picker = datepicker('#task-editor-date', {
+        startDay: 1,
+        minDate: new Date(),
+        formatter: (input, date, instance) => {
+            const dateObject = new Date(date);
+            const year = dateObject.getFullYear();
+            const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObject.getDate()).padStart(2, '0');
+            const isoDate = `${year}-${month}-${day}`;
+            // dateForNewTask = isoDate;
+            input.value = `${day}-${month}-${year}`;
+        }
+    });
 }
