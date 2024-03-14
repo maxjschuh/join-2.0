@@ -340,3 +340,27 @@ function validateInput(inputId) {
 
     } else alert.innerHTML = '';
 }
+
+
+/**
+ * For easier use in functions, the date needs to be saved in the database in the format yyyy-mm-dd. This function provides the date this format.
+ * @param {string} inputId input from where the value should be used
+ * @returns {string} date in format yyyy-mm-dd 
+ */
+function provideDateInDatabaseFormat(inputId) {
+
+    const dateInput = document.getElementById(inputId);
+
+    const [day, month, year] = dateInput.value.trim().split("-");
+    return `${year}-${month}-${day}`;
+}
+
+
+/**
+ * For display in the UI the provided date (format: yyyy-mm-dd) is returned in the format dd-mm-yyy.
+ */
+function provideDateInInterfaceFormat(yyyy_mm_dd) {
+
+    const [year, month, day] = yyyy_mm_dd.split("-");
+    return `${day}-${month}-${year}`;
+}

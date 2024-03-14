@@ -83,7 +83,8 @@ async function boardConfirmEditorChanges() {
 
     const taskEditorTitle = replaceForbiddenCharacters(document.getElementById('task-editor-title').value);
     const taskEditorDescription = replaceForbiddenCharacters(document.getElementById('task-editor-description').value);
-    const taskEditorDueDate = document.getElementById('task-editor-date').value.trim();
+    
+    const taskEditorDueDate = provideDateInDatabaseFormat('task-editor-date');
 
     database.tasks[boardCurrentTaskInDetailView].prio = taskEditorSelectedPrio;
     database.tasks[boardCurrentTaskInDetailView].title = taskEditorTitle;
@@ -102,12 +103,12 @@ async function boardConfirmEditorChanges() {
  * Saves all assignees of the task in the database.
  */
 function taskEditorSaveContacts() {
+
     let newAssignees = [];
 
     taskContactList.forEach(contact => {
 
-        const name = contact.firstname + ' ' + contact.lastname;
-        newAssignees.push(name);
+        newAssignees.push(contact.email);
     });
 
     database.tasks[boardCurrentTaskInDetailView].assigned_to = newAssignees;
@@ -330,8 +331,6 @@ function datePickerTaskEditor() {
             const year = dateObject.getFullYear();
             const month = String(dateObject.getMonth() + 1).padStart(2, '0');
             const day = String(dateObject.getDate()).padStart(2, '0');
-            const isoDate = `${year}-${month}-${day}`;
-            // dateForNewTask = isoDate;
             input.value = `${day}-${month}-${year}`;
         }
     });

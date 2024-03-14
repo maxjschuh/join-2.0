@@ -139,13 +139,3 @@ async function boardRemoveSubtask(i, containerId) {
     boardCreateAllEventListeners();
     await setItem('database', database);
 }
-
-
-/**
- * For display in the UI the date should be rendered in the format dd/mm/yyy.
- */
-function provideDateInInterfaceFormat(yyyy_mm_dd) {
-
-    const [year, month, day] = yyyy_mm_dd.split("-");
-    return `${day}-${month}-${year}`;
-}

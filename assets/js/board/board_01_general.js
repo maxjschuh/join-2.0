@@ -14,6 +14,7 @@ let boardActiveSearch = false;
 let taskEditorSelectedPrio = '';
 let searchResultsDatabaseIndexes = [];
 let maximumScrollY;
+let dateSetInTaskEditor = '';
 
 
 /**

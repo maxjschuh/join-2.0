@@ -27,7 +27,6 @@ let colorForNewCategory;
 let colorForNewCategoryID;
 let requiredFieldsEmpty = false;
 let initialsRendered = false;
-let dateForNewTask;
 
 
 /**
