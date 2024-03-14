@@ -12,14 +12,14 @@ function boardShowTaskEditor() {
     emptyInnerHTML(['board-detail-view-subtasks']);
     document.getElementById('board-task-editor-subtasks').innerHTML = boardTaskEditorTemplateSubtasks();
 
-    taskEditorInitAssigneePicker(task.assigned_to);
     boardRenderSubtasks(task.subtasks, 'addedSubtasks');
-
+    
     clickOutsideDropdownMenu();
     boardTaskEditorSubtaskEnter();
-
+    
     toggleElements(['board-detail-view'], 'board-display-none', true);
     toggleElements(['board-task-editor'], 'board-display-none', false);
+    taskEditorInitAssigneePicker(task.assigned_to);
 }
 
 

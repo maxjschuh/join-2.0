@@ -26,7 +26,6 @@ let newCategory;
 let colorForNewCategory;
 let colorForNewCategoryID;
 let requiredFieldsEmpty = false;
-let initialsRendered = false;
 
 
 /**
@@ -156,13 +155,15 @@ function selectedForTask(selected, id) {
 
         removeContactsForTask(selected);
         toggleSelectionPoint(id, false);
-        switchContactIcons();
-
+        
     } else {
         taskContactList.push(selected);
         toggleSelectionPoint(id, true);
-        switchContactIcons(selected);
     }
+    
+    switchContactIcons();
+    createInitials();
+    renderInitials();
 }
 
 
@@ -220,7 +221,7 @@ function clearContacts() {
     collectedContacts = [];
     taskContactList = [];
     initials = [];
-    switchContactIcons();
+    switchContactIcons('hide');
     renderContacts();
     renderloggedInUserinContactList();
     renderInitials();
@@ -228,15 +229,11 @@ function clearContacts() {
 
 
 /**
- * This function starts the function to create and render the initials,
- * closes the drop down menu and changes the icons.
+ * This function closes the drop down menu and hides the icons.
  */
 function addContacts() {
-    initialsRendered = true;
-    createInitials();
-    switchContactIcons();
-    renderInitials();
     pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
+    switchContactIcons('hide');
 }
 
 

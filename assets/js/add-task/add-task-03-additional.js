@@ -51,19 +51,22 @@ function datePicker() {
  * 
  * @param {string} clicked - This is the id where a classlist should be changed
  * @param {string} notClicked - This is the id where a classlist should be changed
- * @param {string} visible - This is the id where the classlist "d-none" will removed
+ * @param {string} visible - This is the id where the classlist "d-none" will be removed
  * @param {string} notVisible - This is the id where the classlist "d-none" will added
  */
 function pullDownMenu(clicked, notClicked, visible, notVisible) {
-    const openMenu = document.getElementById(clicked).classList;
-    if (openMenu == 'dropdown-category-closed') openDropDownMenu(clicked, notClicked, visible, notVisible);
-    else closeDropDownMenu(clicked, visible, notVisible);
 
-    if (clicked === 'assignedTo') {
-        switchContactIcons();
-        renderInitials();
-        initialsRendered = false;
-    }
+    const openMenu = document.getElementById(clicked).classList;
+
+    if (openMenu == 'dropdown-category-closed') {
+
+        openDropDownMenu(clicked, notClicked, visible, notVisible);
+
+    } else closeDropDownMenu(clicked, visible, notVisible);
+
+    if (clicked === 'assignedTo') switchContactIcons();
+
+    else switchContactIcons('hide');
 }
 
 
@@ -76,7 +79,7 @@ function openDropDownMenu(clicked, notClicked, visible, notVisible) {
     document.getElementById(notClicked).classList.remove('dropdown-category-open');
     document.getElementById(visible).classList.remove('d-none');
 
-    toggleElements([notVisible, 'initialsContainer'], 'd-none', true);
+    toggleElements([notVisible], 'd-none', true);
 }
 
 
@@ -103,6 +106,7 @@ function clickOutsideDropdownMenu() {
  * @param {boolean} event - Click event.
  */
 function closeMenuIfClickedOutside(event) {
+    
     const categoryMenu = document.getElementById('category');
     const assignedToMenu = document.getElementById('assignedTo');
 
@@ -112,11 +116,8 @@ function closeMenuIfClickedOutside(event) {
 
     if (!assignedToMenu.contains(event.target) && assignedToMenu.classList.contains('dropdown-category-open')) {
         pullDownMenu('assignedTo', 'category', 'moreContacts', 'moreCategories');
-        initialsRendered = true;
-        switchContactIcons();
-        setTimeout(() => {
-            initialsRendered = false;
-        }, 20);
+        switchContactIcons('hide');
+        
     }
 }
 
@@ -171,9 +172,9 @@ function removeAddClearIcons(addSubtask, createSubtask, subtaskInput) {
 /**
  * This function adds and/or removes css classes to create a drop down menu.
  */
-function switchContactIcons() {
-    
-    if (!taskContactList.length || initialsRendered) {
+function switchContactIcons(mode) {
+
+    if (!taskContactList.length || mode === 'hide') {
         showAndHideElements(['ddArrow'], ['clearAddButtons']);
         setTimeout(setAttribute, 200)
 
