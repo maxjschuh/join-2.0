@@ -1,4 +1,4 @@
-Full documentation of classes and methods can be found here:
+Full documentation of methods can be found here:
 
 [join.mjschuh.com/docs](https://join.mjschuh.com/docs/index.html)
 
