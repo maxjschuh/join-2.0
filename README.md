@@ -1,3 +1,9 @@
+Full documentation of classes and methods can be found here:
+
+[join.mjschuh.com/docs](https://join.mjschuh.com/docs/index.html)
+
+
+
 What is Join?
 
 Join is a project management tool. It includes a kanban board which allows you to work in a team and add tasks for every team member. By this, your team gets an overview about which task have to be done by whom, which are in progress or are already done. By using drag and drop you can easily move a task card to a different column. Join is a great tool for supporting you in your daily work.
